@@ -406,7 +406,7 @@ fn main() {
 	mount_to_body(|cx|{
 		view! {  
 	        cx,  
-	        <greeting>"Hello, world!"</greeting>  
+	        <h1>"Hello, world!"</h1>  
 	    }
 	})
 }
@@ -417,9 +417,9 @@ We've written the following in the body of the closure, being provided to `mount
 ```rust
 view! {  
 	cx,  
-	<greeting>
+	<h1>
 		"Hello, world!"
-	</greeting>  
+	</h1>  
 }
 ```
 
