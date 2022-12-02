@@ -105,7 +105,7 @@ In standard HTML you can not just make up properties or Elements/tags. It might 
 
 Developers can now create their own custom elements with Javascript, but we're going to ignore that for now. Just know that it does exist but more work is required than just writing you own tag names.
 
-### What does this mean for the view! macro and what we can use in it?
+### What does this mean for the `view!` macro and which HTML elements we can use in it?
 The content that we place in our `view!` macro is interpreted by the `view!` macro when the rust compiler expands it. It takes what we've provided and says, "Ok, so this is what you want... but the rest of the application can't work with this. What you've written isn't actually HTML and it's not actually Rust. I'll parse this input and rewrite it so that the rest of our application can use it, saving you from the verbosity and potentially error prone nature of writing it yourself."
 
 In the next lesson we'll learn about making components which we can compose and how Leptos allows us to have custom components/elements while still generating HTML that the browser can parse and understand according to the HTML spec.
