@@ -12,7 +12,7 @@
 - Creating custom components
 - How components work
 
-# Where we're at
+# The lesson
 In the previous lesson we presented the following code for a Leptos component, but we did not explain the code:
 
 ```rust
