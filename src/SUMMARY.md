@@ -2,7 +2,7 @@
 - [Acknowledgements]()
 - [About this Book]()
 - [About the Author]()
-- [If you get stuck]()
+- [If you get stuck or lose steam]()
 
 ------------
 
