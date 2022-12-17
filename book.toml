@@ -1,0 +1,6 @@
+[book]
+authors = ["John Funk"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Building Apps with Rust"

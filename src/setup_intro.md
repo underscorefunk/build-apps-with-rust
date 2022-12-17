@@ -1,127 +1,127 @@
-1. Install Rust  
-2. Using up-to-date versions of rustc with `Nightly`  
-3. Using up-to-date versions of Leptos from git  
-  
+1. Install Rust
+2. Using up-to-date versions of rustc with `Nightly`
+3. Using up-to-date versions of Leptos from git
+
 ------  
-  
-### 1. Install Rust  
-Detail instructions on how to install Rust for your computer can be found here: https://www.rust-lang.org/tools/install  
-  
-Installing rust will add a few things to your system.  
-1. rustc - the rust compiler  
-2. rustup - a tool for managing rustc and the rust toolchain (https://rustup.rs)  
-3. cargo - the package manager and helper tool for rust (https://doc.rust-lang.org/stable/cargo/)  
-  
-### 2. Using up-to-date versions of rustc with `Nightly`  
+
+### 1. Install Rust
+Detail instructions on how to install Rust for your computer can be found here: https://www.rust-lang.org/tools/install
+
+Installing rust will add a few things to your system.
+1. rustc - the rust compiler
+2. rustup - a tool for managing rustc and the rust toolchain (https://rustup.rs)
+3. cargo - the package manager and helper tool for rust (https://doc.rust-lang.org/stable/cargo/)
+
+### 2. Using up-to-date versions of rustc with `Nightly`
 rustc is the rust compiler. It's possible to run different versions of the compiler. The Rust   
 community is always working away adding new features. These new features are available   
 immediately through nightly builds. Leptos, being brand new, makes use of some of these new   
-features and currently requires `nightly` to run.  
-  
+features and currently requires `nightly` to run.
+
 To confirm that you're using the `nightly` build of rustc (the rust compiler), open your   
-shell/terminal and run the following command:  
-  
+shell/terminal and run the following command:
+
 ```bash  
 rustc -V  
 ```  
-  
-It should output something like this with 'nightly' in it:  
-  
+
+It should output something like this with 'nightly' in it:
+
 ```bash  
 rustc 1.67.0-nightly (e631891f7 2022-11-13)  
 ```  
-  
-If your version isn't the nightly build, run the following shell/terminal command:  
-  
+
+If your version isn't the nightly build, run the following shell/terminal command:
+
 ```bash  
 rustup default nightly  
 ```  
-  
+
 Rustup is used to manage rustc. By calling the above, rustc is updated to us the nightly build   
-as its default. You can change this to stable by using the following shell/terminal command:  
-  
+as its default. You can change this to stable by using the following shell/terminal command:
+
 ```bash  
 rustup default stable  
 ```  
-  
-### 3. Using up-to-date versions of Leptos from git  
+
+### 3. Using up-to-date versions of Leptos from git
 Leptos is changing all the time as well. It's recommended to grab the latest version directly   
-from their git repository instead of from crates.io (https://crates.io/crates/leptos).  
-  
+from their git repository instead of from crates.io (https://crates.io/crates/leptos).
+
 I'll go into detail on exactly how to do this when we start building our app. Don't stress if   
-the following looks unfamiliar.  
-  
+the following looks unfamiliar.
+
 ```toml  
 [dependencies]  
 leptos = { git = "https://github.com/gbj/leptos" }  
 ```  
   
 ---  
-  
-## Creating your first app  
-1. Using cargo to create a new rust app  
-2. Running your first rust app  
+
+## Creating your first app
+1. Using cargo to create a new rust app
+2. Running your first rust app
 3. Adding Leptos to your application as a dependency
 4. Adding index.html to your application
 5. Serving your index.html and bundling WASM with trunk
 6. Updating client side HTML using Leptos
 ---  
-  
-### 1. Using cargo to create a new rust app (`cargo new`)  
-  
-New rust projects are created with the following terminal command:  
-  
-I'm calling my project `tut-leptos-client-side-event`, keeping in mind thst we're testing out how to handle a simple client side event.  
-  
+
+### 1. Using cargo to create a new rust app (`cargo new`)
+
+New rust projects are created with the following terminal command:
+
+I'm calling my project `tut-leptos-client-side-event`, keeping in mind thst we're testing out how to handle a simple client side event.
+
 ```bash  
 cargo new tut-leptos-client-side-event  
 ```  
-  
+
 > **Did you know?**  
 > Cargo new will create the new project in your current working directory. You  can add path specifications to the application name to change where it's scafolded to. For example, `cargo new ~/dev/my-new-app` will create a new rust app in the `dev` directory inside your `~/` use home directory. If you see `~/` know that it's a shorthand for your user   
-> home. On OSX that would be `/Users/your-user-name`.  
-  
-When `cargo` runs with the `new` command, it creates the folder `tut-leptos-client-side-event`. 
+> home. On OSX that would be `/Users/your-user-name`.
 
-This folder gets setup with a few important things.  
+When `cargo` runs with the `new` command, it creates the folder `tut-leptos-client-side-event`.
 
-1. A `src` directory that will contain all of our source code  
+This folder gets setup with a few important things.
+
+1. A `src` directory that will contain all of our source code
 2. A `src\main.rs` file, which contains our main function which is our `app`. This is called to   
-   tart our application and everything is run by calling code inside of it.  
-3. A `cargo.toml` file which contains meta data about our app, and it's dependences.  
-4. A `target` directory that will contain compiled data of our app. Ignore this folder for now.  
-  
-### 2. Running your first rust app (`cargo run`)  
-  
-Recall that we just made a new app with `cargo new tut-leptos-client-side-event`. Now we want to run it! Using the termninal/shell command `cargo run` will compile and run our app. Entering this terminal/shell command will not work right away. You'll get an error message:  
-  
-> error: could not find `Cargo.toml` in ` ....... or any parent directory  
-  
-Cargo needs that cargo.toml file for context. It has information about which version of rust to compile for, which external bits of code (dependencies) need to be gathered to do the  compilation, and so forth.  
-  
-`C`hanging the `d`irectory of your `p`resent `w`orking `d`irectory to the directory created by `cargo new` will allow us to use the cargo.toml file for context, letting us compile the app.  
-  
-> `cd` – is the terminal/shell command for changing directory  
-  
-> `pwd` – is the terminal/shell command for printing the present working directory  
-  
-The following list of commands need to be input individual, one line at a time. The first command changes the present working directory to our user home directory:  
-  
+   tart our application and everything is run by calling code inside of it.
+3. A `cargo.toml` file which contains meta data about our app, and it's dependences.
+4. A `target` directory that will contain compiled data of our app. Ignore this folder for now.
+
+### 2. Running your first rust app (`cargo run`)
+
+Recall that we just made a new app with `cargo new tut-leptos-client-side-event`. Now we want to run it! Using the termninal/shell command `cargo run` will compile and run our app. Entering this terminal/shell command will not work right away. You'll get an error message:
+
+> error: could not find `Cargo.toml` in ` ....... or any parent directory
+
+Cargo needs that cargo.toml file for context. It has information about which version of rust to compile for, which external bits of code (dependencies) need to be gathered to do the  compilation, and so forth.
+
+`C`hanging the `d`irectory of your `p`resent `w`orking `d`irectory to the directory created by `cargo new` will allow us to use the cargo.toml file for context, letting us compile the app.
+
+> `cd` – is the terminal/shell command for changing directory
+
+> `pwd` – is the terminal/shell command for printing the present working directory
+
+The following list of commands need to be input individual, one line at a time. The first command changes the present working directory to our user home directory:
+
 ```bash  
 cd ~/  
 cargo new tut-leptos-client-side-event  
 cd tut-leptos-client-side-event  
 cargo run  
 ```  
-  
-The application will take a brief period to compile and it'll print `Hello, world!` to your terminal/shell.  
-  
-### 3. Adding Leptos to your application as a dependency  
-  
-We're going to add leptos to the mix as a dependency for our rust application.  
-  
-First let's take a look at our stock `cargo.toml`  
-  
+
+The application will take a brief period to compile and it'll print `Hello, world!` to your terminal/shell.
+
+### 3. Adding Leptos to your application as a dependency
+
+We're going to add leptos to the mix as a dependency for our rust application.
+
+First let's take a look at our stock `cargo.toml`
+
 ```toml  
 [package]  
 name = "tut-leptos-client-side-event"  
@@ -132,40 +132,40 @@ edition = "2021"
   
 [dependencies]  
 ```  
-  
-Note that we have no dependencies listed. All that exists is the heading `[dependencies]`.  
-  
+
+Note that we have no dependencies listed. All that exists is the heading `[dependencies]`.
+
 Normally we'd use `cargo` to help us add dependencies. We'd need to call `cargo` in the   
-context of our rust application's `cargo.toml` like we did with `cargo run`.   
-  
+context of our rust application's `cargo.toml` like we did with `cargo run`.
+
 From within the `tut-leptos-client-side-event` folder we can call the following terminal/shell   
-command:  
-  
+command:
+
 ```bash  
 cargo add leptos  
 ```  
-  
-Our `Cargo.toml` now includes the following:  
-  
+
+Our `Cargo.toml` now includes the following:
+
 ```cargo.toml  
 [dependencies]  
 leptos = "0.0.18"  
 ```  
-  
-In getting started we talked about using the git repository to grab the most up to date version of the dependency instead of the version published on crates.io (the rust package repository).   
 
-To do this we'll actually change the leptos entry to:  
-  
+In getting started we talked about using the git repository to grab the most up to date version of the dependency instead of the version published on crates.io (the rust package repository).
+
+To do this we'll actually change the leptos entry to:
+
 ```cargo.toml  
 leptos = { git = "https://github.com/gbj/leptos" }  
 ```  
-  
-### 4. Adding index.html  
-  
-Our rust application will compile to wasm. That wasm will interact with a web page to create our client side experience. For this to work, we'll need to create an index.html.  
-  
-Create this file in the root of your app, alongside cargo.toml. Your app directory should look like this:  
-  
+
+### 4. Adding index.html
+
+Our rust application will compile to wasm. That wasm will interact with a web page to create our client side experience. For this to work, we'll need to create an index.html.
+
+Create this file in the root of your app, alongside cargo.toml. Your app directory should look like this:
+
 ```  
 /tut-leptos-client-side-event  
 	/src
@@ -173,9 +173,9 @@ Create this file in the root of your app, alongside cargo.toml. Your app directo
 	cargo.toml
 	index.html
 ```  
-  
-Inside the index.html should contain the following:  
-  
+
+Inside the index.html should contain the following:
+
 ```html
 <!DOCTYPE html>  
 <html>  
@@ -186,23 +186,23 @@ Inside the index.html should contain the following:
 <body></body>  
 </html>    
 ```  
-  
+
 The important part of this is the following tag:
 
 ```html
 <link data-trunk rel="rust" data-wasm-opt="z"/>
 ```   
-  
+
 A tool called `trunk` is going to eventually put all of these pieces together. The above `<link>` element will be replaced with rust application, compiled to wasm.
 
-  
+
 ### 4. Serving your index.html and bundling WASM with trunk
-  
+
 To use our application on the web, we need to serve it and bundle the WASM with the HTML.
-  
-We're going to use a tool called `trunk` which will do a few things:  
-1. It'll serve index.html so that we can view it in our browser  
-2. It'll use `cargo` to compile the application to WASM  
+
+We're going to use a tool called `trunk` which will do a few things:
+1. It'll serve index.html so that we can view it in our browser
+2. It'll use `cargo` to compile the application to WASM
 3. It'll attach the compiled WASM to our index.html, replacing `<link data-trunk rel="rust" data-wasm-opt="z"/>`
 
 You will need to install the `trunk` tool. Instructions can be found here: https://trunkrs.dev/#install
@@ -269,11 +269,11 @@ The command `println!` is provided by Rust's standard library for you to use to 
 
 We saw before that the main function is written as `fn main(){}`. There is no `!` after `main`. But there is a `!` after `println!`.
 
-The `!` indicates that command is a macro. Macros are like code snippits or code templates that get expanded by the Rust compiler before it's final compilation. 
+The `!` indicates that command is a macro. Macros are like code snippits or code templates that get expanded by the Rust compiler before it's final compilation.
 
-There are function like macros, which use `()` to encapsulate their argumens. There are also procedural macros, which use `{}` to encapsulate a body of code which gets consumed by the macro. 
+There are function like macros, which use `()` to encapsulate their argumens. There are also procedural macros, which use `{}` to encapsulate a body of code which gets consumed by the macro.
 
-As you can imagine, there is a lot involved in actually printing something to the terminal, but we can ignore the complexity with things like `println!`. 
+As you can imagine, there is a lot involved in actually printing something to the terminal, but we can ignore the complexity with things like `println!`.
 
 Macros have parameters which you can pass arguments to, just like functions. Leptos makes extensive use of macros to make our lives easier. They're wonderful!
 
@@ -288,7 +288,7 @@ We've added `leptos` as a dependency in our cargo.toml, so it now exisgts is our
 
 But, it doesn't exist in our `main.rs` because we haven't brought it into scope yet. Bringing things into scope is like bringing things to a workbench or crafting table to use. You need those things at hand, where you're working, so that when you refer to them the compiler knows what you mean and has the bits of code to actually use.
 
-When we write `use leptos::*;` at the top of our main.rs file, we're telling Rust, `use` and think called `leptos` which you should be aware of because we defined it in our cargo.toml, and bring ALL of it's pieces into scope for us to use. The `::` is a separator the same a slash is a separator for hierarchy in your computer's file system. The `*` refers to 'everything'. 
+When we write `use leptos::*;` at the top of our main.rs file, we're telling Rust, `use` and think called `leptos` which you should be aware of because we defined it in our cargo.toml, and bring ALL of it's pieces into scope for us to use. The `::` is a separator the same a slash is a separator for hierarchy in your computer's file system. The `*` refers to 'everything'.
 
 `use leptos::*;`
 
@@ -314,13 +314,13 @@ fn main() {
 }
 ```
 
-`mount_to_body` requires some arguments to run correctly. 
+`mount_to_body` requires some arguments to run correctly.
 
 Specifically, it requires a closure. It requires a value that is actually 'runable' or 'callable'.
 
 ##### Closures
 
-A closure is functionality as a **first class citizen**. This means that it's a function that can be stored as a value and passed around to be called later. 
+A closure is functionality as a **first class citizen**. This means that it's a function that can be stored as a value and passed around to be called later.
 
 ```rust
 fn print_hi(){
@@ -359,7 +359,7 @@ print_hi(); // This was a function
 greeter();  // This was a value `greeter`
 ```
 
-The coolest thing here is that we can see both `print_hi` and `greeter` are names that exist in or applications context. They're ideas. Both of them are callable. And we can call them by adding parenthesis at the end. 
+The coolest thing here is that we can see both `print_hi` and `greeter` are names that exist in or applications context. They're ideas. Both of them are callable. And we can call them by adding parenthesis at the end.
 
 This starts to hint at some of the underlying simplicity of a lot of programming. At the end of the day, we're giving names to things so that we can specify to the computer, what is what. Then we evaluate or run a bit of functionality, and give the result a name so that we can do something else after. It's this over and over again, all the way down.
 
@@ -425,7 +425,7 @@ view! {
 
 This procedural macros `view!` has a body which starts with cx, the context that will be provided to it by mount_to_body when it's run (again, this is inside mount_to_body and evaluated at a later time) and the view or html to mount.
 
-There must be one top level item and all text needs to be quoted. It's a JSX like syntax and beautifully streamlined to write. 
+There must be one top level item and all text needs to be quoted. It's a JSX like syntax and beautifully streamlined to write.
 
 If you had `trunk serve` running this whole time, you can visit http://127.0.0.1:8080 to see your "Hello, world!"
 

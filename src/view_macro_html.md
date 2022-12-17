@@ -1,7 +1,9 @@
-# What we know
+# HTML and the `view!` macro  
+
+## What we know
 - HTML is a specification for a domain specific language that is parsed by a web browser to render a web page
 - The web browser will do its best to render a page, ignoring or gracefully interpreting code in a page that doesn't match the HTML specification.
-- The `view!` macro in rust uses an HTML like synax called `RSX` that gets converted into spec compliant HTML
+- The `view!` macro accepts its arguments between curly braces `{}`, accepting a context `cx` and HTML like mark-up.
 
 # What we'll learn
 - Creating custom components
@@ -21,12 +23,14 @@ fn main() {
     })  
 }
 ```
-> We can see that after the context we have some HTML like text. If this were HTML, you'd have a heading that reads **"Hello, world!"** with the quotes displaying. In Rust and in the context of RSX (like JSX but rust), the quotes tell the macro that this is a string of text. The macro expands this to become a heading that contains **Hello, world!** without the quotes.
+> We can see that after the context variable we have some HTML like text. If this were HTML, you'd have a heading that reads **"Hello, world!"** with the quotes displaying. However, this isn't pure HTML and the macro will process the template to remove the quotes.
 
 ## `View!` macro syntax
 The [view! macro documentation](https://docs.rs/leptos/latest/leptos/macro.view.html) is very nicely detailed with details about it's basic and advanced syntax. It's a JSX like syntax. We'll slowly touch on all of the features as we continue to learn Rust and `Leptos`.
 
 For now, the important thing to remember is that strings need to be quoted.
+
+@todo, highlight that a view contains element markup and text nodes. That's it
 
 ## Adding more to a view
 You can continue to add other html elements as if you were writing plain HTML. Line breaks and indentation will not break the syntax. HTML code often has a lot of line breaks or white space from code formatting. Web browsers will ignore this unless you specify that you want the white space retained. We won't go into that in this guide. Multiple space characters will get coalesced into a single space.
@@ -73,7 +77,7 @@ You're probably already thinking, "I can imagine how I would want to break my ap
 
 We do this by writing a function that returns (or evaluates to) the result of a `view!` macro.
 
-In the following example we're using a pseudo-HTML component tag (our **Leptos component** tag) `<NiceAffirmation />`. 
+In the following example we're using a pseudo-HTML component tag (our **Leptos component** tag) `<NiceAffirmation />`.
 ```rust
 view! {  
 	cx,  
@@ -94,12 +98,3 @@ pub fn NiceAffirmation(cx: Scope) -> Element {
 }
 ```
 > The definition of the function that will handle template generation for `<NiceAffirmation />`
-
-### Breakdown
-#### The `#[component]` compiler directive
-
-#### Function argument's and arguemnt types
-
-#### Function return types
-
-#### Rust as an expression based language

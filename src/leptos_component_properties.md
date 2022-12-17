@@ -1,3 +1,5 @@
+# Leptos Component Properties
+
 # What we know
 - Components are created with specific function definitions and a [#component] function anotation.
 - Variables can be injected into `view!` macro templates

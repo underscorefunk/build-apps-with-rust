@@ -1,5 +1,7 @@
+# Intro to HTML
+
 # What we know
-In [Setup](/Setup) we developed a cursory understanding of:
+In [Setup](/setup_intro) we developed a cursory understanding of:
 - how to create a generic Rust application
 - how to add `Leptos` as a dependency to our Rust application
 - how to serve a file with `trunk`
@@ -23,16 +25,16 @@ fn main() {
     })  
 }
 ```
-> The `main` function `fn` is run when our application runs as WASM. 
-> 
+> The `main` function `fn` is run when our application runs as WASM.
+>
 > Recall that the `trunk` tool uses `cargo` also a tool with `rustc` to compile it to the WASM target, which gets served and linked to our index.html. We view (request) the page in our browser, loading the html and linked WASM, kicking the whole thing off.
-> 
-> When the application runs the function `mount_to_body` is called (runs), which we pass (or provide) a closure (a big of functionality stored as a value) as an argument to it's callback parameter (the bucket that holds things that `mount_to_body` needs to run, _"function dependencies"_). 
-> 
+>
+> When the application runs the function `mount_to_body` is called (runs), which we pass (or provide) a closure (a big of functionality stored as a value) as an argument to it's callback parameter (the bucket that holds things that `mount_to_body` needs to run, _"function dependencies"_).
+>
 > When `mount_to_body` runs, it takes the  functionality we've provided as a closure (a _strategy_ if you will) and calls it (makes it run) with its runtime context `cx`. This does all of the heaving lifting to write our heading the body of our HTML page in index.html
 
 # Lesson: Working with HTML and developing a mental model
-We're not doing much more than creating a static template. If this is all you need, better to stick with a plain old HTML file. 
+We're not doing much more than creating a static template. If this is all you need, better to stick with a plain old HTML file.
 
 ## HTML Elements and Tags
 HTML is made up of Elements. There are a whole list of HTML elements ready for use and supported by all current browsers, from heading and paragraphs to form elements for collecting data from users like. These Elements are written using HTML tags, `<h1>`, `<p>`, and `<input>` respectively.
@@ -45,8 +47,8 @@ Some tags have content. The syntax is to encapsulate the content or wrap it with
 ```
 >This Heading 1 tag has content, which requies a closing tag so that it's content can be wrapped/encapsulated.
 
- What's neat about this opening and closing tag business is that it's not _that_ different from when we called a function and provided an argument (value) for it's parameter. As time goes on you'll start to see a pattern emerging. The above isn't going to look at different from: 
-  
+What's neat about this opening and closing tag business is that it's not _that_ different from when we called a function and provided an argument (value) for it's parameter. As time goes on you'll start to see a pattern emerging. The above isn't going to look at different from:
+
 ```rust
 	h1("Some Content")
 ```
@@ -64,7 +66,7 @@ HTML Elements can be configured by setting values for supported properties and a
 ```html
 <h1 id="my-unique-heading">Hello, world!</h1>
 ```
->Some poperties have specific requirements for their values. `id` for example, should have a unique value across all Elements on the page. 
+>Some poperties have specific requirements for their values. `id` for example, should have a unique value across all Elements on the page.
 
 ```html
 <input name="first-name" placeholder="Enter your name..." type="text" />
@@ -74,7 +76,7 @@ HTML Elements can be configured by setting values for supported properties and a
 ### The browser as interpreter
 When you send a request to the server, it returns a response which has a body (the data, often as text) and headers (meta information about the body). Information in the headers tells the browser how to interpret the body.
 
-> Analogy time: Imagine if you went to a library and asked a librarian for a book. This is like you, the web browser, submitted a request to a server. The librarian (the server) will then provide a response to your request. They may return with the book and a slip of paper saying, "I found the book and this book is in english." We can now use our knowlege of the english language to parse the book (turn it into meaningful data) and understand it. 
+> Analogy time: Imagine if you went to a library and asked a librarian for a book. This is like you, the web browser, submitted a request to a server. The librarian (the server) will then provide a response to your request. They may return with the book and a slip of paper saying, "I found the book and this book is in english." We can now use our knowlege of the english language to parse the book (turn it into meaningful data) and understand it.
 
 Traditionally servers respond to web requests telling the browser that the body's response  is text/html. A browser very deeply wants to render your page for you, so it dutifully reads through what it's been told is html, parses it into meaningful data (the DOM, Document Object Model), and renders it to the screen.
 
