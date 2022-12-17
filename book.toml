@@ -4,6 +4,3 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Building Apps with Rust"
-
-[build]
-build-dir = "docs"
