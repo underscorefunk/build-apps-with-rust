@@ -6,4 +6,4 @@ src = "src"
 title = "Building Apps with Rust"
 
 [build]
-build-dir = "docs"
+build-dir = "book"
