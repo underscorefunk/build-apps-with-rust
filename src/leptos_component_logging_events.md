@@ -47,7 +47,7 @@ Leptos makes it really easy to add event handlers—functionality triggered by e
 <button>"Your Secret Lucky Number"</button>  
 ```
 
-...becomes turns into...
+... is made interactive as follows...
 
 ```rust
 <button on:click=whisper_in_the_console >"Your Secret Lucky Number"</button>  
