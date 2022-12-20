@@ -33,6 +33,9 @@
 - [Intro to Leptos Components](./leptos_component_intro.md)
 - [Variables and the view! macro](./view_macro_variables.md)
 - [Leptos Component properties](./leptos_component_properties.md)
+- [Leptos Component dynamic content separation](./leptos_component_dynamic_content_separation.md)
+- [Leptos Components witnessing events](./leptos_components_log_events.md)
+- [Leptos Components reacting to events](./leptos_components_update_from_event.md)
 
 ------------
 
