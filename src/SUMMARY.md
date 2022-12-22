@@ -40,6 +40,8 @@
 		- [Leptos Components witnessing events](leptos_component_logging_events.md)
 		- [Leptos Components reacting to events](leptos_component_update_from_event.md)
 		- [Event Bubbling and Signal Generics](event_bubbling_and_signal_generics.md)
+		- [Preventing bubbling and default event behaviours ]()
+		- [Custom Events](./custom_events.md)
 
 ------------
 
