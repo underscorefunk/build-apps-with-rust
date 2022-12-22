@@ -316,17 +316,7 @@ But there's a notice under the definition of the `new` method that states the fo
 
 I did a quick search for "web_sys enable feature" which lead me to this support doc [Enable the cargo features for the APIs you're using](https://rustwasm.github.io/wasm-bindgen/web-sys/using-web-sys.html#enable-the-cargo-features-for-the-apis-youre-using).
 
-My cargo.toml now has the following:
-
-```toml
-[dependencies]  
-leptos = { git = "https://github.com/gbj/leptos" }  
-  
-[dependencies.web-sys]  
-features = [  
-    "CustomEvent"  
-]
-```
+Leptos includes these web_sys features for you as part of its library.
 
 If we go back to the `new` method's definition in the web_sys::CustomEvent docs we'll see the following definition:
 
@@ -490,6 +480,27 @@ fn RadApp(cx: Scope) -> Element {
 ```
 > Note that event names are camelCased
 
+We're still not totally there yet though. We need to actually tell this new custom event to bubble.
+
+```rust
+
+//We need to create a config that is mutable (so we add 'mut' after let)
+let mut event_config = web_sys::CustomEventInit::new();  
+
+// We set the bubble property to true
+event_config.bubbles(true);  
+
+// We create a new event with the special config using a different constructor method
+
+let event = web_sys::CustomEvent::new_with_event_init_dict(
+	"myCustomEvent", 
+	&event_config
+);
+
+// was previous
+// let event = web_sys::CustomEvent::new("myCustomEvent"); 
+```
+
 And just like that we have custom events on components with references! 
 
 #### The Complete Code
@@ -512,7 +523,7 @@ fn RadApp(cx: Scope) -> Element {
     };  
     view! {  
         cx,  
-        <MyComponent on:myCustomEvent=log_response/>  
+        <MyComponent on:myCustomEvent=log_response />  
     }  
 }  
   
@@ -521,9 +532,14 @@ fn MyComponent(cx: Scope) -> Element {
     let dom_node_ref = NodeRef::new(cx);  
   
     let trigger_sending_of_custom_event = move |_| {  
-        match web_sys::CustomEvent::new("my-custom-event") {  
-            Ok(event) => {  
-                match dom_node_ref.get() {  
+  
+        let mut event_config = web_sys::CustomEventInit::new();  
+        event_config.bubbles(true);  
+        let event = web_sys::CustomEvent::new_with_event_init_dict("myCustomEvent", &event_config);  
+  
+        match event {  
+             Ok(event) => {  
+                 match dom_node_ref.get() {  
                     None => {}  
                     Some(dom_element) => {  
                         match dom_element.dispatch_event(&event) {  
