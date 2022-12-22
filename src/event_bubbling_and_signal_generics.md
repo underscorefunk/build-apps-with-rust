@@ -226,3 +226,11 @@ The distinction is important because while clicking on the button if there is on
 2) The event handler does not differentiate between buttons if one or more existed.
 
 The above example and lesson is not suitable in most cases but it a good simple example of capturing an event outside of its source. We will go into detail about how to filter the child events, prevent further bubbling, and so forth in later lessons.
+
+### Event delegation and bubbling
+
+Adding event listeners to DOM nodes has non trivial overhead. Leptos solves this problem with a clever optimization. It registers one top level handler for each event type and attaches this event handler to the Window DOM node. 
+
+Event handlers that we register in Leptos get added to a list of handlers for that event type. When an event fires in the browser, it bubbles up to the Window and is handled by the top level handler (created by Leptos as part of the aforementioned optimization). Events include a path component which Leptos can use to walk the DOM tree and fake bubble the event through its ancestors (the parts of its path). 
+
+Custom events created through web_sys do not bubble by default and will not be able to reach the Window from it's origin. For this reason, you need to ensure that custom events bubble so that they reach the Window and Leptos can handle them, delegating to the hander that you wrote.
