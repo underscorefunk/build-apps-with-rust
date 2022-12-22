@@ -7,8 +7,14 @@
 ## What we'll learn
 
 - Which events exist and/or are supported
-- How we can create our own events, specific to the domain of our problem
-- An introduction to event driven architecture
+- Create custom events
+- Tips on how to read Rust documentation
+- The dangers of complexity and trying to think about simplicity
+- An introduction to structs, data, instance methods, and static methods
+ - An introduction to match statements
+ - An introduction to Result types
+ - An introduction to Option types
+ - Creating DOM node references for Leptos components
 
 ## The Lesson
 
