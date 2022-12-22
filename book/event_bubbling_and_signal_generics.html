@@ -342,6 +342,13 @@ fn LuckyNumber(cx: Scope, the_lucky_number: ReadSignal&lt;i32&gt;) -&gt; Element
 <li>The event handler does not differentiate between buttons if one or more existed.</li>
 </ol>
 <p>The above example and lesson is not suitable in most cases but it a good simple example of capturing an event outside of its source. We will go into detail about how to filter the child events, prevent further bubbling, and so forth in later lessons.</p>
+<h3 id="event-delegation-and-bubbling"><a class="header" href="#event-delegation-and-bubbling">Event delegation and bubbling</a></h3>
+<p>Adding event listeners to DOM nodes has non trivial overhead. Leptos solves this problem with a clever optimization. It registers one top level handler for each event type and attaches this event handler to the Window DOM node. </p>
+<p>Event handlers that we register in Leptos get added to a list of handlers for that event type. When an event fires in the browser, it bubbles up to the Window and is handled by the top level handler (created by Leptos as part of the aforementioned optimization). Events include a path component which Leptos can use to walk the DOM tree and fake bubble the event through its ancestors (the parts of its path). </p>
+<p>Custom events created through web_sys do not bubble by default and will not be able to reach the Window from it's origin. For this reason, you need to ensure that custom events bubble so that they reach the Window and Leptos can handle them, delegating to the hander that you wrote.</p>
+<blockquote>
+<p><strong>From the author of Leptos:</strong> Leptos uses event delegation to make the creation of DOM nodes faster. This means that rather than attaching event listeners to individual HTML elements, the framework adds a single event listener to the page per event type (like <code>click</code> or <code>change</code>), and calls the handlers you define by looking them up manually. This adds a small increase in Wasm binary size in exchange for faster rendering times.</p>
+</blockquote>
 
                     </main>
 

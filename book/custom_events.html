@@ -412,15 +412,7 @@ sandwich.total_calories; //&lt;- but then we add () to call it
 <p><em>This API requires the following crate features to be activated: <code>CustomEvent</code></em></p>
 </blockquote>
 <p>I did a quick search for &quot;web_sys enable feature&quot; which lead me to this support doc <a href="https://rustwasm.github.io/wasm-bindgen/web-sys/using-web-sys.html#enable-the-cargo-features-for-the-apis-youre-using">Enable the cargo features for the APIs you're using</a>.</p>
-<p>My cargo.toml now has the following:</p>
-<pre><code class="language-toml">[dependencies]  
-leptos = { git = &quot;https://github.com/gbj/leptos&quot; }  
-  
-[dependencies.web-sys]  
-features = [  
-    &quot;CustomEvent&quot;  
-]
-</code></pre>
+<p>Leptos includes these web_sys features for you as part of its library.</p>
 <p>If we go back to the <code>new</code> method's definition in the web_sys::CustomEvent docs we'll see the following definition:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -570,6 +562,26 @@ fn RadApp(cx: Scope) -&gt; Element {
 <blockquote>
 <p>Note that event names are camelCased</p>
 </blockquote>
+<p>We're still not totally there yet though. We need to actually tell this new custom event to bubble.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span>
+<span class="boring">fn main() {
+</span>//We need to create a config that is mutable (so we add 'mut' after let)
+let mut event_config = web_sys::CustomEventInit::new();  
+
+// We set the bubble property to true
+event_config.bubbles(true);  
+
+// We create a new event with the special config using a different constructor method
+
+let event = web_sys::CustomEvent::new_with_event_init_dict(
+	&quot;myCustomEvent&quot;, 
+	&amp;event_config
+);
+
+// was previous
+// let event = web_sys::CustomEvent::new(&quot;myCustomEvent&quot;); 
+<span class="boring">}</span></code></pre></pre>
 <p>And just like that we have custom events on components with references! </p>
 <h4 id="the-complete-code"><a class="header" href="#the-complete-code">The Complete Code</a></h4>
 <pre><pre class="playground"><code class="language-rust">use leptos::*;  
@@ -590,7 +602,7 @@ fn RadApp(cx: Scope) -&gt; Element {
     };  
     view! {  
         cx,  
-        &lt;MyComponent on:myCustomEvent=log_response/&gt;  
+        &lt;MyComponent on:myCustomEvent=log_response /&gt;  
     }  
 }  
   
@@ -599,9 +611,14 @@ fn MyComponent(cx: Scope) -&gt; Element {
     let dom_node_ref = NodeRef::new(cx);  
   
     let trigger_sending_of_custom_event = move |_| {  
-        match web_sys::CustomEvent::new(&quot;my-custom-event&quot;) {  
-            Ok(event) =&gt; {  
-                match dom_node_ref.get() {  
+  
+        let mut event_config = web_sys::CustomEventInit::new();  
+        event_config.bubbles(true);  
+        let event = web_sys::CustomEvent::new_with_event_init_dict(&quot;myCustomEvent&quot;, &amp;event_config);  
+  
+        match event {  
+             Ok(event) =&gt; {  
+                 match dom_node_ref.get() {  
                     None =&gt; {}  
                     Some(dom_element) =&gt; {  
                         match dom_element.dispatch_event(&amp;event) {  

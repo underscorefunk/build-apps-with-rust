@@ -1447,6 +1447,13 @@ fn LuckyNumber(cx: Scope, the_lucky_number: ReadSignal&lt;i32&gt;) -&gt; Element
 <li>The event handler does not differentiate between buttons if one or more existed.</li>
 </ol>
 <p>The above example and lesson is not suitable in most cases but it a good simple example of capturing an event outside of its source. We will go into detail about how to filter the child events, prevent further bubbling, and so forth in later lessons.</p>
+<h3 id="event-delegation-and-bubbling"><a class="header" href="#event-delegation-and-bubbling">Event delegation and bubbling</a></h3>
+<p>Adding event listeners to DOM nodes has non trivial overhead. Leptos solves this problem with a clever optimization. It registers one top level handler for each event type and attaches this event handler to the Window DOM node. </p>
+<p>Event handlers that we register in Leptos get added to a list of handlers for that event type. When an event fires in the browser, it bubbles up to the Window and is handled by the top level handler (created by Leptos as part of the aforementioned optimization). Events include a path component which Leptos can use to walk the DOM tree and fake bubble the event through its ancestors (the parts of its path). </p>
+<p>Custom events created through web_sys do not bubble by default and will not be able to reach the Window from it's origin. For this reason, you need to ensure that custom events bubble so that they reach the Window and Leptos can handle them, delegating to the hander that you wrote.</p>
+<blockquote>
+<p><strong>From the author of Leptos:</strong> Leptos uses event delegation to make the creation of DOM nodes faster. This means that rather than attaching event listeners to individual HTML elements, the framework adds a single event listener to the page per event type (like <code>click</code> or <code>change</code>), and calls the handlers you define by looking them up manually. This adds a small increase in Wasm binary size in exchange for faster rendering times.</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-events"><a class="header" href="#custom-events">Custom Events</a></h1>
 <h2 id="what-we-know-9"><a class="header" href="#what-we-know-9">What we know</a></h2>
 <ul>
@@ -1718,15 +1725,7 @@ sandwich.total_calories; //&lt;- but then we add () to call it
 <p><em>This API requires the following crate features to be activated: <code>CustomEvent</code></em></p>
 </blockquote>
 <p>I did a quick search for &quot;web_sys enable feature&quot; which lead me to this support doc <a href="https://rustwasm.github.io/wasm-bindgen/web-sys/using-web-sys.html#enable-the-cargo-features-for-the-apis-youre-using">Enable the cargo features for the APIs you're using</a>.</p>
-<p>My cargo.toml now has the following:</p>
-<pre><code class="language-toml">[dependencies]  
-leptos = { git = &quot;https://github.com/gbj/leptos&quot; }  
-  
-[dependencies.web-sys]  
-features = [  
-    &quot;CustomEvent&quot;  
-]
-</code></pre>
+<p>Leptos includes these web_sys features for you as part of its library.</p>
 <p>If we go back to the <code>new</code> method's definition in the web_sys::CustomEvent docs we'll see the following definition:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -1876,6 +1875,26 @@ fn RadApp(cx: Scope) -&gt; Element {
 <blockquote>
 <p>Note that event names are camelCased</p>
 </blockquote>
+<p>We're still not totally there yet though. We need to actually tell this new custom event to bubble.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span>
+<span class="boring">fn main() {
+</span>//We need to create a config that is mutable (so we add 'mut' after let)
+let mut event_config = web_sys::CustomEventInit::new();  
+
+// We set the bubble property to true
+event_config.bubbles(true);  
+
+// We create a new event with the special config using a different constructor method
+
+let event = web_sys::CustomEvent::new_with_event_init_dict(
+	&quot;myCustomEvent&quot;, 
+	&amp;event_config
+);
+
+// was previous
+// let event = web_sys::CustomEvent::new(&quot;myCustomEvent&quot;); 
+<span class="boring">}</span></code></pre></pre>
 <p>And just like that we have custom events on components with references! </p>
 <h4 id="the-complete-code"><a class="header" href="#the-complete-code">The Complete Code</a></h4>
 <pre><pre class="playground"><code class="language-rust">use leptos::*;  
@@ -1896,7 +1915,7 @@ fn RadApp(cx: Scope) -&gt; Element {
     };  
     view! {  
         cx,  
-        &lt;MyComponent on:myCustomEvent=log_response/&gt;  
+        &lt;MyComponent on:myCustomEvent=log_response /&gt;  
     }  
 }  
   
@@ -1905,9 +1924,14 @@ fn MyComponent(cx: Scope) -&gt; Element {
     let dom_node_ref = NodeRef::new(cx);  
   
     let trigger_sending_of_custom_event = move |_| {  
-        match web_sys::CustomEvent::new(&quot;my-custom-event&quot;) {  
-            Ok(event) =&gt; {  
-                match dom_node_ref.get() {  
+  
+        let mut event_config = web_sys::CustomEventInit::new();  
+        event_config.bubbles(true);  
+        let event = web_sys::CustomEvent::new_with_event_init_dict(&quot;myCustomEvent&quot;, &amp;event_config);  
+  
+        match event {  
+             Ok(event) =&gt; {  
+                 match dom_node_ref.get() {  
                     None =&gt; {}  
                     Some(dom_element) =&gt; {  
                         match dom_element.dispatch_event(&amp;event) {  
