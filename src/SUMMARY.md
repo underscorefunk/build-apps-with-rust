@@ -30,12 +30,16 @@
 - [Setup](./setup_intro.md)
 - [Intro to HTML](./html_intro.md)
 - [HTML and the `view!` macro](./view_macro_html.md)
+# Leptos Components
 - [Intro to Leptos Components](./leptos_component_intro.md)
 - [Variables and the view! macro](./view_macro_variables.md)
 - [Leptos Component properties](./leptos_component_properties.md)
 - [Leptos Component dynamic content separation](./leptos_component_dynamic_content_separation.md)
-- [Leptos Components witnessing events](leptos_component_logging_events.md)
-- [Leptos Components reacting to events](leptos_component_update_from_event.md)
+- [Client Side]()
+	- [Events]()
+		- [Leptos Components witnessing events](leptos_component_logging_events.md)
+		- [Leptos Components reacting to events](leptos_component_update_from_event.md)
+		- [Event Bubbling and Signal Generics](event_bubbling_and_signal_generics.md)
 
 ------------
 
