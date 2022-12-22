@@ -13,6 +13,9 @@
 - What generics are in Rust's type system at an introductory level
 
 ## The Lesson
+
+> Caveat: The following lesson is intended to show you an overview of a pattern to respond to events which are emmitted by a component's children. This is not a complete patter. A description of the tricky spots exists at the end of this lesson. 
+
 We've established that the document object model (DOM) is a tree like representation of DOM nodes which is a browsers data structure containing information about what's on a web page. When events happen in a browser, the event will triggered at the lowest, most specific, DOM node. That event will bubble up until it's handled or prevented from continuing. Bubbling up means that the original event will be given the opportunity to handled by the originating element's parents, one at a time, until it reaches the top of the DOM tree.
 
 If we take the following HTML:
@@ -209,4 +212,17 @@ fn LuckyNumber(cx: Scope, the_lucky_number: ReadSignal<i32>) -> Element {
         </div>  
     }  
 }
-```  
+```
+
+### An important caveat when capturing child node events
+One very important thing to note here is that ANY click events within the `<LuckyNumber />` component will trigger the `on:click` event handler. 
+
+When we placed the event handler on the button itself, it was locked to that button. 
+
+When we place the hander on the parent, all clicks bubble up to it.
+
+The distinction is important because while clicking on the button if there is one button yields the same behaviour, there are some subtle differences you shuold be aware of.
+1) Clicking anywhere will trigger the `on:click` handler
+2) The event handler does not differentiate between buttons if one or more existed.
+
+The above example and lesson is not suitable in most cases but it a good simple example of capturing an event outside of its source. We will go into detail about how to filter the child events, prevent further bubbling, and so forth in later lessons.
