@@ -42,6 +42,8 @@
 		- [Event Bubbling and Signal Generics](event_bubbling_and_signal_generics.md)
 		- [Preventing bubbling and default event behaviours ]()
 		- [Custom Events](./custom_events.md)
+		- [Custom Event Data]()
+	- [Forms](./forms.md)
 
 ------------
 
