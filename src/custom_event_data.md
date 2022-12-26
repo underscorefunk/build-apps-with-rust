@@ -10,6 +10,9 @@
 - A deeper look in to declarative or domain specific code
 - Why and how to add data with custom events
 
+## Caveat
+- Custom events with data isn't the most efficient way to send data around Leptos. There is a performance toll to be paid any time data crosses the WASM boundary. This lesson is really about showing you how to do JavaScript like things in Leptos/Rust. With that said, there are more efficient ways to send data around Leptos, but at the cost of JavaScript interoperatibilty, which we'll investigate in later lessons.
+
 ## The Lesson
 
 We introduced custom events in a previous lesson, with the following code:
