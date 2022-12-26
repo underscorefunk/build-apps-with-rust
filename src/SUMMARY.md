@@ -28,7 +28,7 @@
 
 # Rust and Leptos
 - [Setup](./setup_intro.md)
-- [Foundations]
+- [Foundations]()
 	- [Intro to HTML](./html_intro.md)
 	- [HTML and the `view!` macro](./view_macro_html.md)
 - [Leptos Components]()
