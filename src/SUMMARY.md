@@ -48,10 +48,9 @@
 		- [Custom Event Data](./custom_event_data.md)
 		- [Custom Event Data Module](./custom-event-data-module.md)
 		- [Custom Event Data with Signals](./custom_event_data_with_signals.md)
-		- 
 	- [Forms](./forms.md)
 - [Server Side Rendering - Traditional]()
-	- [Responding to URL requests with HTML](./server_url_request_response.md)
+	- [Responding to URL requests with HTML]()
 	- [Responding to form Post actions with HTML]()
 - [Server Side Rendering - Partial with Hydration]()
 
