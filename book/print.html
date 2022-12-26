@@ -1964,6 +1964,10 @@ fn MyComponent(cx: Scope) -&gt; Element {
 <li>A deeper look in to declarative or domain specific code</li>
 <li>Why and how to add data with custom events</li>
 </ul>
+<h2 id="caveat"><a class="header" href="#caveat">Caveat</a></h2>
+<ul>
+<li>Custom events with data isn't the most efficient way to send data around Leptos. There is a performance toll to be paid any time data crosses the WASM boundary. This lesson is really about showing you how to do JavaScript like things in Leptos/Rust. With that said, there are more efficient ways to send data around Leptos, but at the cost of JavaScript interoperatibilty, which we'll investigate in later lessons.</li>
+</ul>
 <h2 id="the-lesson-8"><a class="header" href="#the-lesson-8">The Lesson</a></h2>
 <p>We introduced custom events in a previous lesson, with the following code:</p>
 <pre><pre class="playground"><code class="language-rust">use leptos::*;  
