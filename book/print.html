@@ -1246,8 +1246,169 @@ fn LuckyNumber(cx: Scope, the_lucky_number: i32) -&gt; Element {
     }  
 }</code></pre></pre>
 <p>The coolest part about this is that the signal is responsible for updating itself on the web page if it's value changes. LuckyNumber doesn't run again to create a new template. Leptos updates that special little text node, where <code>{value}</code> is used.</p>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="event-bubbling-and-signal-generics"><a class="header" href="#event-bubbling-and-signal-generics">Event Bubbling and Signal Generics</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="event-handlers-as-props"><a class="header" href="#event-handlers-as-props">Event Handlers as Props</a></h1>
 <h2 id="what-we-know-8"><a class="header" href="#what-we-know-8">What we know</a></h2>
+<ul>
+<li>We sometimes want to handle events at higher levels in the Leptos component tree</li>
+</ul>
+<h2 id="what-well-learn-8"><a class="header" href="#what-well-learn-8">What we'll learn</a></h2>
+<ul>
+<li>How to pass event handlers down the component tree</li>
+</ul>
+<h2 id="the-lesson-6"><a class="header" href="#the-lesson-6">The Lesson</a></h2>
+<p>We know that we can setup click handlers on buttons. Here's a quick example:</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;RadApp /&gt;  
+        }    
+	})
+}  
+  
+#[component]  
+fn RadApp(cx: Scope) -&gt; Element {  
+    view! {  
+        cx,  
+        &lt;ChildComponent/&gt;  
+    }
+}  
+  
+#[component]  
+fn ChildComponent(cx: Scope) -&gt; Element {  
+    let click_handler = |_|{  
+        leptos::log!(&quot;Child button clicked&quot;);  
+    };  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+           &lt;button on:click=click_handler&gt;  
+                &quot;Click me&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}</code></pre></pre>
+<p>We may want to delegate the responsibility of handing this event to a parent or ancestor of the initial event target. In this case, the originating DOM node, the event target, would be the button.</p>
+<p>We previously solved this problem by having our event bubble up. Our <code>click</code> dispatched by the <code>ChildComponent</code> bubbles up to the parent <code>RadApp</code> which responds via <code>on:click</code> as seen here:</p>
+<blockquote>
+<p>Note that we needed to add <code>use web_sys::MouseEvent;</code></p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+use web_sys::MouseEvent;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;RadApp /&gt;  
+        }    })}  
+  
+#[component]  
+fn RadApp(cx: Scope) -&gt; Element {  
+    let click_handler = |_|{  
+        leptos::log!(&quot;Child button clicked&quot;);  
+    };  
+  
+    view! {  
+        cx,  
+        &lt;ChildComponent on:click=click_handler/&gt;  
+    }}  
+  
+#[component]  
+fn ChildComponent(cx: Scope) -&gt; Element {  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+           &lt;button&gt;  
+                &quot;Click me&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}</code></pre></pre>
+<p>The problem here is that we would need to introspect the event to differentiate which thing was clicked to make sure we're responding to the correct event.</p>
+<p>We can solve this problem by dispatching a custom event, but we have extra complexity in adding custom events. It should also be noted that there is overhead (a computational cost that decreases performance) to adding additional event handlers.</p>
+<h3 id="strategy-pattern-sort-of"><a class="header" href="#strategy-pattern-sort-of">Strategy pattern, sort of</a></h3>
+<p>One solution to the aforementioned problem is to pass the handler down as a property. We can send what should happen down to where it happens so that it can be called. This is an inversion of having what happened bubbling up. We're sending what to do on down.</p>
+<p>First, we need to send our click_handler as a property to the <code>ChildComponent</code>. </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]  
+fn RadApp(cx: Scope) -&gt; Element {  
+  
+    let click_handler = |_|{  
+        leptos::log!(&quot;Child button clicked&quot;);  
+    };  
+  
+    view! {  
+        cx,  
+        &lt;ChildComponent onclick=click_handler/&gt;  
+    }
+}  
+<span class="boring">}</span></code></pre></pre>
+<p>Next is the tricky part. We need to accept the value of the <code>click_handler</code> (a closure) into <code>ChildComponent</code>. We do this by declaring it as a function property of the component. We need to use a generic, herein referred to as <code>T</code>. When we add <code>on:click=onclick</code> to the <code>button</code> we're attaching the handler to the <code>click</code> event. This will trigger Rust to say, &quot;HEY, if you're using this value for <code>on:click</code>, it has to be a specific type of closure!&quot; We need to add some specificity to the closure.</p>
+<p>We can do this by adding <code>where T: Fn(MouseEvent) -&gt; () + 'static </code> to the end of the function definition, but before the scope of the function's body opens. This tells Rust that the function parameter <code>onclick</code> can be <code>anything</code> provided that <code>anything</code> implements <code>Fn(MouseEvent) -&gt; ()</code>. This is a <code>function trait</code>. It is also required to be <code>'static</code> lifetime, so we'll add that as well with <code>+ 'static</code>. The static lifetime tells Rust that this data will live for the duration of the application's running.</p>
+<p>By doing this we can safely pass a callback that matches the requirements of the <code>on:click</code> assignment, which is verified at the component property level!</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]  
+fn ChildComponent&lt;T&gt;(cx: Scope, onclick:T ) -&gt; Element  
+    where T: Fn(MouseEvent) -&gt; () + 'static  
+{  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+           &lt;button on:click=onclick&gt;  
+                &quot;Click me&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+<p>I'll update some of the names to disambiguate between <code>on:click</code> and <code>onclick</code>. Here's the final code. </p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+use web_sys::MouseEvent;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;RadApp /&gt;  
+        }    
+	})
+}  
+  
+#[component]  
+fn RadApp(cx: Scope) -&gt; Element {  
+  
+    let log_clicked_button = |_|{  
+        leptos::log!(&quot;Child button clicked&quot;);  
+    };  
+  
+    view! {  
+        cx,  
+        &lt;ChildComponent click_logger=log_clicked_button/&gt;  
+    }
+}  
+  
+#[component]  
+fn ChildComponent&lt;T&gt;(cx: Scope, click_logger:T ) -&gt; Element  
+    where T: Fn(MouseEvent) -&gt; () + 'static  
+{  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+           &lt;button on:click=click_logger&gt;  
+                &quot;Click me&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}
+</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="event-bubbling-and-signal-generics"><a class="header" href="#event-bubbling-and-signal-generics">Event Bubbling and Signal Generics</a></h1>
+<h2 id="what-we-know-9"><a class="header" href="#what-we-know-9">What we know</a></h2>
 <ul>
 <li>We can monitor activity in the browser by responding to events</li>
 <li>We can add functions that run when events happen to Leptos components. These functions are called event handlers. Event handlers added to Leptos components are also added to their DOM node counterparts and connected behind the scenes with Leptos' use of <code>wasm_bindgen</code> making their use transparent.</li>
@@ -1256,12 +1417,12 @@ fn LuckyNumber(cx: Scope, the_lucky_number: i32) -&gt; Element {
 <li>the <code>move</code> keyword that can preceed a closure's parameters, indicating that variables used in the closure's function body will be moved into the closure itself and removed from the current scope as if they were passed into a function. Variables that are types that support the Copy trait will automatically be copied and will still be available in the current scope. </li>
 <li>Signal read and write components support Copy.</li>
 </ul>
-<h2 id="what-well-learn-8"><a class="header" href="#what-well-learn-8">What we'll learn</a></h2>
+<h2 id="what-well-learn-9"><a class="header" href="#what-well-learn-9">What we'll learn</a></h2>
 <ul>
 <li>How events can be captured in parent components</li>
 <li>What generics are in Rust's type system at an introductory level</li>
 </ul>
-<h2 id="the-lesson-6"><a class="header" href="#the-lesson-6">The Lesson</a></h2>
+<h2 id="the-lesson-7"><a class="header" href="#the-lesson-7">The Lesson</a></h2>
 <blockquote>
 <p>Caveat: The following lesson is intended to show you an overview of a pattern to respond to events which are emmitted by a component's children. This is not a complete patter. A description of the tricky spots exists at the end of this lesson. </p>
 </blockquote>
@@ -1455,11 +1616,11 @@ fn LuckyNumber(cx: Scope, the_lucky_number: ReadSignal&lt;i32&gt;) -&gt; Element
 <p><strong>From the author of Leptos:</strong> Leptos uses event delegation to make the creation of DOM nodes faster. This means that rather than attaching event listeners to individual HTML elements, the framework adds a single event listener to the page per event type (like <code>click</code> or <code>change</code>), and calls the handlers you define by looking them up manually. This adds a small increase in Wasm binary size in exchange for faster rendering times.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-events"><a class="header" href="#custom-events">Custom Events</a></h1>
-<h2 id="what-we-know-9"><a class="header" href="#what-we-know-9">What we know</a></h2>
+<h2 id="what-we-know-10"><a class="header" href="#what-we-know-10">What we know</a></h2>
 <ul>
 <li>One of the key ways applications change data over time is in response to stimulus. We can witness these changes through a browser's runtime through the browser's event system.</li>
 </ul>
-<h2 id="what-well-learn-9"><a class="header" href="#what-well-learn-9">What we'll learn</a></h2>
+<h2 id="what-well-learn-10"><a class="header" href="#what-well-learn-10">What we'll learn</a></h2>
 <ul>
 <li>Which events exist and/or are supported</li>
 <li>Create custom events</li>
@@ -1471,7 +1632,7 @@ fn LuckyNumber(cx: Scope, the_lucky_number: ReadSignal&lt;i32&gt;) -&gt; Element
 <li>An introduction to Option types</li>
 <li>Creating DOM node references for Leptos components</li>
 </ul>
-<h2 id="the-lesson-7"><a class="header" href="#the-lesson-7">The Lesson</a></h2>
+<h2 id="the-lesson-8"><a class="header" href="#the-lesson-8">The Lesson</a></h2>
 <p>There are some common events that you can probably intuitively guess. Going from pure intuition is only going to get you so far. </p>
 <p>We frame the way we solve problems through the lense of the tools we have at hand. For this reason, it's a good idea to familiarize yourself with the HTML tags that exist and the web events that exist. The web platform has a ton of features that a lot of people don't know about because they stopped learning HTML at <code>&lt;div&gt;</code> and <code>&lt;p&gt;</code> tags.</p>
 <p>The mozilla foundation has a wonderful website called MDN which contains invaluable reference to help expand your knowledge.</p>
@@ -1954,12 +2115,12 @@ fn MyComponent(cx: Scope) -&gt; Element {
     }  
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-event-data"><a class="header" href="#custom-event-data">Custom Event Data</a></h1>
-<h2 id="what-we-know-10"><a class="header" href="#what-we-know-10">What we know</a></h2>
+<h2 id="what-we-know-11"><a class="header" href="#what-we-know-11">What we know</a></h2>
 <ul>
 <li>Custom events can be dispatched and bubbled up to handle events at different levels of your applications.</li>
 <li>Custom events allow us to convert imperative events based on DOM interaction into domain specific events that are more declarative.</li>
 </ul>
-<h2 id="what-well-learn-10"><a class="header" href="#what-well-learn-10">What we'll learn</a></h2>
+<h2 id="what-well-learn-11"><a class="header" href="#what-well-learn-11">What we'll learn</a></h2>
 <ul>
 <li>A deeper look in to declarative or domain specific code</li>
 <li>Why and how to add data with custom events</li>
@@ -1968,7 +2129,7 @@ fn MyComponent(cx: Scope) -&gt; Element {
 <ul>
 <li>Custom events with data isn't the most efficient way to send data around Leptos. There is a performance toll to be paid any time data crosses the WASM boundary. This lesson is really about showing you how to do JavaScript like things in Leptos/Rust. With that said, there are more efficient ways to send data around Leptos, but at the cost of JavaScript interoperatibilty, which we'll investigate in later lessons.</li>
 </ul>
-<h2 id="the-lesson-8"><a class="header" href="#the-lesson-8">The Lesson</a></h2>
+<h2 id="the-lesson-9"><a class="header" href="#the-lesson-9">The Lesson</a></h2>
 <p>We introduced custom events in a previous lesson, with the following code:</p>
 <pre><pre class="playground"><code class="language-rust">use leptos::*;  
   
@@ -2324,16 +2485,16 @@ fn BltSandwich(cx: Scope) -&gt; Element {
     }  
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-event-module"><a class="header" href="#custom-event-module">Custom Event Module</a></h1>
-<h2 id="what-we-know-11"><a class="header" href="#what-we-know-11">What we know</a></h2>
+<h2 id="what-we-know-12"><a class="header" href="#what-we-know-12">What we know</a></h2>
 <ul>
 <li>Data can be assocaited with custom events</li>
 <li>There's a lot of boiler plate in with custom events</li>
 </ul>
-<h2 id="what-well-learn-11"><a class="header" href="#what-well-learn-11">What we'll learn</a></h2>
+<h2 id="what-well-learn-12"><a class="header" href="#what-well-learn-12">What we'll learn</a></h2>
 <ul>
 <li>How to turn our code into a module that we can reuse</li>
 </ul>
-<h2 id="the-lesson-9"><a class="header" href="#the-lesson-9">The lesson</a></h2>
+<h2 id="the-lesson-10"><a class="header" href="#the-lesson-10">The lesson</a></h2>
 <h3 id="module-basics"><a class="header" href="#module-basics">Module basics</a></h3>
 <p>Rust has the ability to create modules to encapsulate code. It allows you to expose parts of the code to the outside world, while keeping other parts of the code private to the module. </p>
 <p>A module is defined by using the key word <code>mod</code> followed by the name of the module and curley braces which encapsulate the code in a module.</p>
@@ -2722,16 +2883,16 @@ fn BltSandwich(cx: Scope) -&gt; Element {
     }  
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-event-module-with-data"><a class="header" href="#custom-event-module-with-data">Custom event module with data</a></h1>
-<h2 id="what-we-know-12"><a class="header" href="#what-we-know-12">What we know</a></h2>
+<h2 id="what-we-know-13"><a class="header" href="#what-we-know-13">What we know</a></h2>
 <ul>
 <li>Data can be assocaited with custom events</li>
 <li>We can hide the complexity of creating custom events behind an easy to use function inside a module.</li>
 </ul>
-<h2 id="what-well-learn-12"><a class="header" href="#what-well-learn-12">What we'll learn</a></h2>
+<h2 id="what-well-learn-13"><a class="header" href="#what-well-learn-13">What we'll learn</a></h2>
 <ul>
 <li>How to add data to our module.</li>
 </ul>
-<h2 id="the-lesson-10"><a class="header" href="#the-lesson-10">The lesson</a></h2>
+<h2 id="the-lesson-11"><a class="header" href="#the-lesson-11">The lesson</a></h2>
 <p>In a previous lesson we created a module that made dispatching a custom event super easy. We discussed adding data to events before and how useful it is, but we can't add data to be disptched with the events in our custom event module. We should fix that!</p>
 <p>Our simple module looks like this:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -3081,16 +3242,16 @@ fn BltSandwich(cx: Scope) -&gt; Element {
     }
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="forms"><a class="header" href="#forms">Forms</a></h1>
-<h2 id="what-we-know-13"><a class="header" href="#what-we-know-13">What we know</a></h2>
+<h2 id="what-we-know-14"><a class="header" href="#what-we-know-14">What we know</a></h2>
 <ul>
 <li>We can capture events and respond to them</li>
 <li>Signals allow us to persist data across events</li>
 </ul>
-<h2 id="what-well-learn-13"><a class="header" href="#what-well-learn-13">What we'll learn</a></h2>
+<h2 id="what-well-learn-14"><a class="header" href="#what-well-learn-14">What we'll learn</a></h2>
 <ul>
 <li>How to respond to multipart form data</li>
 </ul>
-<h2 id="the-lesson-11"><a class="header" href="#the-lesson-11">The Lesson</a></h2>
+<h2 id="the-lesson-12"><a class="header" href="#the-lesson-12">The Lesson</a></h2>
 <p>Back in the day we used to interact with websites by submitted form data to a server with a requested resource (like a specific page). The page would render, often using or processing the form data that was sent with it, would generate HTML, and then provide us a response. This is how the majority of the web still works to this day!</p>
 <p>We're going to replicate a similar data flow so that you can collect sets of data using forms, but process them all on the client (in the browser).</p>
 <p>We'll start with a Rad app component and some boiler plate, mounting it to the body:</p>

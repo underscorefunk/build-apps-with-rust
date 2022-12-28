@@ -141,7 +141,168 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <h1 id="event-handlers-as-props"><a class="header" href="#event-handlers-as-props">Event Handlers as Props</a></h1>
+<h2 id="what-we-know"><a class="header" href="#what-we-know">What we know</a></h2>
+<ul>
+<li>We sometimes want to handle events at higher levels in the Leptos component tree</li>
+</ul>
+<h2 id="what-well-learn"><a class="header" href="#what-well-learn">What we'll learn</a></h2>
+<ul>
+<li>How to pass event handlers down the component tree</li>
+</ul>
+<h2 id="the-lesson"><a class="header" href="#the-lesson">The Lesson</a></h2>
+<p>We know that we can setup click handlers on buttons. Here's a quick example:</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;RadApp /&gt;  
+        }    
+	})
+}  
+  
+#[component]  
+fn RadApp(cx: Scope) -&gt; Element {  
+    view! {  
+        cx,  
+        &lt;ChildComponent/&gt;  
+    }
+}  
+  
+#[component]  
+fn ChildComponent(cx: Scope) -&gt; Element {  
+    let click_handler = |_|{  
+        leptos::log!(&quot;Child button clicked&quot;);  
+    };  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+           &lt;button on:click=click_handler&gt;  
+                &quot;Click me&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}</code></pre></pre>
+<p>We may want to delegate the responsibility of handing this event to a parent or ancestor of the initial event target. In this case, the originating DOM node, the event target, would be the button.</p>
+<p>We previously solved this problem by having our event bubble up. Our <code>click</code> dispatched by the <code>ChildComponent</code> bubbles up to the parent <code>RadApp</code> which responds via <code>on:click</code> as seen here:</p>
+<blockquote>
+<p>Note that we needed to add <code>use web_sys::MouseEvent;</code></p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+use web_sys::MouseEvent;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;RadApp /&gt;  
+        }    })}  
+  
+#[component]  
+fn RadApp(cx: Scope) -&gt; Element {  
+    let click_handler = |_|{  
+        leptos::log!(&quot;Child button clicked&quot;);  
+    };  
+  
+    view! {  
+        cx,  
+        &lt;ChildComponent on:click=click_handler/&gt;  
+    }}  
+  
+#[component]  
+fn ChildComponent(cx: Scope) -&gt; Element {  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+           &lt;button&gt;  
+                &quot;Click me&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}</code></pre></pre>
+<p>The problem here is that we would need to introspect the event to differentiate which thing was clicked to make sure we're responding to the correct event.</p>
+<p>We can solve this problem by dispatching a custom event, but we have extra complexity in adding custom events. It should also be noted that there is overhead (a computational cost that decreases performance) to adding additional event handlers.</p>
+<h3 id="strategy-pattern-sort-of"><a class="header" href="#strategy-pattern-sort-of">Strategy pattern, sort of</a></h3>
+<p>One solution to the aforementioned problem is to pass the handler down as a property. We can send what should happen down to where it happens so that it can be called. This is an inversion of having what happened bubbling up. We're sending what to do on down.</p>
+<p>First, we need to send our click_handler as a property to the <code>ChildComponent</code>. </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]  
+fn RadApp(cx: Scope) -&gt; Element {  
+  
+    let click_handler = |_|{  
+        leptos::log!(&quot;Child button clicked&quot;);  
+    };  
+  
+    view! {  
+        cx,  
+        &lt;ChildComponent onclick=click_handler/&gt;  
+    }
+}  
+<span class="boring">}</span></code></pre></pre>
+<p>Next is the tricky part. We need to accept the value of the <code>click_handler</code> (a closure) into <code>ChildComponent</code>. We do this by declaring it as a function property of the component. We need to use a generic, herein referred to as <code>T</code>. When we add <code>on:click=onclick</code> to the <code>button</code> we're attaching the handler to the <code>click</code> event. This will trigger Rust to say, &quot;HEY, if you're using this value for <code>on:click</code>, it has to be a specific type of closure!&quot; We need to add some specificity to the closure.</p>
+<p>We can do this by adding <code>where T: Fn(MouseEvent) -&gt; () + 'static </code> to the end of the function definition, but before the scope of the function's body opens. This tells Rust that the function parameter <code>onclick</code> can be <code>anything</code> provided that <code>anything</code> implements <code>Fn(MouseEvent) -&gt; ()</code>. This is a <code>function trait</code>. It is also required to be <code>'static</code> lifetime, so we'll add that as well with <code>+ 'static</code>. The static lifetime tells Rust that this data will live for the duration of the application's running.</p>
+<p>By doing this we can safely pass a callback that matches the requirements of the <code>on:click</code> assignment, which is verified at the component property level!</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]  
+fn ChildComponent&lt;T&gt;(cx: Scope, onclick:T ) -&gt; Element  
+    where T: Fn(MouseEvent) -&gt; () + 'static  
+{  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+           &lt;button on:click=onclick&gt;  
+                &quot;Click me&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+<p>I'll update some of the names to disambiguate between <code>on:click</code> and <code>onclick</code>. Here's the final code. </p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+use web_sys::MouseEvent;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;RadApp /&gt;  
+        }    
+	})
+}  
+  
+#[component]  
+fn RadApp(cx: Scope) -&gt; Element {  
+  
+    let log_clicked_button = |_|{  
+        leptos::log!(&quot;Child button clicked&quot;);  
+    };  
+  
+    view! {  
+        cx,  
+        &lt;ChildComponent click_logger=log_clicked_button/&gt;  
+    }
+}  
+  
+#[component]  
+fn ChildComponent&lt;T&gt;(cx: Scope, click_logger:T ) -&gt; Element  
+    where T: Fn(MouseEvent) -&gt; () + 'static  
+{  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+           &lt;button on:click=click_logger&gt;  
+                &quot;Click me&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}
+</code></pre></pre>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
