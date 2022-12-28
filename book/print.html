@@ -2720,18 +2720,377 @@ fn BltSandwich(cx: Scope) -&gt; Element {
             &lt;/button&gt;  
         &lt;/div&gt;  
     }  
-}```</code></pre></pre>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="forms"><a class="header" href="#forms">Forms</a></h1>
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="custom-event-module-with-data"><a class="header" href="#custom-event-module-with-data">Custom event module with data</a></h1>
 <h2 id="what-we-know-12"><a class="header" href="#what-we-know-12">What we know</a></h2>
+<ul>
+<li>Data can be assocaited with custom events</li>
+<li>We can hide the complexity of creating custom events behind an easy to use function inside a module.</li>
+</ul>
+<h2 id="what-well-learn-12"><a class="header" href="#what-well-learn-12">What we'll learn</a></h2>
+<ul>
+<li>How to add data to our module.</li>
+</ul>
+<h2 id="the-lesson-10"><a class="header" href="#the-lesson-10">The lesson</a></h2>
+<p>In a previous lesson we created a module that made dispatching a custom event super easy. We discussed adding data to events before and how useful it is, but we can't add data to be disptched with the events in our custom event module. We should fix that!</p>
+<p>Our simple module looks like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>mod component_custom_event {  
+    use leptos::web_sys;  
+    use leptos::wasm_bindgen::JsValue;  
+  
+    fn new(name: &amp;str) -&gt; Result&lt;web_sys::CustomEvent, JsValue&gt; {  
+        // configuration  
+        let mut event_config = web_sys::CustomEventInit::new();  
+        event_config.bubbles(true);  
+        // generation  
+        web_sys::CustomEvent::new_with_event_init_dict(  
+            name,  
+            &amp;event_config,  
+        )  
+    }  
+  
+    pub fn dispatch( name: &amp;str, target_ref : NodeRef) 
+    -&gt; Result&lt;bool, JsValue&gt;{  
+  
+        let event = new(name);  
+        let target = target_ref.get();  
+  
+        match (event, target) {  
+            (Ok(event), Some(target)) =&gt; {  
+                target.dispatch_event(&amp;event)  
+            },  
+            (_,_) =&gt; Err(JsValue::null())  
+        }  
+    }  
+}  
+<span class="boring">}</span></code></pre></pre>
+<h3 id="adding-jsvalue-data-to-the-event"><a class="header" href="#adding-jsvalue-data-to-the-event">Adding JsValue data to the event</a></h3>
+<p>I have an example from a previous lesson where I added a payload to an event through the details method on the event configuration. Let's add that back in. </p>
+<p>The first step is adding a new parameter to the <code>new</code> function which allows us to get a JsValue in there.</p>
+<p>We'll add an Option, because sometimes we might not have a payload. Alternately we could create a function called 'new_with_payload' but this is fine.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn new(name: &amp;str, payload: Option&lt;JsValue&gt;) -&gt; Result&lt;web_sys::CustomEvent, JsValue&gt; 
+<span class="boring">}</span></code></pre></pre>
+<p>Then we'll conditionally add it to the event_config if we're given Some(data) for the payload.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if let Some(data) = payload {  
+	event_config.detail(&amp;data);  
+}  
+<span class="boring">}</span></code></pre></pre>
+<p>All finished, we have this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn new(name: &amp;str, payload: Option&lt;JsValue&gt;) -&gt; Result&lt;web_sys::CustomEvent, JsValue&gt; {  
+    let mut event_config = web_sys::CustomEventInit::new();  
+    event_config.bubbles(true);  
+    if let Some(data) = payload {  
+        event_config.detail(&amp;data);  
+    }  
+    web_sys::CustomEvent::new_with_event_init_dict(name, &amp;event_config)  
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="simplified-sending-methods-api"><a class="header" href="#simplified-sending-methods-api">Simplified sending methods (API)</a></h3>
+<p>There is no way to specify a default parameter value in Rust. We want our api to be simple and declarative. We don't want to force people to always provide &quot;None&quot; if they're not including a payload. To fix this we can make a private method called real_dispatch and then a public method to dispatch and event without and with a payload respectively, called <code>dispatch</code> and <code>dispatch_with_data</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn real_dispatch( 
+	name: &amp;str, 
+	target_ref : NodeRef, 
+	payload: Option&lt;JsValue&gt;
+	) -&gt; Result&lt;bool, JsValue&gt;{  
+  
+    let event = new(name, payload);  
+    let target = target_ref.get();  
+  
+    match (event, target) {  
+        (Ok(event), Some(target)) =&gt; {  
+            target.dispatch_event(&amp;event)  
+        },        (_,_) =&gt; Err(JsValue::null())  
+    }
+}
+
+pub fn dispatch( 
+	name: &amp;str, 
+	target_ref : NodeRef
+	) -&gt; Result&lt;bool, JsValue&gt;{  
+    real_dispatch( name, target_ref, None)  
+}
+
+pub fn dispatch_with_data( 
+	name: &amp;str, 
+	target_ref : NodeRef, 
+	data: JsValue
+	) -&gt; Result&lt;bool, JsValue&gt;{  
+    real_dispatch( name, target_ref, Some(data))  
+}
+    
+<span class="boring">}</span></code></pre></pre>
+<p>While we're at it, let's add a function to grab the value a bit more easily too:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn extract_data( event: web_sys::Event) -&gt; JsValue {  
+    event
+	    .unchecked_into::&lt;web_sys::CustomEvent&gt;()
+	    .detail()  
+}
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>We've seen this in a prior lesson. Were just packaging it as part of the module here.</p>
+</blockquote>
+<h3 id="structured-data"><a class="header" href="#structured-data">Structured Data</a></h3>
+<p>Here's where things get interestng. We probably don't to just send a single value. We might want to send a few values. If we went back to our BLT example, maybe we want to send a struct of the whole BLT Sandwich config.</p>
+<p>JavaScript requires everything to be sent as text. We need a way to convert structured data into a sequence of characters that can faithfully represent it. The process of producing this is called serialization. Converting data from a serialized representation to it's typed and structured form is called deserialization. </p>
+<p>Currently what we have will allow us to send stuctured data but it's on the application developer to serialize data and convert it into a JsValue for use with <code>dispatch_with_data()</code>. I think it would be convenient to do this for them so that they don't have to think about serialization. </p>
+<p>Let's start by adding a new function. I don't know what the type of data will be so I'm writing UNKNOWN for the sake of this example. This is not a Rust thing. It's just for you, the reader, to help you follow my thought process.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn dispatch_with_data_serialized(  
+    name: &amp;str,  
+    target_ref : NodeRef,  
+    data: UNKNOWN
+    ) -&gt; Result&lt;bool, JsValue&gt;{  
+	// ..
+}
+<span class="boring">}</span></code></pre></pre>
+<p>I did some searching and found a great crate called &quot;serde&quot; which received it's name from ser-ialize de-serialize. It turns out that there is a version of serde specifically designed to work with wasm, which is supposidly more efficient than converting structured data into JSON (JavaScript Object Notation) and it gives us a JsValue! How great is that!</p>
+<p>I've added the dependency to cargo.toml as such:</p>
+<pre><code class="language-toml">serde-wasm-bindgen = &quot;0.4&quot;
+</code></pre>
+<p>And now I can author the body of the function which is actually realtively simple:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>match serde_wasm_bindgen::to_value(data) {  
+	Ok(data) =&gt; dispatch_with_data( name, target_ref, data),
+	Err(_) =&gt; Err( JsValue::null() )  
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We're matching on the result of converting a reference of our data to the JsValue, if it's ok, we destructure it and return the result of dispatch_with_data, otherwise we'll return a null JsValue as an error. </p>
+<p>Again, recall that we're keeping the return types the same as <code>EventTarget.dispatch()</code>.</p>
+<p>We're not quite done though. We don't know what type to put for the data. Rust requires that we specific the type so that it can verify that we're calling the appropriate methods on it, and correctly managing memory for it.</p>
+<p>To do this we'll revisit type generics, which are those type arguments that I talked about before. They're like parameters/variables but for types. People often use 'T' as a character for a generic 'Type' but you can actually use anything you want that isn't a reserved word. I'm going to use <code>Data</code>. Note that <code>data</code> is the parameter name and <code>Data</code> is the generic type name. </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn dispatch_with_data_serialized&lt;Data&gt;(  
+    name: &amp;str,  
+    target_ref : NodeRef,  
+    data: &amp;Data
+    ) -&gt; Result&lt;bool, JsValue&gt;{  
+    //....
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Here we're saying, a generic will be used called <code>Data</code> and the property <code>data</code> will be whatever type <code>Data</code> is, as a referenced value. We're telling Rust, this type can change.</p>
+<p>As is, Rust will complain because we're using the value of <code>data</code> as an argument for  <code>serde_wasm_bindgen::to_value()</code>. Rust wants to confirm that whatever is being stored in <code>data</code>, accepted through the function call, can be safely passed to that <code>serde_wasm_bindgen::to_value()</code> function, meeting its type requirements.</p>
+<p>Let's look at the definition of <code>serde_wasm_bindgen::to_value()</code> for a clue. It reads as:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn to_value&lt;T: serde::ser::Serialize + ?Sized&gt;(value: &amp;T) -&gt; Result&lt;JsValue&gt; {
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>Translation: &quot;Whatever you pass as the value of <code>value</code>  must be a reference to T. T is any value whoes type implements the the serde::ser::Serialize trait and is<code>Sized</code>.</p>
+</blockquote>
+<p>That's it. Our <code>Data</code> needs to fulfill the same type requirements as  <code>serde::ser::Serialize + ?Sized</code> The colon after 'T' indicates qualifiers for 'T'. These qualifiers are Traits. A Trait is a name that refers to a specification of behaviour/capabilities. If you've ever written object oriented code, these would be similar to interfaces. </p>
+<h3 id="how-do-we-serialize-data"><a class="header" href="#how-do-we-serialize-data">How do we serialize data?</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn dispatch_with_data_serialized&lt;Data: Serialize + ?Sized&gt;(  
+    name: &amp;str,  
+    target_ref : NodeRef,  
+    data: &amp;Data
+    ) -&gt; Result&lt;bool, JsValue&gt;{  
+
+	match serde_wasm_bindgen::to_value(data) {  
+        Ok(data) =&gt; dispatch_with_data( name, target_ref, data),
+        Err(_) =&gt; Err( JsValue::null() )  
+	}
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Serde is included in Leptos and adds support for a bunch of types out of the box. We can also add serialization support for our own types with a macro.  Writing <code>#[derive(Serialize, Deserialize)]</code>
+above a struct will tell Rust to write out the functionality to enable these fetures for you. You do, howver, need to import the traits <code>Serialize</code> and <code>Deserialize</code> with the following use statement:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use serde::{Serialize, Deserialize};
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>We are destructuring here in the use statement so that Serialize and Deserialize are being brought into scope from the serde crate (external module).</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Serialize, Deserialize, Debug)]  
+struct BLTSandwich {  
+    bread: String,  
+    lettuce: String,  
+    tomato: String,  
+    bacon: String,  
+}
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>We're also adding Debug so that we can print this struct later in the lesson with the log macro.</p>
+</blockquote>
+<p>Now let's take a look at our BLT Sandwich component:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]  
+fn BltSandwich(cx: Scope) -&gt; Element {  
+    let dom_node_ref = NodeRef::new(cx);  
+  
+    let trigger_order_sandwich_event = move |event| {  
+        component_custom_event::dispatch_with_data_serialized(  
+            &quot;orderSandwich&quot;,  
+            dom_node_ref,  
+            &amp;BLTSandwich {  
+                bread: &quot;canadian_rye&quot;.to_string(),  
+                lettuce: &quot;romaine&quot;.to_string(),  
+                tomato: &quot;black_krim&quot;.to_string(),  
+                bacon: &quot;farm_smoked_apple_bacon&quot;.to_string(),  
+            }        
+        );  
+    };  
+    view! {  
+        cx,  
+        &lt;div _ref=dom_node_ref&gt;  
+           &lt;h3&gt;&quot;BLT Sandwich&quot;&lt;/h3&gt;  
+            &lt;button on:click=trigger_order_sandwich_event&gt;  
+                &quot;Order Sandwich&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>It looks like there's one last missing piece of the pizzle. We need a function that will extract our serialized data back into our struct. We'll use as similar tactic to find the type requirements. The generic <code>Data</code> will end up in the return type as a type argument for Option. This means that the function may return Some of <code>Data</code>, which must implement the traits <code>serde::de::DeserializeOwned + ?Sized</code> or None.</p>
+<p>Then we call <code>from_value()</code>, match it to handle a potential error and return our option types as the result of the match arm expressions.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn extract_serialized_data&lt;Data: serde::de::DeserializeOwned + ?Sized&gt;(event: web_sys::Event) -&gt; Option&lt;Data&gt; {  
+    match serde_wasm_bindgen::from_value(extract_data(event)) {  
+        Ok(data) =&gt; Some(data),  
+        Err(_) =&gt; None  
+    }  
+}
+<span class="boring">}</span></code></pre></pre>
+<p>When using this function we need to provide it the type for <code>Data</code> which we can do with our type argument syntax, for example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>component_custom_event::extract_serialized_data::&lt;BLTSandwich&gt;(event)
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>The ::&lt;&gt; is a turbofish and used to inject a concrete type as an argument for a generic.</p>
+</blockquote>
+<h3 id="wrapping-it-up"><a class="header" href="#wrapping-it-up">Wrapping it up</a></h3>
+<p>Here we have a working example of the whole thing!</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+use serde::{Serialize, Deserialize};  
+  
+mod component_custom_event {  
+    use leptos::*;  
+    use crate::wasm_bindgen::JsValue;  
+  
+    fn new(name: &amp;str, payload: Option&lt;JsValue&gt;) -&gt; Result&lt;web_sys::CustomEvent, JsValue&gt; {  
+        let mut event_config = web_sys::CustomEventInit::new();  
+        event_config.bubbles(true);  
+        if let Some(data) = payload {  
+            event_config.detail(&amp;data);  
+        }  
+        web_sys::CustomEvent::new_with_event_init_dict(name, &amp;event_config)  
+    }  
+    fn real_dispatch(name: &amp;str, target_ref: NodeRef, payload: Option&lt;JsValue&gt;) -&gt; Result&lt;bool, JsValue&gt; {  
+        let event = new(name, payload);  
+        let target = target_ref.get();  
+  
+        match (event, target) {  
+            (Ok(event), Some(target)) =&gt; target.dispatch_event(&amp;event),  
+            (_, _) =&gt; Err(JsValue::null())  
+        }    }  
+    pub fn dispatch(name: &amp;str, target_ref: NodeRef) -&gt; Result&lt;bool, JsValue&gt; {  
+        real_dispatch(name, target_ref, None)  
+    }  
+    pub fn dispatch_with_data(name: &amp;str, target_ref: NodeRef, data: JsValue) -&gt; Result&lt;bool, JsValue&gt; {  
+        real_dispatch(name, target_ref, Some(data))  
+    }  
+    pub fn dispatch_with_data_serialized&lt;T: serde::ser::Serialize + ?Sized&gt;(  
+        name: &amp;str,  
+        target_ref: NodeRef,  
+        data: &amp;T) -&gt; Result&lt;bool, JsValue&gt; {  
+        match serde_wasm_bindgen::to_value(data) {  
+            Ok(data) =&gt; dispatch_with_data(name, target_ref, data),  
+            Err(_) =&gt; Err(JsValue::null())  
+        }    }  
+    pub fn extract_data(event: web_sys::Event) -&gt; JsValue {  
+        let custom_event = event.unchecked_into::&lt;web_sys::CustomEvent&gt;();  
+        custom_event.detail()  
+    }  
+    pub fn extract_serialized_data&lt;Data: serde::de::DeserializeOwned + ?Sized&gt;(event: web_sys::Event) -&gt; Option&lt;Data&gt; {  
+        match serde_wasm_bindgen::from_value(extract_data(event)) {  
+            Ok(data) =&gt; Some(data),  
+            Err(_) =&gt; None  
+        }  
+    }}  
+  
+#[derive(Serialize, Deserialize, Debug)]  
+struct BLTSandwich {  
+    bread: String,  
+    lettuce: String,  
+    tomato: String,  
+    bacon: String,  
+}  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;SandwichShopApp /&gt;  
+        }    })}  
+  
+#[component]  
+fn SandwichShopApp(cx: Scope) -&gt; Element {  
+    let log_order = |event: web_sys::Event| {  
+        leptos::log!(&quot;Our custom event happened&quot;);  
+        leptos::log!( &quot;{:?}&quot;, component_custom_event::extract_serialized_data::&lt;BLTSandwich&gt;(event));  
+    };  
+    view! {  
+        cx,  
+        &lt;BltSandwich on:orderSandwich=log_order /&gt;  
+    }}  
+  
+#[component]  
+fn BltSandwich(cx: Scope) -&gt; Element {  
+    let dom_node_ref = NodeRef::new(cx);  
+  
+    let trigger_order_sandwich_event = move |event| {  
+        component_custom_event::dispatch_with_data_serialized(  
+            &quot;orderSandwich&quot;,  
+            dom_node_ref,  
+            &amp;BLTSandwich {  
+                bread: &quot;canadian_rye&quot;.to_string(),  
+                lettuce: &quot;romaine&quot;.to_string(),  
+                tomato: &quot;black_krim&quot;.to_string(),  
+                bacon: &quot;farm_smoked_apple_bacon&quot;.to_string(),  
+            },        );  
+    };  
+    view! {  
+        cx,  
+        &lt;div _ref=dom_node_ref&gt;  
+           &lt;h3&gt;&quot;BLT Sandwich&quot;&lt;/h3&gt;  
+            &lt;button on:click=trigger_order_sandwich_event&gt;  
+                &quot;Order Sandwich&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="forms"><a class="header" href="#forms">Forms</a></h1>
+<h2 id="what-we-know-13"><a class="header" href="#what-we-know-13">What we know</a></h2>
 <ul>
 <li>We can capture events and respond to them</li>
 <li>Signals allow us to persist data across events</li>
 </ul>
-<h2 id="what-well-learn-12"><a class="header" href="#what-well-learn-12">What we'll learn</a></h2>
+<h2 id="what-well-learn-13"><a class="header" href="#what-well-learn-13">What we'll learn</a></h2>
 <ul>
 <li>How to respond to multipart form data</li>
 </ul>
-<h2 id="the-lesson-10"><a class="header" href="#the-lesson-10">The Lesson</a></h2>
+<h2 id="the-lesson-11"><a class="header" href="#the-lesson-11">The Lesson</a></h2>
 <p>Back in the day we used to interact with websites by submitted form data to a server with a requested resource (like a specific page). The page would render, often using or processing the form data that was sent with it, would generate HTML, and then provide us a response. This is how the majority of the web still works to this day!</p>
 <p>We're going to replicate a similar data flow so that you can collect sets of data using forms, but process them all on the client (in the browser).</p>
 <p>We'll start with a Rad app component and some boiler plate, mounting it to the body:</p>
@@ -3054,22 +3413,6 @@ fn RadApp(cx: Scope) -&gt; Element {
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script>
-            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
-            const socket = new WebSocket(wsAddress);
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
