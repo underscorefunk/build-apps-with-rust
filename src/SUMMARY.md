@@ -8,21 +8,23 @@
 
 # Introductions
 - [Programming]()
-  - [What it is]()
-  - [Why it's worth it]()
-  - [Why it's hard]()
-  - [Programmer Thinking]()
+	- [What it is]()
+	- [Why it's worth it]()
+	- [Why it's hard]()
+	- [Programmer Thinking]()
 - [Languages]()
-  - [Meaning and Interpretation]()
+	- [Meaning and Interpretation]()
 - [Architectures]()
-  - [How your computer works]()
-  - [How the web works]()
-  - [The frontend-backend divide]()
+	- [What is architecture]()
+	- [How your computer works]()
+	- [How the web works]()
+	- [The frontend-backend divide]()
+	- [General application architecture]()
 - [Tools and Languages]()
-  - [Bash and the terminal]()
-  - [Rust]()
-  - [Trunk]()
-  - [Web browsers]()
+	- [Bash and the terminal]()
+	- [Rust]()
+	- [Trunk]()
+	- [Web browsers]()
 
 ------------
 
@@ -59,6 +61,10 @@
 	- [Responding to URL requests with HTML]()
 	- [Responding to form Post actions with HTML]()
 - [Server Side Rendering - Partial with Hydration]()
+- [User Interfaces]()
+	- [Tables and Lists]()
+	- [Forms]()
+	- [Input Validation]()
 
 ------------
 
@@ -70,5 +76,10 @@
 
 ------------
 
+# Leptos Deep Dive
+
+------------
+
 # Common Problems
+
 
