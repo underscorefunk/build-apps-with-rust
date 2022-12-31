@@ -53,6 +53,7 @@
 		- [Custom Event Module](./custom_event_module.md)
 		- [Custom Event Module with Data](./custom_event_module_with_data.md)
 		- [Custom Event Data with Signals and Effects](./custom_event_data_with_signals_and_effects.md)
+		- [Custom Event Data with Signals and Effects - Part 2](./custom_event_data_with_signals_and_effects_part2.md)
 	- [Forms](./forms.md)
 - [Server Side Rendering - Traditional]()
 	- [Responding to URL requests with HTML]()
