@@ -61,7 +61,7 @@
 	- [Sending Data](./)
 		- [Forms](./forms.md)
 		- [Acton Forms](./)
-	- [Saving/Persisting Data](./client/store_data/index.md)
+	- [Saving/Persisting Data](client/store_data/summary.md)
 		- [Local Storage](./client/store_data/local_storage.md)
 		- [Cookies](./client/store_data/cookies.md)
 - [Server Side](./)
