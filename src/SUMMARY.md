@@ -25,6 +25,8 @@
 	- [Rust]()
 	- [Trunk]()
 	- [Web browsers]()
+- Other Resources
+	- [Rust](./intro/other_resources/rust.md)
 
 ------------
 
@@ -59,9 +61,9 @@
 	- [Sending Data](./)
 		- [Forms](./forms.md)
 		- [Acton Forms](./)
-	- [Saving/Persisting Data](./)
-		- [Local Storage](./)
-		- [Cookies](./)
+	- [Saving/Persisting Data](./client/store_data/index.md)
+		- [Local Storage](./client/store_data/local_storage.md)
+		- [Cookies](./client/store_data/cookies.md)
 - [Server Side](./)
 	- [Setup](./)
 	- [Responding to Requests](./)
@@ -80,7 +82,8 @@
 
 ------------
 
-# Building an Application
+# Tutorial Projects
+- [RPG Initiative Tracker](tutorial_projects/initiative_tracker/summary.md)
 
 ------------
 
