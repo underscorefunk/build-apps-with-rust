@@ -264,3 +264,59 @@ leptos::log!(
 );
 ```
 > Here we log the value stored at "my-key" in the `cookies` `HashMap`. This returns a `Some(&str)` type. We can unwrap this to make it either the string slice `&str` or a reference to an empty string slice, which is also of type `&str`
+
+## The finished code
+
+```rust
+use leptos::*;  
+use web_sys::{KeyboardEvent, HtmlInputElement, HtmlDocument};  
+use std::collections::HashMap;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            <App />  
+        }    })}  
+  
+#[component]  
+fn App(cx: Scope) -> Element {  
+    let write_value_to_cookie = |e: KeyboardEvent| {  
+  
+        let input: HtmlInputElement = e.target().unwrap().unchecked_into();  
+        let doc: HtmlDocument = document().unchecked_into();  
+        let cookie_key = "my-cookie";  
+  
+        let cookie_data = vec!(cookie_key, &input.value() ).join("=");  
+        doc.set_cookie(&cookie_data);  
+  
+        // Parse cookie data and log it out  
+        let cookie: String = doc.cookie().unwrap_or_default();  
+        let key_value_pairs: HashMap<&str, &str> = cookie  
+            .split("; ")  
+            .map(|kvp_string|{  
+                kvp_string.split_at(  
+                    kvp_string.find("=").unwrap_or_default()  
+                )            
+			})            
+			.map(|kvp_tuple|{  
+                (kvp_tuple.0, &kvp_tuple.1[1..])  
+            })
+			.collect();  
+  
+        leptos::log!("{:?}", key_value_pairs.get(cookie_key).unwrap_or(&"") );  
+    };  
+    
+    view! {  
+        cx,  
+        <div>  
+            <input  
+                name="cookie_input"  
+               type="text"  
+              placeholder="Type text and I'll update a cookie!"  
+              on:keyup=write_value_to_cookie  
+         />  
+        </div>  
+    }
+}
+```
