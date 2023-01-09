@@ -374,6 +374,58 @@ leptos::log!(&quot;{:?}&quot;, key_value_pairs );
 <blockquote>
 <p>Here we log the value stored at &quot;my-key&quot; in the <code>cookies</code> <code>HashMap</code>. This returns a <code>Some(&amp;str)</code> type. We can unwrap this to make it either the string slice <code>&amp;str</code> or a reference to an empty string slice, which is also of type <code>&amp;str</code></p>
 </blockquote>
+<h2 id="the-finished-code"><a class="header" href="#the-finished-code">The finished code</a></h2>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+use web_sys::{KeyboardEvent, HtmlInputElement, HtmlDocument};  
+use std::collections::HashMap;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;App /&gt;  
+        }    })}  
+  
+#[component]  
+fn App(cx: Scope) -&gt; Element {  
+    let write_value_to_cookie = |e: KeyboardEvent| {  
+  
+        let input: HtmlInputElement = e.target().unwrap().unchecked_into();  
+        let doc: HtmlDocument = document().unchecked_into();  
+        let cookie_key = &quot;my-cookie&quot;;  
+  
+        let cookie_data = vec!(cookie_key, &amp;input.value() ).join(&quot;=&quot;);  
+        doc.set_cookie(&amp;cookie_data);  
+  
+        // Parse cookie data and log it out  
+        let cookie: String = doc.cookie().unwrap_or_default();  
+        let key_value_pairs: HashMap&lt;&amp;str, &amp;str&gt; = cookie  
+            .split(&quot;; &quot;)  
+            .map(|kvp_string|{  
+                kvp_string.split_at(  
+                    kvp_string.find(&quot;=&quot;).unwrap_or_default()  
+                )            
+			})            
+			.map(|kvp_tuple|{  
+                (kvp_tuple.0, &amp;kvp_tuple.1[1..])  
+            })
+			.collect();  
+  
+        leptos::log!(&quot;{:?}&quot;, key_value_pairs.get(cookie_key).unwrap_or(&amp;&quot;&quot;) );  
+    };  
+    
+    view! {  
+        cx,  
+        &lt;div&gt;  
+            &lt;input  
+                name=&quot;cookie_input&quot;  
+               type=&quot;text&quot;  
+              placeholder=&quot;Type text and I'll update a cookie!&quot;  
+              on:keyup=write_value_to_cookie  
+         /&gt;  
+        &lt;/div&gt;  
+    }
+}</code></pre></pre>
 
                     </main>
 
