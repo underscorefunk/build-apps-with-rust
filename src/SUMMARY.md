@@ -25,7 +25,7 @@
 	- [Rust]()
 	- [Trunk]()
 	- [Web browsers]()
-- Other Resources
+- [Other Resources](./)
 	- [Rust](./intro/other_resources/rust.md)
 
 ------------
