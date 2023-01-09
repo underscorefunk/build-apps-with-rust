@@ -4,9 +4,9 @@ Web applications have the ability to save data to/in the browser.
 
 ## Available tools
 
-- [Web storage: Session Storage](./client/store_data/web_storage.md)
-- [Web storage: Local Storage](./client/store_data/web_storage.md)
-- [Cookies](./client/store_data/cookies.md)
+- [Web storage: Session Storage](/client/store_data/web_storage.md)
+- [Web storage: Local Storage](/client/store_data/web_storage.md)
+- [Cookies](/client/store_data/cookies.md)
 
 ## Example usage
 
