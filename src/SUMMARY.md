@@ -62,7 +62,7 @@
 		- [Forms](./forms.md)
 		- [Acton Forms]()
 	- [Saving/Persisting Data](client/store_data/summary.md)
-		- [Local Storage](./client/store_data/local_storage.md)
+		- [Local Storage](web_storage.md)
 		- [Cookies](./client/store_data/cookies.md)
 - [Server Side]()
 	- [Setup]()

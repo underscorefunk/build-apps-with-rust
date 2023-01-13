@@ -6,6 +6,12 @@
 - How we can set them
 - How we can detect cookie changes
 
+## What's missing
+
+- Cookie paths, lifetimes, and advanced configuration
+- Type safety guarantees for non-string types
+- Session and persistant cookie types
+
 ## Caveat
 
 There are many additional options available when setting cookies. This lesson is intended to give you a cursory understanding of how they're written and stored but it is not exhaustive. 
