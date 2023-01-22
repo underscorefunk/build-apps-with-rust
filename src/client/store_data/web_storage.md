@@ -40,7 +40,9 @@ fn main() {
         view! {  
             cx,  
             <App />  
-        }    })}  
+        }
+	})
+}  
   
 #[component]  
 fn App(cx: Scope) -> Element {  
@@ -50,9 +52,12 @@ fn App(cx: Scope) -> Element {
     view! {  
         cx,  
         <div>  
-            <button on:click=initialize_value>"Initialize value"</button>  
+            <button on:click=initialize_value>
+	            "Initialize value"
+			</button>  
         </div>  
-    }}
+    }
+}
 ```
 
 ### Accessing the Web Storage API

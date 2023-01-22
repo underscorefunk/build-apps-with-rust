@@ -7,6 +7,7 @@ Web applications have the ability to save data to/in the browser.
 - [Web storage: Session Storage](/client/store_data/web_storage.md)
 - [Web storage: Local Storage](/client/store_data/web_storage.md)
 - [Cookies](/client/store_data/cookies.md)
+- [IndexedDB](client/store_data/indexeddb.md)
 
 ## Example usage
 
@@ -16,6 +17,8 @@ Web applications have the ability to save data to/in the browser.
 	- Application state changes for offline usage
 - Cookies
 	- Session or user information that may change the server's respose
+- IndexedDB
+	- Store large amounts of data in object storage stores that can be queried with optimiztions for reading/writing
 
 ## Comparison
 
@@ -38,3 +41,4 @@ Web applications have the ability to save data to/in the browser.
 
 - [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) 
 - [Cookies Api](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/cookies)
+- [IndexedDB Api](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)

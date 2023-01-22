@@ -1,0 +1,788 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>IndexedDB - Building Apps with Rust</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../preface.html"><strong aria-hidden="true">1.</strong> Preface</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Acknowledgements</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> About this Book</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> About the Author</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> If you get stuck or lose steam</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Introductions</li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Programming</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> What it is</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Why it's worth it</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.3.</strong> Why it's hard</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.4.</strong> Programmer Thinking</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> Languages</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">7.1.</strong> Meaning and Interpretation</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> Architectures</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">8.1.</strong> What is architecture</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.2.</strong> How your computer works</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.3.</strong> How the web works</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.4.</strong> The frontend-backend divide</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.5.</strong> General application architecture</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> Tools and Languages</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.1.</strong> Web browsers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.2.</strong> HTML</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.3.</strong> Bash and the terminal</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> Rust</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.5.</strong> Trunk</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.6.</strong> Cargo Leptos</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.</strong> Other Resources</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../intro/other_resources/rust.html"><strong aria-hidden="true">10.1.</strong> Rust</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Getting Started with Rust and Leptos</li><li class="chapter-item expanded "><a href="../../getting_started/setup.html"><strong aria-hidden="true">11.</strong> Setup</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">12.</strong> Foundations</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../getting_started/html_intro.html"><strong aria-hidden="true">12.1.</strong> Intro to HTML</a></li><li class="chapter-item expanded "><a href="../../getting_started/view_macro_html.html"><strong aria-hidden="true">12.2.</strong> HTML and the view! macro</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.</strong> Architecture</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">13.1.</strong> Leptos Components - #[component]</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.2.</strong> Signals (reactive values) - create_signal</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.3.</strong> Effects (side effects) - create_effect</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Generting UI</li><li class="chapter-item expanded "><a href="../../ui/leptos_component_intro.html"><strong aria-hidden="true">14.</strong> Introduction to Leptos components</a></li><li class="chapter-item expanded "><a href="../../ui/view_macro_variables.html"><strong aria-hidden="true">15.</strong> Variables and the view! macro</a></li><li class="chapter-item expanded "><a href="../../ui/leptos_component_properties.html"><strong aria-hidden="true">16.</strong> Component properties</a></li><li class="chapter-item expanded "><a href="../../ui/leptos_component_dynamic_content_separation.html"><strong aria-hidden="true">17.</strong> Component dynamic content separation</a></li><li class="chapter-item expanded "><a href="../../ui/loops_and_control_flow.html"><strong aria-hidden="true">18.</strong> Loops and control flow in components</a></li><li class="chapter-item expanded "><a href="../../ui/tables_and_data_sets.html"><strong aria-hidden="true">19.</strong> Tables and data sets</a></li><li class="chapter-item expanded affix "><li class="part-title">Client Side</li><li class="chapter-item expanded "><div><strong aria-hidden="true">20.</strong> Responding to Events</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../client/responding/leptos_component_logging_events.html"><strong aria-hidden="true">20.1.</strong> Witnessing events</a></li><li class="chapter-item expanded "><a href="../../client/responding/leptos_component_update_from_event.html"><strong aria-hidden="true">20.2.</strong> Reacting to events with event handlers</a></li><li class="chapter-item expanded "><a href="../../client/responding/event_handlers_as_props.html"><strong aria-hidden="true">20.3.</strong> Event handers as props</a></li><li class="chapter-item expanded "><a href="../../client/responding/event_bubbling_and_signal_generics.html"><strong aria-hidden="true">20.4.</strong> Event Bubbling and Signal Generics</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">20.5.</strong> Preventing bubbling and default event behaviours </div></li><li class="chapter-item expanded "><a href="../../client/responding/custom_events.html"><strong aria-hidden="true">20.6.</strong> Custom Events</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_data.html"><strong aria-hidden="true">20.7.</strong> Custom Event Data</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_module.html"><strong aria-hidden="true">20.8.</strong> Custom Event Module</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_module_with_data.html"><strong aria-hidden="true">20.9.</strong> Custom Event Module with Data</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_data_with_signals_and_effects.html"><strong aria-hidden="true">20.10.</strong> Custom Event Data with Signals and Effects</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_data_with_signals_and_effects_part2.html"><strong aria-hidden="true">20.11.</strong> Custom Event Data with Signals and Effects - Part 2</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">21.</strong> Sending Data</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../client/responding/forms.html"><strong aria-hidden="true">21.1.</strong> Forms</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">21.2.</strong> Acton Forms</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">22.</strong> Sending and Receiving Data</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">22.1.</strong> Fetch</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">22.2.</strong> Web Socket</div></li></ol></li><li class="chapter-item expanded "><a href="../../client/store_data/summary.html"><strong aria-hidden="true">23.</strong> Saving/Persisting Data</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../client/store_data/web_storage.html"><strong aria-hidden="true">23.1.</strong> Local Storage</a></li><li class="chapter-item expanded "><a href="../../client/store_data/cookies.html"><strong aria-hidden="true">23.2.</strong> Cookies</a></li><li class="chapter-item expanded "><a href="../../client/store_data/indexeddb.html" class="active"><strong aria-hidden="true">23.3.</strong> IndexedDB</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Cargo Leptos</li><li class="chapter-item expanded affix "><li class="part-title">Server Side</li><li class="chapter-item expanded "><div><strong aria-hidden="true">24.</strong> Setup</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">25.</strong> Responding to Requests</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">26.</strong> Sending Data</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">26.1.</strong> Cookies</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">27.</strong> Saving/Persisting Data</div></li><li class="chapter-item expanded affix "><li class="part-title">Application Behaviours</li><li class="chapter-item expanded "><div><strong aria-hidden="true">28.</strong> Form Validation</div></li><li class="chapter-item expanded affix "><li class="part-title">Application Patterns</li><li class="chapter-item expanded "><div><strong aria-hidden="true">29.</strong> Event Sourcing</div></li><li class="chapter-item expanded affix "><li class="part-title">Common Problems</li><li class="chapter-item expanded "><div><strong aria-hidden="true">30.</strong> Offline Support and Data Sync</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">31.</strong> Observability and Logging</div></li><li class="chapter-item expanded affix "><li class="part-title">Usability Patterns and Performance Concerns</li><li class="chapter-item expanded "><div><strong aria-hidden="true">32.</strong> Bundle Size</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">33.</strong> Partial Hydration</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">34.</strong> UI Response Time</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Tutorial Projects</li><li class="chapter-item expanded "><a href="../../tutorial_projects/initiative_tracker/summary.html"><strong aria-hidden="true">35.</strong> RPG Initiative Tracker</a></li><li class="chapter-item expanded "><a href="../../tutorial_projects/chat/summary.html"><strong aria-hidden="true">36.</strong> Chat</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Building Apps with Rust</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="indexeddb"><a class="header" href="#indexeddb">IndexedDB</a></h1>
+<blockquote>
+<p><strong>This lesson is in <code>notes</code> status and is an extremely rough daft.</strong>
+<em><strong>This lesson is not a complete notes draft</strong></em></p>
+</blockquote>
+<h2 id="what-we-know"><a class="header" href="#what-we-know">What we know</a></h2>
+<ul>
+<li>Data can be stored in the browser</li>
+</ul>
+<h2 id="what-well-learn"><a class="header" href="#what-well-learn">What we'll learn</a></h2>
+<ul>
+<li>Basic interaction with IndexedDB</li>
+</ul>
+<h2 id="caveat"><a class="header" href="#caveat">Caveat</a></h2>
+<p>The IndexedDB API is complicated. Like all other web storage APIs, they are modifiable by any other scripts running on the page, making them untrusted. Pushing data from WASM to JS and back is slower than performing more work in WASM and letting Leptos update the resulting data. For these reasons, it's probably a better idea to think about your applications and create purpose built data structurs that you can query and work with instead of using the indexedDB API and data store.</p>
+<h2 id="the-lesson"><a class="header" href="#the-lesson">The Lesson</a></h2>
+<p>IndexedDB is a NoSQL like database that lives in the browser. We are able to grab data by creating a cursor that allows us to jump around the field of data that is the database. IndexedDB does not use structured query language (SQL) to retrieve data like MySQL, Maria, Postgres, etc.</p>
+<p>The IndexedDB API is notoriously unconfortable to use. This article will provide a cursory overview and exploration of it for those curious. </p>
+<p>Let's get things started with our Leptos <a href="/quick_reference/client_side_app_setup">inital client side application</a>.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &lt;App /&gt;  
+        }    
+	})
+}
+  
+#[component]  
+fn App(cx: Scope) -&gt; Element {  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+            &quot;My App&quot;  
+        &lt;/div&gt;  
+    }
+}</code></pre></pre>
+<p>We'll jump over to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">documentation</a> and scroll down to &quot;Interfaces&quot;. This gives us some hints for where we need to go. </p>
+<p>The documentation reads:
+&gt;To get access to a database, call <a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory/open"><code>open()</code></a> on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/indexedDB"><code>indexedDB</code></a> attribute of a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window">window</a> object.</p>
+<p>In my mind I think, &quot;I should make a button that will connect to the database when I click it.&quot; I find it's easiest to build and learn if I can provide my own input and introspect the result. </p>
+<blockquote>
+<p><strong>Reoccuring Pattern Alert:</strong> It's interesting how this feedback loop is the same as a servers request-&gt;response, or how applications are built in general. Programs are often the way they are because they're expressions of how we think.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]  
+fn App(cx: Scope) -&gt; Element {  
+    let connect_to_database = |_|{  
+        leptos::log!(&quot;Connect to database&quot;)  
+    };  
+    view! {  
+        cx,  
+        &lt;div&gt;  
+            &lt;button on:click=connect_to_database&gt;  
+                &quot;Connect to DB&quot;  
+            &lt;/button&gt;  
+        &lt;/div&gt;  
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The documentation states that indexedDB is an attribute of the <code>window</code> object. We'll use Leptos' <code>window()</code> function to grab it's cached reference to <code>window</code> as a <code>web_sys::Window</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let connect_to_database = |_|{  
+	leptos::log!(&quot;Connect to database&quot;)    
+	let window = window();  
+};
+<span class="boring">}</span></code></pre></pre>
+<p>If we look at the <a href="https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Window.html#method.indexed_db">web_sys::Window documentation</a> we'll see that there is a web_sys version of the indexedDB javascript proprty called <code>indexed_db</code>. Note the difference in case. Rust is prescriptive about it's use of snake case for function/method names. We can see that the return type is <code>Result&lt;Option&lt;IdbFactory&gt;, JsValue&gt;</code>.</p>
+<p>This <code>IdbFactory</code> looks interesting. If we check the IndexedDB documentation we'll see a good definition of what it is.</p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory"><code>IDBFactory</code></a>: Provides access to a database. This is the interface implemented by the global object <a href="https://developer.mozilla.org/en-US/docs/Web/API/indexedDB"><code>indexedDB</code></a> and is therefore the entry point for the API.</p>
+</blockquote>
+<p>This is perfect. We want an entry point for the API!</p>
+<p>We can use the following match pattern to get the <code>IdbFactory</code> (note that this refers to the struct with its PascalCase) out of our <code>indexed_db()</code> call, or return (prematurely terminate the closure/click handler) if the pattern doesn't match.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let idb = match window().indexed_db() {  
+    Ok(Some(idb_factory)) =&gt; idb_factory,  
+    _ =&gt; return  
+};
+<span class="boring">}</span></code></pre></pre>
+<p>The <code>web_sys::indexed_db()</code> documentation also states:</p>
+<blockquote>
+<p><em>This API requires the following crate features to be activated: <code>IdbFactory</code>, <code>Window</code></em></p>
+</blockquote>
+<p>We can enable these feature by adding the following to our cargo.toml file</p>
+<pre><code class="language-toml">[dependencies.web-sys]  
+features = [ &quot;Window&quot;,  &quot;IdbFactory&quot; ]
+</code></pre>
+<p><code>web_sys</code> has a lot of features and compiling all of them into the Leptos WASM application would make it needlessly large. For this reason, features are hidden behind feature flags like this so that we can pick and choose what gets added to our final application on a needs basis. Rust is very considerate.</p>
+<p>Let's zip on over to the <a href="https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.IdbFactory.html"><code>web_sys::IdbFactory</code> struct documentation</a> to see what's avaialble to us there. I see an <a href="https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.IdbFactory.html#method.open"><code>open()</code></a> method which looks like what we want, so we'll try that. Note that we need to add some extra features to the web-sys crate. <code>open()</code> requires &quot;<em><code>IdbFactory</code>, <code>IdbOpenDbRequest</code></em>&quot;, so we'll add the missing <code>IdbOpenDbRequest</code> </p>
+<pre><code class="language-toml">[dependencies.web-sys]  
+features = [ &quot;Window&quot;,  &quot;IdbFactory&quot;, &quot;IdbOpenDbRequest&quot; ]
+</code></pre>
+<p>I made a few changes to make the code more visible. This is where we're at:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let connect_to_database = |_|{  
+  
+    // Grabbed a reference to window  
+    let window = window();  
+  
+    // Got a factory to be able to make an open connection  
+    let idb = match window.indexed_db() {  
+        Ok(Some(idb_factory)) =&gt; idb_factory,  
+        _ =&gt; return  
+    };  
+  
+    let idb_open_request = match idb.open(&quot;my-database&quot;) {  
+         Ok(idb_open_request) =&gt; idb_open_request,  
+         _ =&gt; return  
+    };  
+  
+    // Do something with the connection  
+};
+<span class="boring">}</span></code></pre></pre>
+<p>The question that we now have is, how do we work with IndexedDB? We need some more information.</p>
+<h3 id="store-type"><a class="header" href="#store-type">Store type</a></h3>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Basic_Terminology">MDN documentation</a> states that IndexedDB is a key-value store. The values can be complex objects, and keys can be properties of those objects. If we're thinking in terms of Rust, what they're saying is that we can store structs in IndexedDB, where properties like 'id' could be a key used to look up the struct.</p>
+<h3 id="transactions"><a class="header" href="#transactions">Transactions</a></h3>
+<p>All interactions with IndexedDB are done in the form of transactions. The mental model is such that we requst for a change in the database and the database will hold the request until it is safe to perform. This guarantees data integrity where we don't have two sources potentially modifying the same data, etc.</p>
+<p>There are three transaction types. We'll only be looking at the first two:</p>
+<ol>
+<li>readwrite</li>
+<li>readonly</li>
+<li>versionchange</li>
+</ol>
+<h3 id="data-retrieval"><a class="header" href="#data-retrieval">Data Retrieval</a></h3>
+<p>Data is not returned from the database as soon as you request it. Recall that we submit requests to the database as transactions for it to perform. The database decides when it is safe to perform those transactions. For this reason we'll need to provide indexedDB with callbacks to run when the transactions are preformed. We'll be reacting to the retrieval of data. In fact, IndexedDB uses DOM events to notifuy us when resuts are available. It's not dissimilar to how we worked with buttons and click events. </p>
+<h3 id="mdn-to-the-rescue"><a class="header" href="#mdn-to-the-rescue">MDN to the rescue</a></h3>
+<p>The wonderful Mozilla Developer Network (MDN) has a reference on <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">Using IndexedDB</a>. In it, they outline the basic usage steps as follows:</p>
+<ol>
+<li>Open a database.</li>
+<li>Create an object store in the database.</li>
+<li>Start a transaction and make a request to do some database operation, like adding or retrieving data.</li>
+<li>Wait for the operation to complete by listening to the right kind of DOM event.</li>
+<li>Do something with the results (which can be found on the request object).</li>
+</ol>
+<p>We'll follow along, but in Rust and Leptos.</p>
+<p>Where we last left off, we created a <code>web_sys::IdbOpenDbRequest</code></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let idb_open_request = match idb.open(&quot;my-database&quot;) {  
+     Ok(idb_open_request) =&gt; idb_open_request,  
+     _ =&gt; return  
+};  
+<span class="boring">}</span></code></pre></pre>
+<p>This isn't a connection persey. It is part of the chain of processes to setup a connection.</p>
+<p>In the MDN documentation, the author establishes the same type of object in Javascript and then attaches event handlers to <code>onerror</code> and <code>onsuccess</code>.</p>
+<p>We'll add callback functions/handlers to our Rust version.</p>
+<p>If we look at the definitions of <a href="https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.IdbOpenDbRequest.html#method.onsuccess"><code>set_onsuccess</code></a> and <a href="https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.IdbOpenDbRequest.html#method.set_onerror"><code>set_onerror</code></a> we'll see that these are the functions that allow us to set the values of the onsuccess and onerror propreties of the JavaScript object. Exactly what we're looking for. Their definitions also tell us that we need to add the <code>IdbRequest</code> feature to our <code>cargo.toml</code> file.</p>
+<pre><code class="language-toml">[dependencies.web-sys]  
+features = [ &quot;IdbFactory&quot;, &quot;IdbOpenDbRequest&quot;, &quot;IdbRequest&quot;]
+</code></pre>
+<p>Intuitively I think, &quot;JavaScript accepts functions as the values for these properties, so I should use closures for mine. Though it'll need to be wrapped in a <code>Some</code> because it's an option.&quot;</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>idb_open_request.set_onsuccess(
+	Some(
+		||{  
+			// on success stuff here 
+		}
+	)
+);  
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>This is all spaced out so that you can easily see the syntax.</p>
+</blockquote>
+<p>Unfortunately, my intuition is off. Even thought the word <code>Function</code> looks familiar, we have to remember that in Rust we have <code>Fn</code>, <code>FnOnce</code>, and <code>FnOnce</code> as function types. <code>Function</code> isn't a native function type. Looking closer I can see that <code>Function</code> is a special struct that is callable by WASM. It is a <code>js_sys::Function</code>.</p>
+<h3 id="creating-javascript-closures-in-rust"><a class="header" href="#creating-javascript-closures-in-rust">Creating JavaScript closures in Rust</a></h3>
+<p>What we need to do is create a <a href="https://rustwasm.github.io/wasm-bindgen/api/wasm_bindgen/closure/struct.Closure.html"><code>wasm_bindgen::closure::Closure</code></a> and then  <a href="https://rustwasm.github.io/wasm-bindgen/api/wasm_bindgen/closure/struct.Closure.html#casting-a-closure-to-a-js_sysfunction">cast the closure to a js_sys::Function</a>. The MDN documentation uses a struct with a <code>_closure</code> property. We'll do things slightly differently, stepping through each line of code and what it does.</p>
+<p>The first step is making a closure. We'll use the <a href="https://rustwasm.github.io/wasm-bindgen/api/wasm_bindgen/closure/struct.Closure.html#method.wrap"><code>Closure::wrap</code></a> method. The documentation defines it as:</p>
+<blockquote>
+<p>A more direct version of <code>Closure::new</code> which creates a <code>Closure</code> from a <code>Box&lt;dyn Fn&gt;</code>/<code>Box&lt;dyn FnMut&gt;</code>, which is how it’s kept internally.</p>
+</blockquote>
+<p>This sounds like exactly what we want,</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// cb stands for callback
+let cb = wasm_bindgen::closure::Closure::wrap(
+	// We need something here.
+);
+<span class="boring">}</span></code></pre></pre>
+<p>We need to provide an argument which is a <code>Box</code> that contains a <code>dyn FnMut</code>. There's a lot here to unpack.</p>
+<h4 id="box"><a class="header" href="#box">Box</a></h4>
+<p>In Rust, there are two types of memory allocation, heap and stack. The stack is fast but requires the size of what's being stored in it to be consistent and known. The heap allows us to store things that may change in size, but they need to be looked up in the stack to get their actual values. It's two steps instead of one. Also, the heap isn't as organized as the stack, so it's lookups will also be slower. </p>
+<p>A <code>Box</code> is a way for us to store data in the heap. The actual size of a <code>Box</code> is known, because it's a pointer to memory in the heap. </p>
+<h4 id="dyn-dynamic"><a class="header" href="#dyn-dynamic">dyn (dynamic)</a></h4>
+<p>Rust wants to know everything in advance to be able to optimize all code and make its security guarantees. If we're going to be skipping across contiquous zeros and ones in memory and interpreting them as data, we need to know the size of the data we're reading.</p>
+<p>Unfortunately sometimes this isn't possible to do at compilation time. When we use traits as types in Rust, we're telling Rust that anything that impements the specified trait is fair game for use as an argument. This is a powerful technique because we're allowing any values to be used in the future provided someone writes an <code>impl</code> (implementation) for the given trait.</p>
+<p>For example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct RobotDuck{}  
+
+impl RobotDuck {  
+    fn assert_duckitude() {  
+        println!(
+	        &quot;I'm totally not a robot. 
+	        Look at me click on these 
+	        images of bread floating 
+	        in a pond.&quot;
+		)  
+    }
+}  
+    
+struct RealDuck{}  
+  
+trait Quack {  
+    fn quack(&amp;self){  
+        println!(&quot;QUACK&quot;);  
+    }  
+}  
+  
+impl Quack for RobotDuck{}  
+impl Quack for RealDuck{}  
+<span class="boring">}</span></code></pre></pre>
+<p>In the above, example, we have two structs with different functions. As a result, they'll look different in memory. Both of these ducks implement the <code>Quack</code> trait and can call the default trait implementation <code>quack()</code>.</p>
+<p>Let's say we have this function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn this_thing_quacks&lt;T&gt;(quackable: T) where T: Quack {
+	println!(&quot;This thing quacks!&quot;);  
+	quackable.quack();  
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We have a trait bound on the generic type <code>T</code> that requires implementation of <code>Quack</code>. When the compiler runs, it will actually create a version of this function for each type that impements <code>Quack</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn this_thing_quacks(quackable: RobotDuck){
+	//...
+}
+
+fn this_thing_quacks(quackable: RealDuck){
+	//...
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Recall that functions are also data! Rust needs to have guarantees about the sizes of data as arguments for the function with the generic <code>T</code>.</p>
+<p>We'll get an error if we try to change the signature to this though.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn this_thing_quacks(quackable: Quack) {
+	println!(&quot;This thing quacks!&quot;);  
+	quackable.quack();  
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The reason being is that we don't know what size <code>Quack</code> is when it is being called. There are multiple things that implement <code>Quack</code> and they aren't all the same size! Rust doesn't stamp out the different versions because it hasn't been pre-defined. When we use a trait bound (with the where clause or with <code>&lt;T: Quack&gt;</code>) , Rust's precompilation can prepare the versions for you. When we use the trait object as a type, we defer to runtime checks.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn this_thing_quacks(quackable: dyn Quack) {
+	println!(&quot;This thing quacks!&quot;);  
+	quackable.quack();  
+}
+<span class="boring">}</span></code></pre></pre>
+<p>By adding <a href="https://doc.rust-lang.org/std/keyword.dyn.html"><code>dyn</code></a> we tell the compiler that it will need to look up the data, and an associated table of its functions. If we knew the type at compilation time, we wouldn't need to look up associated functions because they would be known.</p>
+<h3 id="fn--fnmut-function-trait-objects"><a class="header" href="#fn--fnmut-function-trait-objects">Fn / FnMut (Function Trait Objects)</a></h3>
+<p>Closures and things that are callable implement one (or more) of three function traits in Rust. They are FnOnce, FnMut, and Fn. Closures that have data moved into them are actually like structs, with properties for their closed over values. For this reason they implement FnOnce (they can only be called once). </p>
+<p><strong>The function traits cascade:</strong></p>
+<ul>
+<li>Fn can be used anywhere an FnMut and FnOnce can</li>
+<li>FnMut can be used anywhere an FnOnce can</li>
+<li>FnOnce can only be used where an FnOnce is specified</li>
+</ul>
+<p><em>The rules for what implements the traits are as follows:</em></p>
+<ul>
+<li>Fn - Accepts values that are owned or references as arguments</li>
+<li>FnMut - Accepts values that have mutable references</li>
+<li>FnOnce - uses move smenatics</li>
+</ul>
+<p>This should not be confused with <code>fn</code> which is a function pointer. Function pointers are used to refer to functions whoes identity (and as a result, size) are not known at compilation time. A pointer to a function needs to be used in this case, just like a Box&lt;&gt; gives us a pointer because the contents of a box might not be known.</p>
+<p>With all that known, let's go back to the closure we're trying to make.</p>
+<p>The parameter type of Closure::wrap is outlined as follows: </p>
+<blockquote>
+<p>A more direct version of <code>Closure::new</code> which creates a <code>Closure</code> from a <code>Box&lt;dyn Fn&gt;</code>/<code>Box&lt;dyn FnMut&gt;</code>, which is how it’s kept internally.</p>
+</blockquote>
+<p>To satisfy this the specification of <code>Closure:wrap</code> let's first add that <code>Box</code>. And in that box we'll put a closure.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cb = wasm_bindgen::closure::Closure::wrap(
+	Box::new(
+		|| {  
+		    leptos::log!(&quot;Connected ok&quot;);  
+		}
+	)
+);
+<span class="boring">}</span></code></pre></pre>
+<p>The Rust compiler will throw an error here, asking for us to be more specific:</p>
+<blockquote>
+<p>the trait <code>WasmClosure</code> is not implemented for closure <code>[closure@src/main.rs]</code></p>
+</blockquote>
+<p>We can tell the Rust compiler to treat our box as a specific type (which is will check against) with the <code>as Type</code> statement after the <code>Box</code>'s initialization.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cb = wasm_bindgen::closure::Closure::wrap(
+	Box::new(
+		|| {  
+		    leptos::log!(&quot;Connected ok&quot;);  
+		}
+	) as Box&lt;dyn Fn()-&gt;()&gt;
+);
+<span class="boring">}</span></code></pre></pre>
+<p>My hope is that now you'll look at this and read it as follows:</p>
+<p>We're creating a closure but it needs to be stored in the heap. The value of the <code>Box</code> which specifies heap storage is a closure which doesn't have any arguments and does't close over any values. We can cast the internal type of the <code>Box</code> as a <code>dyn Fn()-&gt;()</code> because it's actual type won't be known until runtime and it accepts no arguments and returns no values (or returns a unit type <code>()</code>).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cb = wasm_bindgen::closure::Closure::wrap(
+	Box::new(
+		|| {  
+		    leptos::log!(&quot;Connected ok&quot;);  
+		}
+	) as Box&lt;dyn Fn()-&gt;()&gt;
+);
+<span class="boring">}</span></code></pre></pre>
+<p>Note that in a lot of cases we can use the turbo fish to specify type arguments <code>Box::new</code> does not accept any generic as an argument so we need to specify it after the fact.</p>
+<p>Let's keep climbing out of this hole back up to where we started, with trying to create a js_sys::Function that we can pass into the connection handler as a reference.</p>
+<p>The result of this is whole thing is that we have a closure, but we don't have a reference to js_sys::Function. In fact, we need <code>Some(js_sys::Function)</code>.</p>
+<p>Here we'll take our callback closure, well get it as a reference, then we'll cast that reference as a js_sys::Function with the turbo fish. And of course, we wrap it all in <code>Some()</code>. </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>Some(cb.as_ref().unchecked_ref::&lt;Function&gt;())
+<span class="boring">}</span></code></pre></pre>
+<p>One additional thing that we need to do here, for the sake of Leptos, is to add the following:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>on_cleanup(cx, move || {  
+    drop(cb);  
+});
+<span class="boring">}</span></code></pre></pre>
+<p>Leptos has a clean up routine that it runs when a context is closed. We need to move our callback closure, which is actually a handle, to the cleanup function's callback closure. </p>
+<p><code>on_cleanup</code> is being told, &quot;Hey, when cx is cleaned up, run this closure!&quot; In that closure we've moved our callback and passed it into drop(). This means that it'll be cleaned up in WASM's memory, and JavaScript land will prune the closure on its side as well.</p>
+<p>Our whole connection callback looks like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let connect_to_database = move |_|{  
+  
+    // Grabbed a reference to window  
+    let window = window();  
+  
+    // Got a factory to be able to make an open connection  
+    let idb = match window.indexed_db() {  
+        Ok(Some(idb_factory)) =&gt; idb_factory,  
+        _ =&gt; return  
+    };  
+  
+    let idb_open_request = match idb.open(&quot;my-database&quot;) {  
+         Ok(idb_open_request) =&gt; idb_open_request,  
+         _ =&gt; return  
+    };  
+  
+    let ok_cb = wasm_bindgen::closure::Closure::wrap(  
+        Box::new(|| {  
+            leptos::log!(&quot;Connected ok&quot;);  
+        }) as Box::&lt;dyn Fn()-&gt;() &gt;  
+    );  
+  
+    idb_open_request.set_onsuccess(  
+        Some(ok_cb.as_ref().unchecked_ref::&lt;js_sys::Function&gt;())  
+    );  
+  
+    on_cleanup(cx, move || {  
+        drop(ok_cb);  
+    });  
+  
+    let error_cb = wasm_bindgen::closure::Closure::wrap(  
+        Box::new(|| {  
+            leptos::log!(&quot;Connected error&quot;);  
+        }) as Box::&lt;dyn Fn()-&gt;() &gt;  
+    );  
+  
+    idb_open_request.set_onerror(  
+        Some(error_cb.as_ref().unchecked_ref::&lt;js_sys::Function&gt;())  
+    );  
+  
+    on_cleanup(cx, move || {  
+        drop(error_cb);  
+    });  
+  
+    // You are here.  
+  
+};
+<span class="boring">}</span></code></pre></pre>
+<p>So, here's where things get interesting. Our database connection is stored in the <code>result</code> property of our <code>IdbOpenDbRequest</code> if our connection was successful. What we want to do is create a signal so that we can store the <code>IDBDatabase</code> on success. It looks like our open database request may need to be used in a few scopes too. We can use Leptos signals to store this data.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let ( 
+	idb_open_db_request, 
+	set_idb_open_db_request 
+) = create_signal::&lt;Option&lt;web_sys::IdbOpenDbRequest&gt;&gt;( cx, None );  
+
+let ( 
+	idb, 
+	set_idb 
+) = create_signal::&lt;Option&lt;web_sys::IdbDatabase&gt;&gt;( cx, None );
+<span class="boring">}</span></code></pre></pre>
+<p>It's important that we use <code>Option</code> types here so that we have the ability to set a default value of None. </p>
+<p>We'll update our click handler closure with the <code>move</code> keyword, so that these signals will be moved into it when they're used. Keep in mind that signals support the <code>Copy</code> trait, so they'll be copied into the closurs without being moved from the scope they were defined it.</p>
+<p>We'll also update the names of some of these variables so that they reflect their types and disambiguate from the new signals. There is a lot of idb this and idb that. </p>
+<p>I present, the start of our on click connect to db handler closure/callback:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let connect_to_database = move |_|{  
+  
+    let window = window();  
+
+	// Guard assignment
+	// idb was renamed to idb_factory
+    let idb_factory = match window.indexed_db() {  
+        Ok(Some(idb_factory)) =&gt; idb_factory,  
+        _ =&gt; return  
+    };  
+
+	// Guard assignment
+	// updated to now set the reactive value
+    match idb_factory.open(&quot;my-database&quot;) {  
+         Ok(new_idb_open_request) =&gt; set_idb_open_db_request
+	         .set(Some(new_idb_open_request)),  
+         _ =&gt; return  
+    };
+<span class="boring">}</span></code></pre></pre>
+<p>We need to update our callbacks for the database connection lifecycle to use our signals as well. In the <code>onsuccess</code> callback, we'll also need to pull the database connection out of the db connection requests <code>result</code>. </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let ok_cb = wasm_bindgen::closure::Closure::wrap(  
+    Box::new(move|| {  
+        
+        leptos::log!(&quot;Connected ok&quot;);  
+
+		// We'll get the request's value from the reactive system
+        match idb_open_db_request.get() {  
+
+			// If it is set we'll use it, referring to it herein
+			// as ok_idb_open_request
+            Some(ok_idb_open_request) =&gt; {  
+
+				// We'll grab the result which in this context will
+				// be an idb database. 
+                match ok_idb_open_request.result() {  
+		            
+		            // If the result() was accessible
+		            // it'll be a new_idb_connection
+                    Ok(new_idb_connection) =&gt; {  
+
+						// But this is from JavaScript so we have 
+						// to unchecked_into with the Rust type.
+                        let new_idb = new_idb_connection
+	                        .unchecked_into::&lt;web_sys::IdbDatabase&gt;();  
+                        
+                        // We'll store this new connection in
+                        // Leptos' reactive syste
+                        set_idb.set(Some(new_idb));  
+                    
+	                    // We'll log the result from Leptos'
+	                    // reactive system to confirm that it
+	                    // worke as planned.
+                        leptos::log!(&quot;{:?}&quot;, idb.get());  
+                    },  
+                    Err(_) =&gt; {}  
+                }  
+            },  
+            None =&gt; {}  
+        };  
+  
+    }) as Box::&lt;dyn Fn()-&gt;() &gt;  
+);
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>The above code is spaced wide and in a verbose syntax so that it is clear.</p>
+</blockquote>
+<p>The rest of the callback contains a our on error handler, and a new onupgrade needed.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>	let error_cb = wasm_bindgen::closure::Closure::wrap(  
+	    Box::new(move || {  
+	        leptos::log!(&quot;Connected error&quot;);  
+	    }) as Box::&lt;dyn Fn()-&gt;() &gt;  
+	);  
+	  
+	let upgrade_cb = wasm_bindgen::closure::Closure::wrap(  
+	    Box::new(move || {  
+	        leptos::log!(&quot;Doing database upgrade or setup&quot;);  
+	    }) as Box::&lt;dyn Fn()-&gt;() &gt;  
+	);  
+	  
+	match idb_open_db_request.get() {  
+	    Some(idb_odbr) =&gt; {  
+	        idb_odbr.set_onsuccess(  
+	            Some(ok_cb.as_ref().unchecked_ref::&lt;Function&gt;())  
+	        );  
+	        idb_odbr.set_onerror(  
+	            Some(error_cb.as_ref().unchecked_ref::&lt;Function&gt;())  
+	        );  
+	        idb_odbr.set_onupgradeneeded(  
+	            Some(upgrade_cb.as_ref().unchecked_ref::&lt;Function&gt;())  
+	        );  
+	    },  
+	    None =&gt; {}  
+	}  
+	  
+	on_cleanup(cx, move || {  
+	    drop(ok_cb);  
+	    drop(error_cb);  
+	    drop(upgrade_cb);  
+	});
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The on upgrade needed will fire when the database needs to be initialized or if the format of the database changes. This is where we will add our initialization code for the type of data stored in the database.</p>
+<p>The interesting thing is that <code>onsuccess</code> will happen after the <code>onupgradeneeded</code>. As per the MDN documentation it looks like <code>onupgradeneeded</code> gets passed an event which we can use to extract the <code>event.target.result</code> out of.</p>
+<pre><code class="language-javascript">// This event handles the event whereby a new version of
+// the database needs to be created Either one has not
+// been created before, or a new version number has been
+// submitted via the window.indexedDB.open line above
+// it is only implemented in recent browsers
+DBOpenRequest.onupgradeneeded = (event) =&gt; {
+  const db = event.target.result;
+</code></pre>
+<blockquote>
+<p>From <a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBOpenDBRequest"># IDBOpenDBRequest MDN documentation</a></p>
+</blockquote>
+<p>We can update our closure with a parameter called event. We've changed the signature and size of the closure, which requres us to update the <code>as Box::&lt;dyn Fn()-&gt;()&gt;</code> to match. </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let upgrade_cb = wasm_bindgen::closure::Closure::wrap(  
+    Box::new(move |event| {  
+        leptos::log!(&quot;Doing database upgrade or setup&quot;);  
+    }) as Box::&lt;dyn Fn(Event)-&gt;() &gt;  
+);
+<span class="boring">}</span></code></pre></pre>
+<p>We can't just write <code>Fn(Event) -&gt; ()</code> and we need to add the type for the parameter to work with it. So how do we go about finding th type? We can go to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBOpenDBRequest/upgradeneeded_event">documentation page for the method</a> and take a look at the event type listed. It is stated as <a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBVersionChangeEvent"><code>IDBVersionChangeEvent</code></a>. If I look that up but in Rust's required PascalCase <code>IdbVersionChangeEvent</code> I'll find this <a href="https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.IdbVersionChangeEvent.html"><code>web_sys::IdbVersionChangeEvent</code></a>. We do need to add the feature to our cargo.toml as per the documentation as well. The feature is <code>IdbVersionChangeEvent</code>. By now you should be seeing a pattern of how we're progressing through solving this problem. We'll search for javascript examples (as Rust examples are few and far between), and then look up the web_sys equivalents.</p>
+<p>Let's update the event with our expected type and the type in the <code>as Box::&lt;&gt;</code> part.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let upgrade_cb = wasm_bindgen::closure::Closure::wrap(  
+    Box::new(move |event: web_sys::IdbVersionChangeEvent| {  
+        leptos::log!(&quot;Doing database upgrade or setup&quot;);  
+    }) as Box::&lt;dyn Fn(web_sys::IdbVersionChangeEvent) -&gt; ()&gt;  
+);
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p><strong>Important:</strong> The upgrade callback will only run if the database has not been initialized or if it has a version change where the integer version number is greater than the existing version number. We haven't discussed version changes so for the time being you can change the name of the database to create a new one, always triggering the update callback.</p>
+</blockquote>
+<p>You'll frequently run into issues where you won't know whats the type is from the JavaScript side of things. In this case, we want to work with <code>web_sys::IdbVersionChangeEvent.target()</code> but we don't know what the return type of <code>target()</code> is. What I'll often do is log the value to the browser's console and look for hints for the type that I should cast the value into.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let upgrade_cb = wasm_bindgen::closure::Closure::wrap(  
+    Box::new(move |event: web_sys::IdbVersionChangeEvent| {  
+  
+        match event.target() {  
+            Some(event_target) =&gt; {  
+                leptos::log!(&quot;{:?}&quot;, event_target);
+            },
+			None =&gt; {}  
+        }    
+	}) as Box::&lt;dyn Fn(web_sys::IdbVersionChangeEvent) -&gt; ()&gt;  
+);
+<span class="boring">}</span></code></pre></pre>
+<p>The above logs <code>EventTarget { obj: Object { obj: JsValue(IDBOpenDBRequest) } }</code> to the console. This tells me that I can cast the value by calling <code>unchecked_into::&lt;IdbOpenDBRequest&gt;()</code>. It's important to note two things here; 1) The Rust trait has different casing than the JavaScript object type listed in JsValue; 2) You will likely need to enable the feature for that trait in web-sys.</p>
+<p>We'll continue this same pattern to get the result, cast the result, and we'll be left with our database which we can initialize as a store for some form of data:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let upgrade_cb = wasm_bindgen::closure::Closure::wrap(  
+    Box::new(move |event: web_sys::IdbVersionChangeEvent| {  
+  
+        leptos::log!(&quot;Doing database upgrade or setup&quot;);  
+        
+        match event.target() {  
+            Some(event_target) =&gt; {  
+                let open_request = event_target
+	                .unchecked_into::&lt;web_sys::IdbOpenDbRequest&gt;();  
+                match open_request.result() {  
+                    Ok(newly_opened_idb) =&gt; {  
+                        let newly_opened_idb = newly_opened_idb
+	                        .unchecked_into::&lt;web_sys::IdbDatabase&gt;();  
+                        // Do things here  
+                    }  
+                    Err(_) =&gt; {}  
+                }
+			}, 
+		   None =&gt; {}  
+        }    
+	}) as Box::&lt;dyn Fn(web_sys::IdbVersionChangeEvent) -&gt; ()&gt;  
+);
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>Recall that we can use <code>web_sys::IdbDatabase</code> beacuse <code>web_sys</code> is brought into scope via <code>use leptos::*</code></p>
+</blockquote>
+<h3 id="structuring-the-database"><a class="header" href="#structuring-the-database">Structuring the database</a></h3>
+<p>We now have a newly opened database in <code>newly_opened_idb</code>. We need to setup some tables in the database. IndexedDB doesn't use tables though. They use object stores. Each object in an object store is associated with a key. An object store can use a key path (you tell it how to source the key from the object being stored, <code>key_path</code>) or from a key generator (<code>auto_increment</code>). Object stores can contain objects and primitive data. If they contain objects, they may also have indexes which can enforce specific rules, and make queries faster.</p>
+<h3 id="writing-data"><a class="header" href="#writing-data">Writing data</a></h3>
+<h3 id="querying-data"><a class="header" href="#querying-data">Querying data</a></h3>
+<h3 id="creating-stores-and-indexes-as-storage-bounds"><a class="header" href="#creating-stores-and-indexes-as-storage-bounds">Creating stores and indexes as storage bounds</a></h3>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../client/store_data/cookies.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../../tutorial_projects/initiative_tracker/summary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../client/store_data/cookies.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../../tutorial_projects/initiative_tracker/summary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
