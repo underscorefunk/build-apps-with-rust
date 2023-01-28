@@ -1,0 +1,632 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Loops and the &lt;For /&gt; view! macro tag - Building Apps with Rust</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../preface.html"><strong aria-hidden="true">1.</strong> Preface</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Acknowledgements</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> About this Book</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> About the Author</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> If you get stuck or lose steam</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Introductions</li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Programming</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> What it is</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Why it's worth it</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.3.</strong> Why it's hard</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.4.</strong> Programmer Thinking</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> Languages</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">7.1.</strong> Meaning and Interpretation</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> Architectures</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">8.1.</strong> What is architecture</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.2.</strong> How your computer works</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.3.</strong> How the web works</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.4.</strong> The frontend-backend divide</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.5.</strong> General application architecture</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> Tools and Languages</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.1.</strong> Web browsers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.2.</strong> HTML</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.3.</strong> Bash and the terminal</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> Rust</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.5.</strong> Trunk</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.6.</strong> Cargo Leptos</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.</strong> Other Resources</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/other_resources/rust.html"><strong aria-hidden="true">10.1.</strong> Rust</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Getting Started with Rust and Leptos</li><li class="chapter-item expanded "><a href="../getting_started/setup.html"><strong aria-hidden="true">11.</strong> Setup</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">12.</strong> Foundations</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/html_intro.html"><strong aria-hidden="true">12.1.</strong> Intro to HTML</a></li><li class="chapter-item expanded "><a href="../getting_started/view_macro_html.html"><strong aria-hidden="true">12.2.</strong> HTML and the view! macro</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.</strong> Architecture</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">13.1.</strong> Leptos Components - #[component]</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.2.</strong> Signals (reactive values) - create_signal</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.3.</strong> Effects (side effects) - create_effect</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Generting UI</li><li class="chapter-item expanded "><a href="../ui/leptos_component_intro.html"><strong aria-hidden="true">14.</strong> Introduction to Leptos components</a></li><li class="chapter-item expanded "><a href="../ui/view_macro_variables.html"><strong aria-hidden="true">15.</strong> Variables and the view! macro</a></li><li class="chapter-item expanded "><a href="../ui/leptos_component_properties.html"><strong aria-hidden="true">16.</strong> Component properties</a></li><li class="chapter-item expanded "><a href="../ui/leptos_component_dynamic_content_separation.html"><strong aria-hidden="true">17.</strong> Component dynamic content separation</a></li><li class="chapter-item expanded "><a href="../ui/loops_and_the_for_view_macro_tag.html" class="active"><strong aria-hidden="true">18.</strong> Loops and the &lt;For /&gt; view! macro tag</a></li><li class="chapter-item expanded "><a href="../ui/tables_and_data_sets.html"><strong aria-hidden="true">19.</strong> Tables and data sets</a></li><li class="chapter-item expanded affix "><li class="part-title">Client Side</li><li class="chapter-item expanded "><div><strong aria-hidden="true">20.</strong> Responding to Events</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../client/responding/leptos_component_logging_events.html"><strong aria-hidden="true">20.1.</strong> Witnessing events</a></li><li class="chapter-item expanded "><a href="../client/responding/leptos_component_update_from_event.html"><strong aria-hidden="true">20.2.</strong> Reacting to events with event handlers</a></li><li class="chapter-item expanded "><a href="../client/responding/event_handlers_as_props.html"><strong aria-hidden="true">20.3.</strong> Event handers as props</a></li><li class="chapter-item expanded "><a href="../client/responding/event_bubbling_and_signal_generics.html"><strong aria-hidden="true">20.4.</strong> Event Bubbling and Signal Generics</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">20.5.</strong> Preventing bubbling and default event behaviours </div></li><li class="chapter-item expanded "><a href="../client/responding/custom_events.html"><strong aria-hidden="true">20.6.</strong> Custom Events</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_data.html"><strong aria-hidden="true">20.7.</strong> Custom Event Data</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_module.html"><strong aria-hidden="true">20.8.</strong> Custom Event Module</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_module_with_data.html"><strong aria-hidden="true">20.9.</strong> Custom Event Module with Data</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_data_with_signals_and_effects.html"><strong aria-hidden="true">20.10.</strong> Custom Event Data with Signals and Effects</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_data_with_signals_and_effects_part2.html"><strong aria-hidden="true">20.11.</strong> Custom Event Data with Signals and Effects - Part 2</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">21.</strong> Sending Data</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../client/responding/forms.html"><strong aria-hidden="true">21.1.</strong> Forms</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">21.2.</strong> Acton Forms</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">22.</strong> Sending and Receiving Data</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">22.1.</strong> Fetch</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">22.2.</strong> Web Socket</div></li></ol></li><li class="chapter-item expanded "><a href="../client/store_data/summary.html"><strong aria-hidden="true">23.</strong> Saving/Persisting Data</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../client/store_data/web_storage.html"><strong aria-hidden="true">23.1.</strong> Local Storage</a></li><li class="chapter-item expanded "><a href="../client/store_data/cookies.html"><strong aria-hidden="true">23.2.</strong> Cookies</a></li><li class="chapter-item expanded "><a href="../client/store_data/indexeddb.html"><strong aria-hidden="true">23.3.</strong> IndexedDB</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Cargo Leptos</li><li class="chapter-item expanded affix "><li class="part-title">Server Side</li><li class="chapter-item expanded "><div><strong aria-hidden="true">24.</strong> Setup</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">25.</strong> Responding to Requests</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">26.</strong> Sending Data</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">26.1.</strong> Cookies</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">27.</strong> Saving/Persisting Data</div></li><li class="chapter-item expanded affix "><li class="part-title">Application Behaviours</li><li class="chapter-item expanded "><div><strong aria-hidden="true">28.</strong> Form Validation</div></li><li class="chapter-item expanded affix "><li class="part-title">Application Patterns</li><li class="chapter-item expanded "><div><strong aria-hidden="true">29.</strong> Event Sourcing</div></li><li class="chapter-item expanded affix "><li class="part-title">Common Problems</li><li class="chapter-item expanded "><div><strong aria-hidden="true">30.</strong> Offline Support and Data Sync</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">31.</strong> Observability and Logging</div></li><li class="chapter-item expanded affix "><li class="part-title">Usability Patterns and Performance Concerns</li><li class="chapter-item expanded "><div><strong aria-hidden="true">32.</strong> Bundle Size</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">33.</strong> Partial Hydration</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">34.</strong> UI Response Time</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Tutorial Projects</li><li class="chapter-item expanded "><a href="../tutorial_projects/initiative_tracker/summary.html"><strong aria-hidden="true">35.</strong> RPG Initiative Tracker</a></li><li class="chapter-item expanded "><a href="../tutorial_projects/chat/summary.html"><strong aria-hidden="true">36.</strong> Chat</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Building Apps with Rust</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="loops-and-the-for--view-macro-tag"><a class="header" href="#loops-and-the-for--view-macro-tag">Loops and the <code>&lt;For /&gt;</code> <code>view!</code> macro tag</a></h1>
+<blockquote>
+<p>This article is in notes status and has not been reviewed or proofed.</p>
+</blockquote>
+<h2 id="what-we-know"><a class="header" href="#what-we-know">What we know</a></h2>
+<ul>
+<li>How to <a href="/getting_started/setup">setup a basic client side Leptos application</a> and run it with <code>trunk</code></li>
+<li>Leptos component basics</li>
+<li>Rust type system basics</li>
+</ul>
+<h2 id="what-well-learn"><a class="header" href="#what-well-learn">What we'll learn</a></h2>
+<ul>
+<li>How to store data in collections</li>
+<li>Intro to the array data type</li>
+<li>The difference between &amp;str and String</li>
+<li>Intro to the vector data type</li>
+<li>How to loop over a collection </li>
+<li>How to loop over a collection with the <code>&lt;For /&gt;</code> <code>view!</code> macro tag</li>
+</ul>
+<h2 id="the-lesson"><a class="header" href="#the-lesson">The Lesson</a></h2>
+<h3 id="setup-our-leptos-loops-application"><a class="header" href="#setup-our-leptos-loops-application">Setup our leptos-loops application</a></h3>
+<p>We'll start with a basic Leptos application:</p>
+<ol>
+<li>Create the new application with the terminal command <code>cargo new leptos-loops</code>, </li>
+<li>Update <code>cargo.toml</code> by adding the leptos dependency</li>
+<li>Update <code>/src/main.rs</code> to import eveything from leptos with <code>use leptos::*</code> and use leptos' <code>mount_to-body</code> function to update the web page with some html.</li>
+<li>Create an <code>index.html</code> that trunk will embed our compiled WASM into.</li>
+</ol>
+<blockquote>
+<p>/cargo.toml</p>
+</blockquote>
+<pre><code class="language-toml">[package]  
+name = &quot;leptos-loops&quot;  
+version = &quot;0.1.0&quot;  
+edition = &quot;2021&quot;  
+  
+[dependencies]  
+leptos = &quot;0.1.2&quot;
+</code></pre>
+<blockquote>
+<p>/src/main.rs</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+  
+    mount_to_body(|cx| view! { cx,  
+        &lt;h1&gt;&quot;Leptos Loops&quot;&lt;/h1&gt;  
+    })  
+}</code></pre></pre>
+<blockquote>
+<p>/index.html</p>
+</blockquote>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;  
+&lt;html&gt;  
+&lt;head&gt;  
+    &lt;link data-trunk rel=&quot;rust&quot; data-wasm-opt=&quot;z&quot;/&gt;  
+&lt;/head&gt;  
+&lt;body&gt;&lt;/body&gt;  
+&lt;/html&gt;
+</code></pre>
+<h3 id="use-trunk-to-serve-the-application-and-reload-on-changes"><a class="header" href="#use-trunk-to-serve-the-application-and-reload-on-changes">Use <code>trunk</code> to serve the application and reload on changes</a></h3>
+<p>In the root of the rust application use the terminal command <code>trunk serve --open</code>. A browser window will open and you should see &quot;Leptos Loops&quot; displayed on your screen.</p>
+<h3 id="adding-detail-to-our-example-with-data"><a class="header" href="#adding-detail-to-our-example-with-data">Adding detail to our example with data</a></h3>
+<p>Let's make our example a bit more fun by listing off some great cat names.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| view! { cx,  
+        &lt;h1&gt;&quot;Great cat names&quot;&lt;/h1&gt;  
+        &lt;ul&gt;  
+            &lt;li&gt;&quot;Beans&quot;&lt;/li&gt;  
+            &lt;li&gt;&quot;Basil&quot;&lt;/li&gt;  
+            &lt;li&gt;&quot;Oliver&quot;&lt;/li&gt;  
+        &lt;/ul&gt;  
+    })
+}</code></pre></pre>
+<h3 id="collections"><a class="header" href="#collections">Collections</a></h3>
+<p>We previously listed off our cat names and hard coded them into a template.  It would be better to pull that data out into a <code>data structure</code> which we can then do work over (for each item in the stucture) to generate the list items. I say <code>better</code> because we're assuming that these items are going to change. In this lesson we're imagining that the list of great cat names will grow over time. It is completely reasonable to write out a list and be literal if you don't expect things to change.</p>
+<h4 id="arrays"><a class="header" href="#arrays">Arrays</a></h4>
+<blockquote>
+<p><a href="https://doc.rust-lang.org/std/primitive.array.html">Rust standard library documentation</a></p>
+</blockquote>
+<p>One of the most basic data structures that exists in Rust is an Array. It is a group of the same type of data, with a set quantity or storage/size. We can assign an array to a variable by wrapping a set of the same types of data in square brackets, separating each item with a comma.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cat_names = [&quot;Beans&quot;, &quot;Basil&quot;, &quot;Oliver&quot;];
+<span class="boring">}</span></code></pre></pre>
+<p>Rust will infer (figure out) that the data type of <code>cat_names</code> is <code>[&amp;str; 3]</code> (the items in the array are <code>&amp;str</code> and there are <code>3</code> of the). The type signature for arrays uses square brackets, encapsulating the the type of the items in teh array, followed by a semicolon, and the size of the array or quantity of items in the array.</p>
+<p>We could have written the following as well:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cat_names: [&amp;str;3] = [&quot;Beans&quot;, &quot;Basil&quot;, &quot;Oliver&quot;];
+<span class="boring">}</span></code></pre></pre>
+<h5 id="fixed-length"><a class="header" href="#fixed-length">Fixed Length</a></h5>
+<p>An important thing to note is that arrays are of immutable length. You can not add an item to an array because Rust has blocked off a space in memory for the array. There is no extra space to store another item. This is part of how Rust maintains memory safety. It won't allow you to just dump your data into the spot after an array to make a &quot;bigger array&quot;. </p>
+<h5 id="forced-type"><a class="header" href="#forced-type">Forced Type</a></h5>
+<p>The type of items needs to be the same for each item in an array. This is so that Rust knows how much memory to allocate to store the number of items.  You can not do the following:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cat_names: [&amp;str;4] = [&quot;Beans&quot;, &quot;Basil&quot;, &quot;Oliver&quot;];
+<span class="boring">}</span></code></pre></pre>
+<p>Rust's compiler will complain about the value you're assigning being <code>[&amp;str;3]</code>, because there are three items, but <code>let cat_names: [&amp;str;4] = </code> will try to allocate extra space. At that point Rust won't know what is actually in that fourth space. If it can't guarantee what's there, Rust's compiler won't let the application compile. As disciplined as we all think we are, it's easy to miss checking the data at that location in memory when we use it. You might think there's a <code>&amp;str</code> there but who knows! There are better ways to handle variable length sequential groups of same typed data. But, if you did want to use an Array, you could specify an option type.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cat_names: [Option&lt;&amp;str&gt;;4] = [
+	Some(&quot;Beans&quot;), 
+	Some(&quot;Basil&quot;), 
+	Some(&quot;Oliver&quot;),
+	None
+];
+<span class="boring">}</span></code></pre></pre>
+<p>It's important to note that there are still 4 items, and each item is of the same type.</p>
+<h5 id="str"><a class="header" href="#str">&amp;str</a></h5>
+<p>We wrote &quot;Beans&quot;, &quot;Basil&quot;, and &quot;Oliver.&quot; All three of these would often be referred to as &quot;string values&quot; in other programming languages. They're a series of &quot;characters.&quot; Oh! That sounds familiar. They're a series... they're a collection of the same type. It sounds a lot like an array doesn't it?! That's because they are! But they're not characters in a way that you might think.</p>
+<p>Let's look at what these individual values actually are to get a complete understanding of what's going on here.</p>
+<p>We know that at the end of the day, everything in a program has to be turned into a numerical value. If you think back to being a kid (or maybe you still are ^.^) you may have written coded messages, replacing letters with numbers, A becomes 1, B becomes 2, C becomes 3, and so on. Perhaps &quot;Beans&quot; is a series of characters that become a series of numerical values. There are 5 characters, so maybe &quot;Beans&quot; is actually an array of 5 x 8bit integers, with the type signature <code>[u8;5]</code>.</p>
+<p>Well it turns out that there is an older system called the <a href="https://www.w3schools.com/charsets/ref_html_ascii.asp">ASCII character set</a> that works like this. If we were using ASCII we could represent Beans as an array of 7bit integers. The ASCII character set contains 128 characters. 7 binary bits allows us to create values of 0 ( 0000000 ) to 128 (1111111).</p>
+<pre><code>B,  E,  A,  N,  S
+66, 69, 65, 78, 83
+</code></pre>
+<p>ASCII is pretty limited though. What if I wanted to put an emoji of beans as the name! 🫘 How do I represent that in ASCII. I can't. This makes me sad. Thankfully, there's a system called Unicode that allows us to extend the available &quot;character set&quot;. </p>
+<p>In Rust, all text is required to be valid Unicode or <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a>. Rust uses <code>str</code> as a data structure to hold these UTF-8 &quot;characters.&quot; I used quotes there because Unicode is more like a virtual structure of characters floating in space and characters are &quot;code points&quot; in thst cloud of expressive units. </p>
+<p>You can think of <code>str</code> as <code>str</code>ing. The <code>str</code> hides the complexity of unicode so that you can just write your program, while still being able to use all 1,112,064 valid character points.</p>
+<p>In summary <code>str</code> is a fixed length data strcture of code points. It is immutable. When we write <code>&amp;str</code> we're referring to a <code>string slice</code> in Rust, which is a reference to a set of &quot;characters,&quot; but again, the characters are code points. ^.^</p>
+<h4 id="vectors"><a class="header" href="#vectors">Vectors</a></h4>
+<blockquote>
+<p><a href="https://doc.rust-lang.org/std/vec/index.html">Rust standard library documention</a></p>
+</blockquote>
+<p>Vectors are like arrays in that they are a sequential group of the same data type, but differ in that they are of variable length. You can create a new vector with the <code>Vec</code> struct's <code>new</code> static method.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cat_names = Vec::new();
+<span class="boring">}</span></code></pre></pre>
+<p>At this point there is no data type asigned to the Vector. We can specify the type in advance.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cat_names: Vec&lt;&amp;str&gt; = Vec::new();
+<span class="boring">}</span></code></pre></pre>
+<p>Rust will infer the type if we use the <code>from</code> static method using an array.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cat_names = Vec::from([&quot;Beans&quot;, &quot;Basil&quot;, &quot;Oliver&quot;]);
+<span class="boring">}</span></code></pre></pre>
+<p>Or we can let Rust infer the type. It will pick up the type of the first item stored in the vector and use that as the requirement for all future additions. If you want to edit a vector you'll need to make it mutable though.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut cat_names= Vec::new();  // no internal type
+cat_names.push(&quot;Beans&quot;);        // now the internal type is &amp;str
+cat_names.push(&quot;Basil&quot;);  
+cat_names.push(&quot;Oliver&quot;);
+<span class="boring">}</span></code></pre></pre>
+<p>Vectors can also be made using the handy <code>vec!</code> macro:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let cat_names= vec![&quot;Beans&quot;,&quot;Basil&quot;, &quot;Oliver&quot;];
+<span class="boring">}</span></code></pre></pre>
+<h3 id="updating-our-html-to-use-collections"><a class="header" href="#updating-our-html-to-use-collections">Updating our HTML to use collections</a></h3>
+<p>Let's update our example application to store our cat names in a <code>Vec</code> using the <code>vec!</code> macro.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    
+    let cat_names = vec![&quot;Beans&quot;,&quot;Basil&quot;, &quot;Oliver&quot;];
+    
+    mount_to_body(|cx| view! { cx,  
+        &lt;h1&gt;&quot;Great cat names&quot;&lt;/h1&gt;  
+        &lt;ul&gt;  
+            
+        &lt;/ul&gt;  
+    })
+    
+}</code></pre></pre>
+<p>We need to fill in that gap in the unordered list tags <code>&lt;ul&gt;...&lt;/ul&gt;</code> with our list items.</p>
+<p>Let's imagine that there's a function called <code>list_names</code> which will give us a Vector of Views. To make views, we need a context, and to list names we actually need the names. This tells us our two arguments to the function. We need to wrap this in curly braces so that it gets executed.</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {  
+  
+    let cat_names= vec![  
+        &quot;Beans&quot;,  
+        &quot;Basil&quot;,  
+        &quot;Oliver&quot;  
+    ];  
+  
+    mount_to_body(|cx| view! { cx,  
+        &lt;h1&gt;&quot;Great cat names&quot;&lt;/h1&gt;  
+        &lt;ul&gt;  
+            {list_names(cx,cat_names)}  
+        &lt;/ul&gt;  
+    })}</code></pre></pre>
+<p>Now we need to write the function. I like to start with the signature. Let's make sure we know what it's accepting and what we want to get out of it. The body of the function is where we connect the dots.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn list_names(cx: Scope, cat_names: Vec&lt;&amp;str&gt;) -&gt; Vec&lt;View&gt; {
+	// STUFF HERE
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If we want to do something to a Vector in Rust we'll need to turn it into an iterator. We can call the method <code>into_iter()</code> to turn our current evaluated value into that special iterator.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>	cat_names
+		.into_iter()
+<span class="boring">}</span></code></pre></pre>
+<p>Next we want to do something to each item. We want to change each <code>&amp;str</code> into a view. Map is a method that can be called on an interator that will apply to each item. It accepts a closure which operates on each item. Its a function in a mathematical sense!</p>
+<p>Our first step is turning each one of these into a view.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>cat_names  
+    .into_iter()  
+    .map(  
+        move |name| view!{cx, &lt;li&gt;{name}&lt;/li&gt;}
+	)
+<span class="boring">}</span></code></pre></pre>
+<p>Note that if we have a single line of code, we don't need to add curley braces to define the body of a closure. Move is necesary because <code>&amp;str</code> values don't support copy. If we're using name into the view! macro, it will love out of its iterator.</p>
+<p>The second step is turning these into an actual <code>View</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>cat_names  
+    .into_iter()  
+    .map(  
+        move |name| view!{cx, &lt;li&gt;{name}&lt;/li&gt;}  
+	)
+	.map(  
+	    move |li| li.into_view(cx)  
+	)
+<span class="boring">}</span></code></pre></pre>
+<p>We now have an iterator with Views that we need to convert into a Vector of Views. We can call <code>collect</code> on the iterator to turn it back into a &quot;collection&quot; which is our Vector.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn list_names(cx: Scope, cat_names: Vec&lt;&amp;str&gt;) -&gt; Vec&lt;View&gt; {  
+    cat_names  
+        .into_iter()  
+        .map(  
+            move |name| view!{cx, &lt;li&gt;{name}&lt;/li&gt;}  
+        )
+		.map(  
+            move |li| li.into_view(cx)  
+        )        
+        .collect()  
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We don't have a semicolon at the end of <code>collect()</code>. That makes the result of <code>collect()</code> the final statement/expression and the returned value of the function.</p>
+<p>At this point we're going to get some issues with lifetimes. Rust will complain because we're passing a Vector of references into a function, and getting back a Vector of Views that used the reference. Rust can't guarantee that the references to those string slices will live as long as the Vector of Views that they generate through this function.</p>
+<p>We can specify a static lifetime for the string slices which is the same lifetime as the Views, solving our problem.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn list_names(cx: Scope, cat_names: Vec&lt;&amp;'static str&gt;) -&gt; Vec&lt;View&gt; {  
+    cat_names  
+        .into_iter()  
+        .map(  
+            move |name| view!{cx, &lt;li&gt;{name.clone()}&lt;/li&gt;}  
+        )        
+        .map(  
+            move|li| li.into_view(cx)  
+        )        
+        .collect()  
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Here's what our final application looks:</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+  
+    let cat_names= vec![  
+        &quot;Beans&quot;,  
+        &quot;Basil&quot;,  
+        &quot;Oliver&quot;
+    ];  
+  
+    mount_to_body(|cx| view! { cx,  
+        &lt;h1&gt;&quot;Great cat names&quot;&lt;/h1&gt;  
+        &lt;ul&gt;  
+            {list_names(cx,cat_names)}  
+        &lt;/ul&gt;  
+    })}  
+  
+fn list_names(cx: Scope, cat_names: Vec&lt;&amp;'static str&gt;) -&gt; Vec&lt;View&gt; {  
+    cat_names  
+        .into_iter()  
+        .map(  
+            move |name| view!{cx, &lt;li&gt;{name.clone()}&lt;/li&gt;}  
+        )        
+        .map(  
+            move|li| li.into_view(cx)  
+        )       
+         .collect()  
+}</code></pre></pre>
+<h4 id="what-if-static-lifetimes-arent-an-option"><a class="header" href="#what-if-static-lifetimes-arent-an-option">What if static lifetimes aren't an option?</a></h4>
+<p>If you can't use static lifetimes, you can convert the <code>&amp;str</code> (string slices) into owned strings, of type <code>String</code>. </p>
+<p>I used three different approaches to converting a string slice <code>&amp;str</code> into a <code>String</code>. You can call <code>to_string()</code> on the slice's value, you can call a method on the String struct, or you can call <code>into</code>. </p>
+<p>Then we need to update the list_names parameter type from <code>Vec&lt;&amp;'static str&gt;</code>  to <code>Vec&lt;String&gt;</code></p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+  
+    let cat_names = vec![  
+        &quot;Beans&quot;.to_string(),  
+        String::from(&quot;Basil&quot;),  
+        &quot;Oliver&quot;.into()  
+    ];  
+  
+    mount_to_body(|cx| view! { cx,  
+        &lt;h1&gt;&quot;Great cat names&quot;&lt;/h1&gt;  
+        &lt;ul&gt;  
+            {list_names(cx,cat_names)}  
+        &lt;/ul&gt;  
+    })}  
+  
+fn list_names(cx: Scope, cat_names: Vec&lt;String&gt;) -&gt; Vec&lt;View&gt; {  
+    cat_names  
+        .into_iter()  
+        .map(  
+            move |name| view!{cx, &lt;li&gt;{name.clone()}&lt;/li&gt;}  
+        )        
+        .map(  
+            move|li| li.into_view(cx)  
+        )        
+        .collect()  
+}</code></pre></pre>
+<h4 id="inline-closures"><a class="header" href="#inline-closures">Inline closures</a></h4>
+<p>In the above example we used a function to generate the Vector of Views. Keep in mind that this is happening in a closure that is being passed to the <code>mount_to_body</code> function. The scope variable <code>cx</code> does not exist outside of this! As a result, we can not create closures outside of the mount_to_body closure. If we crested an app component we would be in a state where the scope exists. It would open up more clean syntax.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    let cat_names = vec![  
+        &quot;Beans&quot;,  
+        &quot;Basil&quot;,  
+        &quot;Oliver&quot;  
+    ];  
+  
+    mount_to_body(|cx| view! { cx,  
+        &lt;ListNames cat_names/&gt;  
+    })}  
+  
+#[component]  
+fn ListNames(cx: Scope, cat_names: Vec&lt;&amp;'static str&gt;) -&gt; impl IntoView {  
+  
+    let list_items: Vec&lt;_&gt; = cat_names  
+        .into_iter()  
+        .map( move |name| view!{cx, &lt;li&gt;{name}&lt;/li&gt;} )  
+        .collect();  
+  
+    view! {cx,  
+        &lt;h1&gt;&quot;Great cat names&quot;&lt;/h1&gt;  
+        &lt;ul&gt;  
+            {list_items}  
+        &lt;/ul&gt;  
+    }
+}</code></pre></pre>
+<blockquote>
+<p>Note, you can not inline the <code>cat_names.into_iter().etc</code> in place of <code>{list_items}</code> in the view macro because of how macros are processed. The variables need to be evaluated in advace in this case.</p>
+</blockquote>
+<p>A subtle but important difference in the above example is that we have a Vector of <code>Leptos::HtmlElement</code>s. We don't have to concretely specify their type, which allows us to set the type of list_items to <code>Vec&lt;_&gt;</code> meaning <code>Vector of...it doesn't matter because we never need to check the concrete type</code>. When we pass the <code>Vec&lt;HtmlElement&lt;?&gt;</code> into the <code>view!</code> macro via <code>{list_items}</code>, the macro checks against HtmlElements being valid values. We can skip declaration of th e concrete types in this situation.</p>
+<p>By contrast we needed a concrete type for a function definitions return type, which is why we used <code>Vec&lt;View&gt;</code> earlier. It wouldn't be possible for us to say <code>&lt;Vec&lt;HtmlElement&lt;?&gt;&gt;</code>.</p>
+<h4 id="tradeoffs-with-using-iterators-without-keys"><a class="header" href="#tradeoffs-with-using-iterators-without-keys">Tradeoffs with using iterators without keys</a></h4>
+<p>This is a fine approach for simple applications, but it starts to break down when you're using signals and concerned about performance. If cat_names was a signal (a read signal which updates views when it is updated), we'd end up re-rendering the whole list of names. This isn't ideal.</p>
+<h3 id="using-the-for--view-macro-tag"><a class="header" href="#using-the-for--view-macro-tag">Using the <code>&lt;For /&gt;</code> <code>view!</code> macro tag</a></h3>
+<p>The <code>view!</code> macro has a helper called <code>&lt;For /&gt;</code> that will do a lot of this leg work for us. The benfits of using <code>&lt;For &gt;</code> is that Leptos will associate a key with each item output. The key allows Leptos to target granular updates to avoid rerendering the whole list.</p>
+<p>There are three properties that we must assign for the <code>&lt;For /&gt;</code> tag.</p>
+<ol>
+<li>each: A closure that returns the collection. The collection must support the ability to be converted into an interable. Vectors and Arrays work perfectly fine here.</li>
+<li>key: A closure that will return a value that can be used as an identifier for a given item</li>
+<li>view: A closure that will return the view for a given item.</li>
+</ol>
+<p>Ownership can be tricky with <code>&lt;For /&gt;</code>. We'll need to clone the names for the iteration so that we can guarantee that the references don't go away. We need to do something similar for the key closure. We need to clone the returned value. If we didn't, the value would get dropped. </p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    let cat_names = vec![  
+        &quot;Beans&quot;,  
+        &quot;Basil&quot;,  
+        &quot;Oliver&quot;  
+    ];  
+  
+    mount_to_body(|cx| view! { cx,  
+        &lt;ListNames cat_names/&gt;  
+    })
+}  
+    
+#[component]  
+fn ListNames(cx: Scope, cat_names: Vec&lt;&amp;'static str&gt;) -&gt; impl IntoView {  
+  
+    view! {cx,  
+        &lt;h1&gt;&quot;Great cat names&quot;&lt;/h1&gt;  
+        &lt;For  
+            each={ move || cat_names.clone()}  
+            key={ |name| name.clone()}  
+            view={ 
+	            move |name| {  
+	                view! {  
+	                    cx,  
+	                    &lt;li&gt;{name}&lt;/li&gt;  
+	                }            
+				}     
+			}   
+		/&gt;    
+	}
+}</code></pre></pre>
+<h4 id="with-more-complex-data-stuctures"><a class="header" href="#with-more-complex-data-stuctures">With more complex data stuctures</a></h4>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+#[derive(Clone)]  
+struct CatName {  
+    name: String,  
+    rating: u8,  
+}  
+  
+fn main() {  
+    let cat_names = vec![  
+        CatName { name: &quot;Beans&quot;.to_string(), rating: 1 },  
+        CatName { name: &quot;Basil&quot;.to_string(), rating: 2 },  
+        CatName { name: &quot;Oliver&quot;.to_string(), rating: 3 },  
+    ];  
+  
+    mount_to_body(|cx| view! { cx,  
+        &lt;ListNames cat_names/&gt;  
+    })
+}  
+  
+#[component]  
+fn ListNames(cx: Scope, cat_names: Vec&lt;CatName&gt;) -&gt; impl IntoView {  
+    view! {cx,  
+        &lt;h1&gt;&quot;Great cat names&quot;&lt;/h1&gt;  
+        &lt;For  
+            each={ move || cat_names.clone()}  
+            key={ |cat_name| cat_name.rating}  
+            view={  
+               move |cat_name| {  
+                   view! {  
+                       cx,  
+                       &lt;li id={cat_name.rating}&gt;
+	                       {cat_name.name}
+					   &lt;/li&gt;  
+                   }    
+			   }
+			} 
+		 /&gt;   
+	 }
+ }</code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../ui/leptos_component_dynamic_content_separation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../ui/tables_and_data_sets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../ui/leptos_component_dynamic_content_separation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../ui/tables_and_data_sets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
