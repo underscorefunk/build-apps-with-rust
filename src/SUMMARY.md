@@ -51,6 +51,7 @@
 - [Component properties](./ui/leptos_component_properties.md)
 - [Component dynamic content separation](./ui/leptos_component_dynamic_content_separation.md)
 - [Loops and the `<For />` `view!` macro tag](./ui/loops_and_the_for_view_macro_tag.md)
+- [Conditional display and the `<Show>` `view!` macro tag](conditional_display_and_the_show_macro.md)
 - [Tables and data sets](./ui/tables_and_data_sets.md)
 
 # Client Side
