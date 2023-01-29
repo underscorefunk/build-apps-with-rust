@@ -110,11 +110,11 @@ fn main() {
 }
 ```
 
-This looks like it shoul work, but it doesn't. 
+This looks like it should work, but it doesn't. 
 
 Rust's compiler is smart. It's very smart. It wants to make sure that we don't leave memory allocated that isn't being used. To make sure that unused variables are freed up safely it follows a rule. 
 
->Any variables used in a scope (encapsulasted with curly braces `{`...`}`) will have their memory freed (Rust's compiler calls this Dropping) at the end of the scope. Variables used in the scope are those moved into it or allocated/defined in it. The only values left are those written as the last statement in the scope, which is the evaluated value of the whole scope/code block.
+>Any variables used in a scope (encapsulated with curly braces `{`...`}`) will have their memory freed (Rust's compiler calls this Dropping) at the end of the scope. Variables used in the scope are those moved into it or allocated/defined in it. The only values left are those written as the last statement in the scope, which is the evaluated value of the whole scope/code block.
 
 Here's what's happening in secret.
 
@@ -283,7 +283,7 @@ fn main() {
 Leptos provides a conditional tag to make this a bit more straight forward. The show tag also offers some optimizations. It will not processes branches that are already active if no changes have been made. Raw `if` statements will evaluate their predicate and evaluate their success scopes each time. More details can be found in the [official documentation](https://docs.rs/leptos/latest/leptos/fn.Show.html).
 
 The `<Show>` tag requires two properties, both of which are closures.
-- when: A cosure for the predicate. It will be run to see if it is true or not. If true, the children of the `<Show>` tag will be printed.
+- when: A closure for the predicate. It will be run to see if it is true or not. If true, the children of the `<Show>` tag will be printed.
 - fallback: A closure that returns what to display if the predicate is false. This is like the else branch.
 
 ```rust
