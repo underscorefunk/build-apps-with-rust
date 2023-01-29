@@ -228,10 +228,10 @@ fn main() {
         }    
 	})
 }</code></pre></pre>
-<p>This looks like it shoul work, but it doesn't. </p>
+<p>This looks like it should work, but it doesn't. </p>
 <p>Rust's compiler is smart. It's very smart. It wants to make sure that we don't leave memory allocated that isn't being used. To make sure that unused variables are freed up safely it follows a rule. </p>
 <blockquote>
-<p>Any variables used in a scope (encapsulasted with curly braces <code>{</code>...<code>}</code>) will have their memory freed (Rust's compiler calls this Dropping) at the end of the scope. Variables used in the scope are those moved into it or allocated/defined in it. The only values left are those written as the last statement in the scope, which is the evaluated value of the whole scope/code block.</p>
+<p>Any variables used in a scope (encapsulated with curly braces <code>{</code>...<code>}</code>) will have their memory freed (Rust's compiler calls this Dropping) at the end of the scope. Variables used in the scope are those moved into it or allocated/defined in it. The only values left are those written as the last statement in the scope, which is the evaluated value of the whole scope/code block.</p>
 </blockquote>
 <p>Here's what's happening in secret.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -372,7 +372,7 @@ fn main() {
 <p>Leptos provides a conditional tag to make this a bit more straight forward. The show tag also offers some optimizations. It will not processes branches that are already active if no changes have been made. Raw <code>if</code> statements will evaluate their predicate and evaluate their success scopes each time. More details can be found in the <a href="https://docs.rs/leptos/latest/leptos/fn.Show.html">official documentation</a>.</p>
 <p>The <code>&lt;Show&gt;</code> tag requires two properties, both of which are closures.</p>
 <ul>
-<li>when: A cosure for the predicate. It will be run to see if it is true or not. If true, the children of the <code>&lt;Show&gt;</code> tag will be printed.</li>
+<li>when: A closure for the predicate. It will be run to see if it is true or not. If true, the children of the <code>&lt;Show&gt;</code> tag will be printed.</li>
 <li>fallback: A closure that returns what to display if the predicate is false. This is like the else branch.</li>
 </ul>
 <pre><pre class="playground"><code class="language-rust">use leptos::*;  
