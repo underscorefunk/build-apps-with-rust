@@ -1,0 +1,473 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Conditional display and the &lt;Show&gt; view! macro tag - Building Apps with Rust</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../preface.html"><strong aria-hidden="true">1.</strong> Preface</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Acknowledgements</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> About this Book</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> About the Author</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> If you get stuck or lose steam</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Introductions</li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Programming</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> What it is</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Why it's worth it</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.3.</strong> Why it's hard</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.4.</strong> Programmer Thinking</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> Languages</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">7.1.</strong> Meaning and Interpretation</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> Architectures</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">8.1.</strong> What is architecture</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.2.</strong> How your computer works</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.3.</strong> How the web works</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.4.</strong> The frontend-backend divide</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.5.</strong> General application architecture</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> Tools and Languages</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.1.</strong> Web browsers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.2.</strong> HTML</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.3.</strong> Bash and the terminal</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> Rust</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.5.</strong> Trunk</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.6.</strong> Cargo Leptos</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.</strong> Other Resources</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../intro/other_resources/rust.html"><strong aria-hidden="true">10.1.</strong> Rust</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Getting Started with Rust and Leptos</li><li class="chapter-item expanded "><a href="../getting_started/setup.html"><strong aria-hidden="true">11.</strong> Setup</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">12.</strong> Foundations</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting_started/html_intro.html"><strong aria-hidden="true">12.1.</strong> Intro to HTML</a></li><li class="chapter-item expanded "><a href="../getting_started/view_macro_html.html"><strong aria-hidden="true">12.2.</strong> HTML and the view! macro</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.</strong> Architecture</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">13.1.</strong> Leptos Components - #[component]</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.2.</strong> Signals (reactive values) - create_signal</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.3.</strong> Effects (side effects) - create_effect</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">Generting UI</li><li class="chapter-item expanded "><a href="../ui/leptos_component_intro.html"><strong aria-hidden="true">14.</strong> Introduction to Leptos components</a></li><li class="chapter-item expanded "><a href="../ui/view_macro_variables.html"><strong aria-hidden="true">15.</strong> Variables and the view! macro</a></li><li class="chapter-item expanded "><a href="../ui/leptos_component_properties.html"><strong aria-hidden="true">16.</strong> Component properties</a></li><li class="chapter-item expanded "><a href="../ui/leptos_component_dynamic_content_separation.html"><strong aria-hidden="true">17.</strong> Component dynamic content separation</a></li><li class="chapter-item expanded "><a href="../ui/loops_and_the_for_view_macro_tag.html"><strong aria-hidden="true">18.</strong> Loops and the &lt;For /&gt; view! macro tag</a></li><li class="chapter-item expanded "><a href="../ui/conditional_display_and_the_show_macro.html" class="active"><strong aria-hidden="true">19.</strong> Conditional display and the &lt;Show&gt; view! macro tag</a></li><li class="chapter-item expanded "><a href="../ui/tables_and_data_sets.html"><strong aria-hidden="true">20.</strong> Tables and data sets</a></li><li class="chapter-item expanded affix "><li class="part-title">Client Side</li><li class="chapter-item expanded "><div><strong aria-hidden="true">21.</strong> Responding to Events</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../client/responding/leptos_component_logging_events.html"><strong aria-hidden="true">21.1.</strong> Witnessing events</a></li><li class="chapter-item expanded "><a href="../client/responding/leptos_component_update_from_event.html"><strong aria-hidden="true">21.2.</strong> Reacting to events with event handlers</a></li><li class="chapter-item expanded "><a href="../client/responding/event_handlers_as_props.html"><strong aria-hidden="true">21.3.</strong> Event handers as props</a></li><li class="chapter-item expanded "><a href="../client/responding/event_bubbling_and_signal_generics.html"><strong aria-hidden="true">21.4.</strong> Event Bubbling and Signal Generics</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">21.5.</strong> Preventing bubbling and default event behaviours </div></li><li class="chapter-item expanded "><a href="../client/responding/custom_events.html"><strong aria-hidden="true">21.6.</strong> Custom Events</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_data.html"><strong aria-hidden="true">21.7.</strong> Custom Event Data</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_module.html"><strong aria-hidden="true">21.8.</strong> Custom Event Module</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_module_with_data.html"><strong aria-hidden="true">21.9.</strong> Custom Event Module with Data</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_data_with_signals_and_effects.html"><strong aria-hidden="true">21.10.</strong> Custom Event Data with Signals and Effects</a></li><li class="chapter-item expanded "><a href="../client/responding/custom_event_data_with_signals_and_effects_part2.html"><strong aria-hidden="true">21.11.</strong> Custom Event Data with Signals and Effects - Part 2</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">22.</strong> Sending Data</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../client/responding/forms.html"><strong aria-hidden="true">22.1.</strong> Forms</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">22.2.</strong> Acton Forms</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">23.</strong> Sending and Receiving Data</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">23.1.</strong> Fetch</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">23.2.</strong> Web Socket</div></li></ol></li><li class="chapter-item expanded "><a href="../client/store_data/summary.html"><strong aria-hidden="true">24.</strong> Saving/Persisting Data</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../client/store_data/web_storage.html"><strong aria-hidden="true">24.1.</strong> Local Storage</a></li><li class="chapter-item expanded "><a href="../client/store_data/cookies.html"><strong aria-hidden="true">24.2.</strong> Cookies</a></li><li class="chapter-item expanded "><a href="../client/store_data/indexeddb.html"><strong aria-hidden="true">24.3.</strong> IndexedDB</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Cargo Leptos</li><li class="chapter-item expanded affix "><li class="part-title">Server Side</li><li class="chapter-item expanded "><div><strong aria-hidden="true">25.</strong> Setup</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">26.</strong> Responding to Requests</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">27.</strong> Sending Data</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">27.1.</strong> Cookies</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">28.</strong> Saving/Persisting Data</div></li><li class="chapter-item expanded affix "><li class="part-title">Application Behaviours</li><li class="chapter-item expanded "><div><strong aria-hidden="true">29.</strong> Form Validation</div></li><li class="chapter-item expanded affix "><li class="part-title">Application Patterns</li><li class="chapter-item expanded "><div><strong aria-hidden="true">30.</strong> Event Sourcing</div></li><li class="chapter-item expanded affix "><li class="part-title">Common Problems</li><li class="chapter-item expanded "><div><strong aria-hidden="true">31.</strong> Offline Support and Data Sync</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">32.</strong> Observability and Logging</div></li><li class="chapter-item expanded affix "><li class="part-title">Usability Patterns and Performance Concerns</li><li class="chapter-item expanded "><div><strong aria-hidden="true">33.</strong> Bundle Size</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">34.</strong> Partial Hydration</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">35.</strong> UI Response Time</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Tutorial Projects</li><li class="chapter-item expanded "><a href="../tutorial_projects/initiative_tracker/summary.html"><strong aria-hidden="true">36.</strong> RPG Initiative Tracker</a></li><li class="chapter-item expanded "><a href="../tutorial_projects/chat/summary.html"><strong aria-hidden="true">37.</strong> Chat</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Building Apps with Rust</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="conditional-display-and-the-show-view-macro-tag"><a class="header" href="#conditional-display-and-the-show-view-macro-tag">Conditional display and the <code>&lt;Show&gt;</code> <code>view!</code> macro tag</a></h1>
+<blockquote>
+<p>This article is in notes status and has not been reviewed or proofed.</p>
+</blockquote>
+<h2 id="what-we-know"><a class="header" href="#what-we-know">What we know</a></h2>
+<ul>
+<li>How to <a href="/getting_started/setup">setup a basic client side Leptos application</a> and run it with <code>trunk</code></li>
+<li>Leptos component basics</li>
+</ul>
+<h2 id="what-well-learn"><a class="header" href="#what-well-learn">What we'll learn</a></h2>
+<ul>
+<li>Techniques for conditionally displaying data</li>
+<li>Using the <code>&lt;Show&gt;</code> <code>view!</code> macro tag </li>
+</ul>
+<h2 id="the-lesson"><a class="header" href="#the-lesson">The Lesson</a></h2>
+<h3 id="setup-our-leptos-loops-application"><a class="header" href="#setup-our-leptos-loops-application">Setup our leptos-loops application</a></h3>
+<p>Follow the <a href="./quick_reference/client_side_app_setup.html">quick reference for setting up a client side leptos application</a>.</p>
+<h3 id="the-idea-of-conditionals-and-control-flow"><a class="header" href="#the-idea-of-conditionals-and-control-flow">The idea of conditionals and control flow</a></h3>
+<p>Programs take in data, process it or work over it, and yield a result. This result may be a change to the data which is returned, or some action impacting the world outside of the application like writing a file, sending an email, etc.</p>
+<p>It's common to have branches in applications where the result of running the application may change depending on its input or the conditions in which it is run. </p>
+<blockquote>
+<p><strong>(Aside) Programs as Functions:</strong> I say application but this applies to funtions as well. Applications are untimately a large function with complex inputs and outputs. The idea of <code>fn main()</code> hints at the truth behind the fractal nature (repetition of a pattern at difference scales as you look into something) of programs as functions.</p>
+</blockquote>
+<p>To help solidify your understading, you can think of these two situtions in the context of these examples:</p>
+<ol>
+<li>Linear: Like a regular book or story based video game. You read it or play it once and the result is always the same. It is consistent.</li>
+<li>Branching: Like a choose your own adventure book or role playing video game where the actions you take dictate the outcome.</li>
+</ol>
+<p>As you can imagine, having variability of output or result based on these conditions, with the ability to switch paths, can add complexity in your application. The term <a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">Cyclomatic complexity</a> refers specifically to that. We try to keep the number of branches as low as possible. We do this because functions with linear behaviours of input to output are easier to reason about, are more predictable, and as a result less prone to bugs.</p>
+<p>In this lesson we will be specifically looking at how to create branches in our code, and as a result, in our UI. </p>
+<h3 id="if-statements"><a class="header" href="#if-statements">If statements</a></h3>
+<p>Rust provides a variety of control flow syntax to tell the compiler which parts of our code should be used, or which path to take through it as it runs. The most basic syntax for this uses the keyworld <code>if</code> followed by a statement that evaluates to a boolean value, which is true or false.</p>
+<p>The syntax is very simple:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let loves_cats = true;  
+
+if loves_cats {  
+    leptos::log!(&quot;Hooray&quot;);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The pattern is <code>if</code> followed by a condition which we call a predicate. In this example it is <code>loves_cats</code> and then a scope which will run &quot;predicated&quot; on (depending on) the condition being true.</p>
+<h3 id="conditional-values-in-the-view-macro"><a class="header" href="#conditional-values-in-the-view-macro">Conditional values in the <code>view!</code> macro</a></h3>
+<p>Let's see if we can use this in our <code>view!</code> macro to conditionally display some text. We want our message to print out if a condition is true. You can imagine that your applications conditions are more dynamic and interesting. We're hard coding the condition here so that the example is consistent and easy to follow.</p>
+<p>We want to do something like this, but we only want the message &quot;Hooray. They love cats!&quot; to print if they actually do.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        view! {  
+            cx,  
+            &quot;Hooray. They love cats!&quot;  
+        }    
+	})
+}</code></pre></pre>
+<p>We'll refactor this a bit, moving the string out of there into a variable.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        let message = &quot;Hooray. They love cats!&quot;;
+        view! {  
+            cx,  
+            {message}  
+        }    
+	})
+}</code></pre></pre>
+<p>But we want that to be changed on a condition. We want the message to be empty, but if they love cats, then it should contain our &quot;Hooray. They love cats!&quot; text.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+        
+        let loves_cats = true;
+        
+        let message = &quot;&quot;;
+        
+        if loves_cats {
+	        let message = &quot;Hooray. They love cats!&quot;;
+        }
+        
+        view! {  
+            cx,  
+            {message}  
+        }    
+	})
+}</code></pre></pre>
+<p>This looks like it shoul work, but it doesn't. </p>
+<p>Rust's compiler is smart. It's very smart. It wants to make sure that we don't leave memory allocated that isn't being used. To make sure that unused variables are freed up safely it follows a rule. </p>
+<blockquote>
+<p>Any variables used in a scope (encapsulasted with curly braces <code>{</code>...<code>}</code>) will have their memory freed (Rust's compiler calls this Dropping) at the end of the scope. Variables used in the scope are those moved into it or allocated/defined in it. The only values left are those written as the last statement in the scope, which is the evaluated value of the whole scope/code block.</p>
+</blockquote>
+<p>Here's what's happening in secret.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let message = &quot;&quot;;
+        
+if loves_cats {
+	// Let's assign message to a value
+	let message = &quot;Hooray. They love cats!&quot;;
+	// We're at the end of the scope. 
+	// Let's clean up `message`.
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We can solve this problem by making message mutable, adding the <code>mut</code> keyword after <code>let</code>.</p>
+<p>We can then reassign message through the mutable reference that gets moved into the <code>if</code> statement's scope. Not that it's important that message be assigned an empty string value so that it is initialized.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// make message mutable
+let mut message = &quot;&quot;;
+        
+if loves_cats {
+	// A mutable reference is used behind the scenes
+	// and `moved` into this scope. 
+	message = &quot;Hooray. They love cats!&quot;;
+	// We're at the end of the scope. 
+	// The mutable reference is cleaned up
+	// The owned value of message was never 
+	// actually moved, and still exists outside 
+	// of the `if`
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We now have a conditional that works, displaying a message if the predicate is true in our UI.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+  
+        let loves_cats = true;  
+        let mut message = &quot;&quot;;  
+        if loves_cats {  
+            message = &quot;Hooray. They love cats!&quot;;  
+        }  
+  
+        view! {  
+            cx,  
+            {message}  
+        }
+	})
+}</code></pre></pre>
+<h3 id="if-in-the-view-macro"><a class="header" href="#if-in-the-view-macro">If in the <code>view!</code> macro</a></h3>
+<p>What if we wanted to bring this inline, in our <code>view!</code> macro?</p>
+<p>Here's where things get interesting.</p>
+<p>There is an interesting little trick here with Rust's <code>if</code> statements. If we recall,  Rust is an expression language and expressions evaluate to the last statement. You can think of it as the &quot;final word.&quot;</p>
+<p>In the example below, the block of code for the <code>if</code> statement evaluates to a <a href="https://doc.rust-lang.org/std/primitive.unit.html">unit type</a>. It's almost like Rust's take on null, written as <code>()</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let loves_cats = true;  
+
+if loves_cats {  
+    let message = &quot;Hooray. They love cats!&quot;; 
+    //                                     ^
+    // semicolon means this isn't 
+    // the last thing left. It has ended
+    // The final word here has nothing,
+    // which represents as the () or unit type
+}
+<span class="boring">}</span></code></pre></pre>
+<p>So really, the whole if statement ends up evaluating to a unit type.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if loves_cats {  
+    let message = &quot;Hooray. They love cats!&quot;; 
+    // Invisible unit type gets added here 
+    // ()
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If we drop the semicolon, it will evaluate to a <code>&amp;str</code>, the last expression in the scope!</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if loves_cats {  
+    &quot;Hooray. They love cats!&quot; 
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Let's replace our message variable with the inline <code>if</code> conditional statement</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+  
+        view! {  
+            cx,  
+            {
+				if loves_cats {  
+                    &quot;Hooray. They love cats!&quot;  
+                }  
+            }
+		} 
+	})
+}</code></pre></pre>
+<p>Now this looks like it should work! But it doesn't, and there's good reason for it. The <code>if</code> statement evaluates to a <code>&amp;str</code> (string slice) value if it is <code>true</code>. But what about if it's <code>false</code>? In this case, it would be a unit type and that isn't valid input for the <code>view!</code> macro.</p>
+<p>We can add a <code>else</code> block with an empty string slice to solve this problem.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+  
+        view! {  
+            cx,  
+            {
+				if loves_cats {  
+                    &quot;Hooray. They love cats!&quot;  
+                } else {
+	                &quot;&quot;
+                }
+            }
+		} 
+	})
+}</code></pre></pre>
+<p>You can also replace this with a match statement for a bit more clarity.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+  
+        let loves_cats = true;  
+        view! {  
+            cx,  
+            {               
+	             match loves_cats {  
+                    true  =&gt; &quot;Hooray. They love cats!&quot;,  
+                    false =&gt; &quot;&quot;  
+                }  
+            }   
+		}    
+	})
+}</code></pre></pre>
+<h3 id="the-show-tag-in-the-view-macro"><a class="header" href="#the-show-tag-in-the-view-macro">The <code>&lt;Show&gt;</code> tag in the <code>view!</code> macro</a></h3>
+<p>Leptos provides a conditional tag to make this a bit more straight forward. The show tag also offers some optimizations. It will not processes branches that are already active if no changes have been made. Raw <code>if</code> statements will evaluate their their predicate and evaluate their success scopes each time. More details can be found in the <a href="https://docs.rs/leptos/latest/leptos/fn.Show.html">official documentation</a>.</p>
+<p>The <code>&lt;Show&gt;</code> tag requires two properties, both of which are closures.</p>
+<ul>
+<li>when: A cosure for the predicate. It will be run to see if it is true or not. If true, the children of the <code>&lt;Show&gt;</code> tag will be printed.</li>
+<li>fallback: A closure that returns what to display if the predicate is false. This is like the else branch.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+  
+        let loves_cats = true;  
+        view! {  
+            cx,  
+            &lt;Show  
+                when=move || loves_cats  
+                fallback=|_| &quot;Give it time&quot;  
+            &gt;  
+                &quot;Hooray. They love cats!&quot;  
+            &lt;/Show&gt;  
+        }    
+	})
+}</code></pre></pre>
+<p>It's important to note that this can also be written with curley braces in the closures to make them more clear. Here's an example for the sake of familiarity.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;Show  
+	when=move || { loves_cats }  
+	fallback=|_| { &quot;Give it time&quot; }
+&gt; 
+	&quot;Hooray. They love cats!&quot;  
+&lt;/Show&gt;  
+<span class="boring">}</span></code></pre></pre>
+<p>The fallback will send a context along with it, allowing you to return views.</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;  
+  
+fn main() {  
+    mount_to_body(|cx| {  
+  
+        let loves_cats = true;  
+        view! {  
+            cx,  
+            &lt;Show  
+                when=move || loves_cats  
+                fallback=|cx| view!{cx,&quot;Give it time&quot;}  
+            &gt;
+				&quot;Hooray. They love cats!&quot;  
+            &lt;/Show&gt;  
+        }    
+	})
+}</code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../ui/loops_and_the_for_view_macro_tag.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../ui/tables_and_data_sets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../ui/loops_and_the_for_view_macro_tag.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../ui/tables_and_data_sets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
