@@ -1629,7 +1629,7 @@ fn main() {
 	})
 }</code></pre></pre>
 <h3 id="the-show-tag-in-the-view-macro"><a class="header" href="#the-show-tag-in-the-view-macro">The <code>&lt;Show&gt;</code> tag in the <code>view!</code> macro</a></h3>
-<p>Leptos provides a conditional tag to make this a bit more straight forward. The show tag also offers some optimizations. It will not processes branches that are already active if no changes have been made. Raw <code>if</code> statements will evaluate their their predicate and evaluate their success scopes each time. More details can be found in the <a href="https://docs.rs/leptos/latest/leptos/fn.Show.html">official documentation</a>.</p>
+<p>Leptos provides a conditional tag to make this a bit more straight forward. The show tag also offers some optimizations. It will not processes branches that are already active if no changes have been made. Raw <code>if</code> statements will evaluate their predicate and evaluate their success scopes each time. More details can be found in the <a href="https://docs.rs/leptos/latest/leptos/fn.Show.html">official documentation</a>.</p>
 <p>The <code>&lt;Show&gt;</code> tag requires two properties, both of which are closures.</p>
 <ul>
 <li>when: A cosure for the predicate. It will be run to see if it is true or not. If true, the children of the <code>&lt;Show&gt;</code> tag will be printed.</li>
@@ -1652,7 +1652,7 @@ fn main() {
         }    
 	})
 }</code></pre></pre>
-<p>It's important to note that this can also be written with curley braces in the closures to make them more clear. Here's an example for the sake of familiarity.</p>
+<p>It's important to note that this can also be written with curly braces in the closures to make them more clear. Here's an example for the sake of familiarity.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>&lt;Show  
