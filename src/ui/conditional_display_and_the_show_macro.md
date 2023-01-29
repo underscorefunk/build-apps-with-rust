@@ -280,7 +280,7 @@ fn main() {
 
 ### The `<Show>` tag in the `view!` macro
 
-Leptos provides a conditional tag to make this a bit more straight forward. The show tag also offers some optimizations. It will not processes branches that are already active if no changes have been made. Raw `if` statements will evaluate their their predicate and evaluate their success scopes each time. More details can be found in the [official documentation](https://docs.rs/leptos/latest/leptos/fn.Show.html).
+Leptos provides a conditional tag to make this a bit more straight forward. The show tag also offers some optimizations. It will not processes branches that are already active if no changes have been made. Raw `if` statements will evaluate their predicate and evaluate their success scopes each time. More details can be found in the [official documentation](https://docs.rs/leptos/latest/leptos/fn.Show.html).
 
 The `<Show>` tag requires two properties, both of which are closures.
 - when: A cosure for the predicate. It will be run to see if it is true or not. If true, the children of the `<Show>` tag will be printed.
@@ -306,7 +306,7 @@ fn main() {
 }
 ```
 
-It's important to note that this can also be written with curley braces in the closures to make them more clear. Here's an example for the sake of familiarity.
+It's important to note that this can also be written with curly braces in the closures to make them more clear. Here's an example for the sake of familiarity.
 
 ```rust
 <Show  
