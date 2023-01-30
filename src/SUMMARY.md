@@ -1,6 +1,6 @@
 - [Preface](./preface.md)
 - [Acknowledgements]()
-- [About this Book]()
+- [About this Book](./about.md)
 - [About the Author]()
 - [If you get stuck or lose steam]()
 
@@ -23,7 +23,7 @@
 	- [General application architecture]()
 - [Tools and Languages]()
 	- [Web browsers]()
-	 - [HTML]()
+	- [HTML]()
 	- [Bash and the terminal]()
 	- [Rust]()
 	- [Trunk]()
@@ -79,42 +79,28 @@
 	- [Cookies](./client/store_data/cookies.md)
 	- [IndexedDB](./client/store_data/indexeddb.md)
 
-# Full Stack
-- [Cargo Leptos](./full_stack/cargo_leptos_setup.md)
+# Getting started with Cargo Leptos
+- [Setup](./cargo_leptos/cargo_leptos_setup.md)
 
 # Server Side
-
-- [Setup]()
 - [Responding to Requests]()
-		- [Server Functions]()
-			- [HTML]()
-			- [Data / API Endpoints]()
-		- [Server Actions]()
-		- [Form Actions]()
+	- [Server Functions]()
+		- [HTML]()
+		- [Data / API Endpoints]()
+	- [Server Actions]()
+	- [Form Actions]()
 - [Sending Data]()
 	- [Cookies]()
+- [Sending and Receiving Data]()
+	- [Web Sockets]()
 - [Saving/Persisting Data]()
 		- [Local Storage]()
 		- [Database]()
 
-# Application Behaviours
-
-- [Form Validation]()
-
-# Application Patterns
-
-- [Event Sourcing]()
-
-# Common Problems
-
-- [Offline Support and Data Sync]()
-- [Observability and Logging]()
-
-# Usability Patterns and Performance Concerns
-
-- [Bundle Size]()
-- [Partial Hydration]()
-- [UI Response Time]()
+# Deployment
+- [Render.com]() 
+- [Fly.io]()
+- [Cloudflare Workers]()
 
 ------------
 
@@ -122,3 +108,23 @@
 
 - [RPG Initiative Tracker](./tutorial_projects/initiative_tracker/summary.md)
 - [Chat](./tutorial_projects/chat/summary.md)
+
+------------
+
+# Quick Reference
+
+------------
+
+# Appendix
+- [Common Application Behaviours]()
+	- [Form Validation]()
+- [Common Design Patterns]()
+	- [Event Sourcing]()
+- [Common Problems and Concerns]()
+	- [Quality]()
+		- [UI Response Time]()
+		- [Bundle Size]()
+		- [Partial Hydration]()
+	- [Consistency]()
+		- [Offline Support and Data Sync]()
+		- [Observability and Logging]()
