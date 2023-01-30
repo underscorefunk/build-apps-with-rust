@@ -79,7 +79,8 @@
 	- [Cookies](./client/store_data/cookies.md)
 	- [IndexedDB](./client/store_data/indexeddb.md)
 
-# Cargo Leptos
+# Full Stack
+- [Cargo Leptos](./full_stack/cargo_leptos_setup.md)
 
 # Server Side
 
