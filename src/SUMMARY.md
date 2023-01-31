@@ -86,6 +86,10 @@
 - [Server Initialization and Main.rs](./cargo_leptos/overview_main.md)
 
 # Server Side
+- [Responses](./server/responses.md)
+	- [Headers]()
+	- [Cookies]()
+	- [Body]()
 - [Responding to Requests]()
 	- [Server Functions]()
 		- [HTML]()
