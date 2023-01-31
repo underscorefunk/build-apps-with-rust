@@ -81,8 +81,9 @@
 
 # Getting started with Cargo Leptos
 - [Setup](cargo_leptos/setup.md)
-- [Overview](./cargo_leptos/overview.md)
-	- [Main.rs](./cargo_leptos/overview_main.md)
+- [File Structure](cargo_leptos/file_structure.md)
+- [Config](cargo_leptos/file_structure.md)
+- [Server Initialization and Main.rs](./cargo_leptos/overview_main.md)
 
 # Server Side
 - [Responding to Requests]()

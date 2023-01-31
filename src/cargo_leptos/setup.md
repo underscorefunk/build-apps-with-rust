@@ -29,11 +29,12 @@ cargo leptos -V
 Cargo Leptos has a staged `new` command which will walk you through setting up a project. For now, we'll be using git to clone an existing template as our starting point.
 
 ### A template project
+
 The following will clone a repository which is a good starting point for a Leptos application with Axum as its web server. The last line of the bash script will run your web server. To stop the web server press ^C (control + c).
 
 ```bash
-git clone https://github.com/benwis/start-axum
-mv start-axum my-leptos-app
+git clone https://github.com/underscorefunk/cargo-leptos-axum
+mv cargo-leptos-axum my-leptos-app
 cd my-leptos-app
 cargo leptos watch
 ```
@@ -49,4 +50,4 @@ The above bash script should print something like the following to your terminal
 listening on http://127.0.0.1:3000
 ```
 
-This means that we can now visit the url 127.0.0.1:3000, and see our placeholder Leptos app.
+This means that we can now visit the url 127.0.0.1:3000, and see our placeholder Leptos app. Leptos will use port 3001 by default to watch for updates. 
