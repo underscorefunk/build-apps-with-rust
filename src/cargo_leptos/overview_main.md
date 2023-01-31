@@ -116,7 +116,7 @@ log!("listening on http://{}", &addr);
 
 #### 2) Server config
 
-We're calling `get_configuration()` with an argument of `None` which will load the configuration from settings we've established in our `cargo.toml`. In the example you'll see them listed under the `[package.metadata.leptos]` heading.
+We're calling `get_configuration()` with an argument of `None` which will load the configuration from settings from Cargo Leptos. We could also replace `None` with `Some("./cargo.toml")` to load the settings we've established in our `cargo.toml`. In the example you'll see them listed under the `[package.metadata.leptos]` heading.
 
 `leptos_options` is a property on the `conf` that was setup using the `cargo.toml` settings. We need to pass the options to a few places so we've assigned it to it's own variable. We've also cloned the site address so that we can pass it around without it being a reference into a struct. If we didn't clone it, Rust would likely complain about leptos_options having moved but we have a reference to it which is going elsewhere (like in the log message and used to bind the server to the address).
 
