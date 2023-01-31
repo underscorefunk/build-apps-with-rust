@@ -1,7 +1,7 @@
 # Intro to HTML
 
 # What we know
-In [Setup](setup.md) we developed a cursory understanding of:
+In [Setup](getting_started/setup.md) we developed a cursory understanding of:
 - how to create a generic Rust application
 - how to add `Leptos` as a dependency to our Rust application
 - how to serve a file with `trunk`

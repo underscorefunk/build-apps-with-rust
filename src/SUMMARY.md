@@ -80,7 +80,9 @@
 	- [IndexedDB](./client/store_data/indexeddb.md)
 
 # Getting started with Cargo Leptos
-- [Setup](./cargo_leptos/cargo_leptos_setup.md)
+- [Setup](cargo_leptos/setup.md)
+- [Overview](./cargo_leptos/overview.md)
+	- [Main.rs](./cargo_leptos/overview_main.md)
 
 # Server Side
 - [Responding to Requests]()
@@ -101,6 +103,9 @@
 - [Render.com]() 
 - [Fly.io]()
 - [Cloudflare Workers]()
+
+# Desktop Applications
+- [Tauri]()
 
 ------------
 
