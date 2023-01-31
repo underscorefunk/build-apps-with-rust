@@ -22,6 +22,22 @@ You can confirm the installation by checking the active version.
 cargo leptos -V
 ```
 
+## Dependencies
+
+You may need to us nightly rust. You can set the default with:
+
+```bash
+rustup default nightly
+```
+
+You may be required to install the rust-up wasm target:
+
+```bash
+rustup target add wasm32-unknown-unknown
+```
+
+You should switch to nightly before installing the target wasm target,
+
 ## Setting up a new application
 
 ### Coming soon
