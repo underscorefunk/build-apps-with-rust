@@ -87,8 +87,8 @@
 - [Server Initialization and Main.rs](./cargo_leptos/overview_main.md)
 - [Leptos app main component and app.rs](./cargo_leptos/overview_app.md)
 - [Extern]()
-	- [Leptos_meta](./cargo_leptos/leptos_meta.rs)
-	- [Leptos_router](./cargo_leptos/leptos_router.rs)
+	- [Leptos_meta](./cargo_leptos/leptos_meta.md)
+	- [Leptos_router](./cargo_leptos/leptos_router.md)
 
 # Server Side
 - [Responses](./server/responses.md)
