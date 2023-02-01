@@ -6363,8 +6363,64 @@ fn HomePage(cx: Scope) -&gt; impl IntoView {
 <span class="boring">}</span></code></pre></pre>
 <p>It's common to have a component per route. This keeps the router clean and easy to read. It also encapsulates all of that view into a single area. At this point you should feel at home. From here it's a matter of creating views and building out your application. </p>
 <p>We'll explore server/client interaction as we progress through the lesson, but now you're up and running with a full stack completely typed web application! Hooray!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="leptos_meta-1"><a class="header" href="#leptos_meta-1">Leptos_meta</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="leptos_router-1"><a class="header" href="#leptos_router-1">Leptos_router</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="leptos-meta"><a class="header" href="#leptos-meta">Leptos Meta</a></h1>
+<p><code>leptos_meta</code> is an external crate that Cargo Leptos uses to manage response meta data. That is to say, what ends up between the <code>&lt;head&gt;</code> and <code>&lt;/head&gt;</code> tags of your server's web response. It allows you to declare meta data in any component, which will be extracted and place in the <code>&lt;head&gt;</code> automagically.</p>
+<blockquote>
+<p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/">Official documentation for leptos_meta</a></p>
+</blockquote>
+<h2 id="available-tags"><a class="header" href="#available-tags">Available tags</a></h2>
+<p>The following tag are available for use with <code>leptos_meta</code>. A full list of their properties (required and optional) can be found in their respective linked documentation.</p>
+<p>Note: All of these examples are expected to be written in the context of the <code>view!</code> macro's template input with the exception of the formatter, which is generated outside of the view macro for the <code>&lt;Title&gt;</code></p>
+<p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/fn.Link.html"><code>&lt;Link&gt;</code></a></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;Link 
+	rel=&quot;preload&quot;
+	href=&quot;myFont.woff2&quot;
+	as_=&quot;font&quot;
+	type_=&quot;font/woff2&quot;
+	crossorigin=&quot;anonymous&quot;
+/&gt;
+<span class="boring">}</span></code></pre></pre>
+<p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/fn.Meta.html"><code>&lt;Meta&gt;</code></a></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;Meta charset=&quot;utf-8&quot;/&gt;
+&lt;Meta name=&quot;description&quot; content=&quot;A Leptos fan site.&quot;/&gt;
+&lt;Meta http_equiv=&quot;refresh&quot; content=&quot;3;url=https://github.com/leptos-rs/leptos&quot;/&gt;
+<span class="boring">}</span></code></pre></pre>
+<p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/fn.Script.html"><code>&lt;Script&gt;</code></a></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;Script&gt;
+	&quot;console.log('Hello, world!');&quot;
+&lt;/Script&gt;
+<span class="boring">}</span></code></pre></pre>
+<p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/fn.Style.html"><code>&lt;Style&gt;</code></a></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;Style&gt;
+	&quot;body { font-weight: bold; }&quot;
+&lt;/Style&gt;
+<span class="boring">}</span></code></pre></pre>
+<p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/fn.Stylesheet.html"><code>&lt;Stylesheet&gt;</code></a></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;Stylesheet href=&quot;/style.css&quot;/&gt;
+<span class="boring">}</span></code></pre></pre>
+<p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/fn.Title.html"><code>&lt;Title&gt;</code></a></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let formatter = |text| format!(&quot;{text} — Leptos Online&quot;);
+
+&lt;Title formatter/&gt;
+
+// .. or ..
+
+&lt;Title text=&quot;The title of my page&quot;/&gt;
+
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="leptos-router"><a class="header" href="#leptos-router">Leptos Router</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="responses"><a class="header" href="#responses">Responses</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="initiative-tracker"><a class="header" href="#initiative-tracker">Initiative Tracker</a></h1>
 <p>A tutorial project in which we build an initiative and game tracker for a role playing game like Dungeons and Dragons.</p>
