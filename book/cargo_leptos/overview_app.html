@@ -191,11 +191,9 @@ pub fn HomePage(cx: Scope) -&gt; impl IntoView {
   
     // content for this welcome page  
     &lt;Router&gt;  
-        &lt;main&gt;  
-            &lt;Routes&gt;  
-                &lt;Route path=&quot;&quot; view=|cx| view! { cx, &lt;HomePage/&gt; }/&gt;  
-            &lt;/Routes&gt;  
-        &lt;/main&gt;  
+        &lt;Routes&gt;  
+			&lt;Route path=&quot;&quot; view=|cx| view! { cx, &lt;HomePage/&gt; }/&gt;  
+		&lt;/Routes&gt;  
     &lt;/Router&gt;  
 }
 <span class="boring">}</span></code></pre></pre>
@@ -218,14 +216,12 @@ pub fn HomePage(cx: Scope) -&gt; impl IntoView {
   
     // content for this welcome page  
     &lt;Router&gt;  
-        &lt;main&gt;  
-            &lt;Routes&gt;  
-                &lt;Route path=&quot;&quot; view=|cx| view! { cx, &lt;HomePage/&gt; }/&gt;  
-                &lt;Route path=&quot;/hi&quot; view=|cx| view! { cx, 
-	                &lt;Title text=&quot;Hi&quot;/&gt;&lt;h1&gt;&quot;Hello&quot;&lt;/h1&gt; }
-				/&gt;  
-            &lt;/Routes&gt;  
-        &lt;/main&gt;  
+		&lt;Routes&gt;  
+			&lt;Route path=&quot;&quot; view=|cx| view! { cx, &lt;HomePage/&gt; }/&gt;  
+			&lt;Route path=&quot;/hi&quot; view=|cx| view! { cx, 
+				&lt;Title text=&quot;Hi&quot;/&gt;&lt;h1&gt;&quot;Hello&quot;&lt;/h1&gt; }
+			/&gt;  
+		&lt;/Routes&gt;  
     &lt;/Router&gt;  
 }
 <span class="boring">}</span></code></pre></pre>

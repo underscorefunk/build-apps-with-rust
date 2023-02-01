@@ -1686,18 +1686,22 @@ fn main() {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="reserved-tags"><a class="header" href="#reserved-tags">Reserved Tags</a></h1>
 <p>Some tags are uses by Leptos for special functions.</p>
 <ul>
-<li>
-<p><code>&lt;Show&gt;</code></p>
-</li>
-<li>
-<p><code>&lt;Router&gt;</code></p>
-</li>
-<li>
-<p><code>&lt;Routes&gt;</code></p>
-</li>
-<li>
-<p><code>&lt;Route&gt;</code></p>
-</li>
+<li><code>&lt;Show&gt;</code></li>
+</ul>
+<h2 id="leptos_router"><a class="header" href="#leptos_router">leptos_router</a></h2>
+<ul>
+<li><code>&lt;Router&gt;</code></li>
+<li><code>&lt;Routes&gt;</code></li>
+<li><code>&lt;Route&gt;</code></li>
+</ul>
+<h2 id="leptos_meta"><a class="header" href="#leptos_meta">leptos_meta</a></h2>
+<ul>
+<li><code>&lt;Link&gt;</code></li>
+<li><code>&lt;Meta&gt;</code></li>
+<li><code>&lt;Script&gt;</code></li>
+<li><code>&lt;Style&gt;</code></li>
+<li><code>&lt;Stylesheet&gt;</code></li>
+<li><code>&lt;Title&gt;</code></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="witnessing-events"><a class="header" href="#witnessing-events">Witnessing events</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="leptos-components-updating-from-events"><a class="header" href="#leptos-components-updating-from-events">Leptos components updating from events</a></h1>
@@ -6307,11 +6311,9 @@ pub fn HomePage(cx: Scope) -&gt; impl IntoView {
   
     // content for this welcome page  
     &lt;Router&gt;  
-        &lt;main&gt;  
-            &lt;Routes&gt;  
-                &lt;Route path=&quot;&quot; view=|cx| view! { cx, &lt;HomePage/&gt; }/&gt;  
-            &lt;/Routes&gt;  
-        &lt;/main&gt;  
+        &lt;Routes&gt;  
+			&lt;Route path=&quot;&quot; view=|cx| view! { cx, &lt;HomePage/&gt; }/&gt;  
+		&lt;/Routes&gt;  
     &lt;/Router&gt;  
 }
 <span class="boring">}</span></code></pre></pre>
@@ -6334,14 +6336,12 @@ pub fn HomePage(cx: Scope) -&gt; impl IntoView {
   
     // content for this welcome page  
     &lt;Router&gt;  
-        &lt;main&gt;  
-            &lt;Routes&gt;  
-                &lt;Route path=&quot;&quot; view=|cx| view! { cx, &lt;HomePage/&gt; }/&gt;  
-                &lt;Route path=&quot;/hi&quot; view=|cx| view! { cx, 
-	                &lt;Title text=&quot;Hi&quot;/&gt;&lt;h1&gt;&quot;Hello&quot;&lt;/h1&gt; }
-				/&gt;  
-            &lt;/Routes&gt;  
-        &lt;/main&gt;  
+		&lt;Routes&gt;  
+			&lt;Route path=&quot;&quot; view=|cx| view! { cx, &lt;HomePage/&gt; }/&gt;  
+			&lt;Route path=&quot;/hi&quot; view=|cx| view! { cx, 
+				&lt;Title text=&quot;Hi&quot;/&gt;&lt;h1&gt;&quot;Hello&quot;&lt;/h1&gt; }
+			/&gt;  
+		&lt;/Routes&gt;  
     &lt;/Router&gt;  
 }
 <span class="boring">}</span></code></pre></pre>
@@ -6363,8 +6363,8 @@ fn HomePage(cx: Scope) -&gt; impl IntoView {
 <span class="boring">}</span></code></pre></pre>
 <p>It's common to have a component per route. This keeps the router clean and easy to read. It also encapsulates all of that view into a single area. At this point you should feel at home. From here it's a matter of creating views and building out your application. </p>
 <p>We'll explore server/client interaction as we progress through the lesson, but now you're up and running with a full stack completely typed web application! Hooray!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="leptos_meta"><a class="header" href="#leptos_meta">Leptos_meta</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="leptos_router"><a class="header" href="#leptos_router">Leptos_router</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="leptos_meta-1"><a class="header" href="#leptos_meta-1">Leptos_meta</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="leptos_router-1"><a class="header" href="#leptos_router-1">Leptos_router</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="responses"><a class="header" href="#responses">Responses</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="initiative-tracker"><a class="header" href="#initiative-tracker">Initiative Tracker</a></h1>
 <p>A tutorial project in which we build an initiative and game tracker for a role playing game like Dungeons and Dragons.</p>
