@@ -53,6 +53,7 @@
 - [Loops and the `<For />` `view!` macro tag](./ui/loops_and_the_for_view_macro_tag.md)
 - [Conditional display and the `<Show>` `view!` macro tag](./ui/conditional_display_and_the_show_macro.md)
 - [Tables and data sets](./ui/tables_and_data_sets.md)
+- [Reserved Tags](./ui/reserved_tags.md)
 
 # Client Side
 
@@ -84,6 +85,10 @@
 - [File Structure](cargo_leptos/file_structure.md)
 - [Config](cargo_leptos/config.md)
 - [Server Initialization and Main.rs](./cargo_leptos/overview_main.md)
+- [Leptos app main component and app.rs](./cargo_leptos/overview_app.md)
+- [Extern]()
+	- [Leptos_meta](./cargo_leptos/leptos_meta.rs)
+	- [Leptos_router](./cargo_leptos/leptos_router.rs)
 
 # Server Side
 - [Responses](./server/responses.md)
