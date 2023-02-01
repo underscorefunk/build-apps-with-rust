@@ -58,11 +58,9 @@ view! {
   
     // content for this welcome page  
     <Router>  
-        <main>  
-            <Routes>  
-                <Route path="" view=|cx| view! { cx, <HomePage/> }/>  
-            </Routes>  
-        </main>  
+        <Routes>  
+			<Route path="" view=|cx| view! { cx, <HomePage/> }/>  
+		</Routes>  
     </Router>  
 }
 ```
@@ -90,14 +88,12 @@ view! {
   
     // content for this welcome page  
     <Router>  
-        <main>  
-            <Routes>  
-                <Route path="" view=|cx| view! { cx, <HomePage/> }/>  
-                <Route path="/hi" view=|cx| view! { cx, 
-	                <Title text="Hi"/><h1>"Hello"</h1> }
-				/>  
-            </Routes>  
-        </main>  
+		<Routes>  
+			<Route path="" view=|cx| view! { cx, <HomePage/> }/>  
+			<Route path="/hi" view=|cx| view! { cx, 
+				<Title text="Hi"/><h1>"Hello"</h1> }
+			/>  
+		</Routes>  
     </Router>  
 }
 ```
