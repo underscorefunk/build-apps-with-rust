@@ -6364,12 +6364,47 @@ fn HomePage(cx: Scope) -&gt; impl IntoView {
 <p>It's common to have a component per route. This keeps the router clean and easy to read. It also encapsulates all of that view into a single area. At this point you should feel at home. From here it's a matter of creating views and building out your application. </p>
 <p>We'll explore server/client interaction as we progress through the lesson, but now you're up and running with a full stack completely typed web application! Hooray!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="leptos-meta"><a class="header" href="#leptos-meta">Leptos Meta</a></h1>
-<p><code>leptos_meta</code> is an external crate that Cargo Leptos uses to manage response meta data. That is to say, what ends up between the <code>&lt;head&gt;</code> and <code>&lt;/head&gt;</code> tags of your server's web response. It allows you to declare meta data in any component, which will be extracted and place in the <code>&lt;head&gt;</code> automagically.</p>
+<p>There are aspects of a server's HTML response that don't exclusively live in between the <code>&lt;Body&gt;</code> tags of the document. It is important that we're able to modify those parts of the response so that we can change a page's title, embed styles and scripts, and so forth.</p>
+<p><code>leptos_meta</code> is an external crate that Cargo Leptos uses to manage response meta data or associated page data. It will look at the UI generated from a page's views, pulling out special tags, and moving them to where they need to be. </p>
+<p>For example, let's say you had a blog post page. You can use the <code>&lt;Title /&gt;</code> tag to set the page's title at the same point where you output the <code>&lt;h1&gt;...&lt;/h1&gt;</code> with the actual title of the blog post that readers will see. </p>
+<p>There are a few behaviours of meta data or associated resources that are managed by <code>leptos_meta</code>:</p>
+<ol>
+<li>
+<p>Fixed document tags that <code>leptos_meta</code> will update outside of the <code>&lt;Head&gt;</code> content.</p>
+<ul>
+<li><code>&lt;Html /&gt;</code></li>
+<li><code>&lt;Body /&gt;</code></li>
+</ul>
+</li>
+<li>
+<p>Content that will be hoisted from components and placed or updated in the <code>&lt;Head&gt;</code></p>
+<ul>
+<li><code>&lt;Link&gt;</code></li>
+<li><code>&lt;Meta&gt;</code></li>
+<li><code>&lt;Script&gt;</code></li>
+<li><code>&lt;Style&gt;</code></li>
+<li><code>&lt;Stylesheet&gt;</code></li>
+<li><code>&lt;Title&gt;</code></li>
+</ul>
+</li>
+</ol>
 <blockquote>
 <p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/">Official documentation for leptos_meta</a></p>
 </blockquote>
 <h2 id="available-tags"><a class="header" href="#available-tags">Available tags</a></h2>
 <p>The following tag are available for use with <code>leptos_meta</code>. A full list of their properties (required and optional) can be found in their respective linked documentation.</p>
+<h3 id="fixed-document-tags"><a class="header" href="#fixed-document-tags">Fixed document tags</a></h3>
+<p><code>&lt;Body /&gt;</code></p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;Body class=&quot;cool-body-class&quot;/&gt;
+<span class="boring">}</span></code></pre></pre>
+<p><code>&lt;Html /&gt;</code> </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;Html lang=&quot;he&quot; dir=&quot;rtl&quot;/&gt;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="head-tags"><a class="header" href="#head-tags">Head tags</a></h3>
 <p>Note: All of these examples are expected to be written in the context of the <code>view!</code> macro's template input with the exception of the formatter, which is generated outside of the view macro for the <code>&lt;Title&gt;</code></p>
 <p><a href="https://docs.rs/leptos_meta/0.1.3/leptos_meta/fn.Link.html"><code>&lt;Link&gt;</code></a></p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
