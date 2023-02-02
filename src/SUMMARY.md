@@ -96,6 +96,7 @@
 	- [Cookies]()
 	- [Body]()
 - [Responding to Requests]()
+	- [Accessing Request Data](./server/responding/accessing_request_data.md)
 	- [Server Functions]()
 		- [HTML]()
 		- [Data / API Endpoints]()
