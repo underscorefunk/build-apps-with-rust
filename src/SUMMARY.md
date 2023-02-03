@@ -1,3 +1,4 @@
+- [Notice to Reader](./read_me_first.md)
 - [Preface](./preface.md)
 - [Acknowledgements]()
 - [About this Book](./about.md)
@@ -91,7 +92,7 @@
 	- [Leptos_router](./cargo_leptos/leptos_router.md)
 
 # Server Side
-- [Responses](./server/responses.md)
+- [Responding to Requests](./server/responding.md)
 	- [Headers]()
 	- [Cookies]()
 	- [Body]()
