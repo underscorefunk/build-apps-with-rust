@@ -6841,7 +6841,7 @@ view!{cx,
 <p>Actions are created with the <code>create_action</code> function which accepts two arguments:</p>
 <ul>
 <li><code>cx</code> — A scope context in which the action will be run</li>
-<li><code>task</code> — A function to run asynchronously </li>
+<li><code>task</code> — A function to run asynchronously. Arguments should always be passed by reference</li>
 </ul>
 <p>An actions tasks is triggered by calling the <code>dispatch</code> method on the <code>Action</code>.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -6853,7 +6853,7 @@ async fn my_server_fn(x: u8, y: u8) -&gt; Result&lt;u8, ServerFnError&gt; {
 <span class="boring">}</span></code></pre></pre>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>let my_action = create_action(cx, |(x: u8,y: u8)| {
+</span>let my_action = create_action(cx, |&amp;(x: u8,y: u8)| {
   my_server_fn(x,y)
 }
 

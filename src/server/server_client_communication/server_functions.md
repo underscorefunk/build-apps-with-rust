@@ -227,7 +227,7 @@ Actions allow us to make async calls in our synchronous reactive system. We can 
 
 Actions are created with the `create_action` function which accepts two arguments:
 - `cx` — A scope context in which the action will be run
-- `task` — A function to run asynchronously 
+- `task` — A function to run asynchronously. Arguments should always be passed by reference
 
 An actions tasks is triggered by calling the `dispatch` method on the `Action`.
 
@@ -239,7 +239,7 @@ async fn my_server_fn(x: u8, y: u8) -> Result<u8, ServerFnError> {
 ```
 
 ```rust
-let my_action = create_action(cx, |(x: u8,y: u8)| {
+let my_action = create_action(cx, |&(x: u8,y: u8)| {
   my_server_fn(x,y)
 }
 
