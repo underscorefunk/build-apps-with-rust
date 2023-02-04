@@ -116,6 +116,8 @@
 - [Fly.io]()
 - [Cloudflare Workers]()
 
+------------
+
 # Desktop Applications
 - [Tauri]()
 
@@ -129,6 +131,11 @@
 ------------
 
 # Quick Reference
+- [Structuring Applications](./quick_reference/rust/structuring_applictions.md)
+
+------------
+
+# Recipes
 
 ------------
 
