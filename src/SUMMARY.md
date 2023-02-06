@@ -1,3 +1,7 @@
+------------
+
+# Preamble
+
 - [Notice to Reader](./read_me_first.md)
 - [Preface](./preface.md)
 - [Acknowledgements]()
@@ -22,6 +26,7 @@
 	- [How the web works]()
 	- [The frontend-backend divide]()
 	- [General application architecture]()
+	- [Trade-offs between WASM and JavaScript]()
 - [Tools and Languages]()
 	- [Web browsers]()
 	- [HTML]()
@@ -37,17 +42,21 @@
 # Getting Started with Rust and Leptos
 
 - [Setup](./getting_started/setup.md)
-- [Foundations]()
-	- [Intro to HTML](./getting_started/html_intro.md)
-	- [HTML and the `view!` macro](./getting_started/view_macro_html.md)
 - [Architecture]()
 	- [Leptos Components - #[component]]()
 	- [Signals (reactive values) - create_signal]()
 	- [Effects (side effects) - create_effect]()
 
-# Generting UI
+------------
 
-- [Introduction to Leptos components](./ui/leptos_component_intro.md)
+# Generting UI
+- [Introduction](./client/summary.md)	
+- [Setup]()
+	- [Trunk]()
+- [Introspection and Debugging]()
+- [HTML](./getting_started/html_intro.md)
+- [The `view!` macro](./getting_started/view_macro_html.md)
+- [Leptos Components](./ui/leptos_component_intro.md)
 - [Variables and the view! macro](./ui/view_macro_variables.md)
 - [Component properties](./ui/leptos_component_properties.md)
 - [Component dynamic content separation](./ui/leptos_component_dynamic_content_separation.md)
@@ -56,8 +65,14 @@
 - [Tables and data sets](./ui/tables_and_data_sets.md)
 - [Reserved Tags](./ui/reserved_tags.md)
 
+------------
+
 # Client Side
 
+- [Introduction](./client/summary.md)
+- [Setup]()
+	- [Trunk]()
+- [Introspection and Debugging]()
 - [Responding to Events]()
 	- [Witnessing events](./client/responding/leptos_component_logging_events.md)
 	- [Reacting to events with event handlers](./client/responding/leptos_component_update_from_event.md)
@@ -81,17 +96,20 @@
 	- [Cookies](./client/store_data/cookies.md)
 	- [IndexedDB](./client/store_data/indexeddb.md)
 
-# Getting started with Cargo Leptos
-- [Setup](cargo_leptos/setup.md)
-- [File Structure](cargo_leptos/file_structure.md)
-- [Config](cargo_leptos/config.md)
-- [Server Initialization and Main.rs](./cargo_leptos/overview_main.md)
-- [Leptos app main component and app.rs](./cargo_leptos/overview_app.md)
-- [Extern]()
-	- [Leptos_meta](./cargo_leptos/leptos_meta.md)
-	- [Leptos_router](./cargo_leptos/leptos_router.md)
+------------
 
 # Server Side
+- [Introduction](./server/summary.md)
+- [Setup]()
+	- [Cargo Leptos](./server/cargo_leptos/summary.md)
+		- [Setup](server/cargo_leptos/setup.md)
+		- [File Structure](file_structure.md)
+		- [Config](config.md)
+		- [Server Initialization and Main.rs](overview_main.md)
+		- [Leptos app main component and app.rs](overview_app.md)
+		- [Leptos_meta](leptos_meta.md)
+		- [Leptos_router](leptos_router.md)
+- [Introspection and Debugging]()
 - [Responding to Requests](./server/responding.md)
 	- [Headers]()
 	- [Cookies]()
@@ -113,7 +131,11 @@
 		- [Local Storage]()
 		- [Database]()
 
+
+------------
+
 # Deployment
+
 - [Render.com]() 
 - [Fly.io]()
 - [Cloudflare Workers]()
