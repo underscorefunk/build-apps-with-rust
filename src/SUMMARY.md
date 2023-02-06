@@ -116,6 +116,7 @@
 	- [Body]()
 - [Responding to Requests]()
 	- [Accessing Request Data](./server/responding/accessing_request_data.md)
+	- [`<Transition>`](./server/server_client_communication/transition.md)
 	- [Server Functions](./se)
 		- [HTML]()
 		- [Data / API Endpoints]()
