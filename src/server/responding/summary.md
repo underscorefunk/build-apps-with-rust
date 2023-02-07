@@ -1,2 +1,2 @@
-# Responding to Requests from the Server
+# Responding to Requests from the Client
 

@@ -4,7 +4,7 @@ Some tags are uses by Leptos for special functions.
 
 - `<Show>`
 - `<Suspense>`
-- `<Transition>`
+- `<Transition>`  
 
 ## leptos_router
 - `<Router>`

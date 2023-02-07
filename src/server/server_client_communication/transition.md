@@ -1,6 +1,9 @@
-# Transition
+# `<Transition />`
+#async-bridge
 
-A transition is like suspense with one key difference. If the resources used in the children are updating (not initially loading), the current ui will stay in place until new UI can be created when the updated resource is ready. Transition also provides a pending or "updating" state that we can set to display loading messages.
+>[Official documentation](https://docs.rs/leptos/latest/leptos/fn.Transition.html)
+
+A transition is like suspense with one key difference; if the resources used in the children are updating (not initially loading), the current ui will stay in place until new UI can be created when the updated resource is ready. Transition also provides a pending or "updating" state that we can set to display loading messages.
 
 Let's create a little example where we can add to a list of items. This is a pretty common pattern of update a parameter with interaction, query new data, and update the ui with the new data.
 
