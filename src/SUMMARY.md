@@ -110,7 +110,6 @@
 		- [Leptos_meta](./server/cargo_leptos/leptos_meta.md)
 		- [Leptos_router](./server/cargo_leptos/leptos_router.md)
 - [Introspection and Debugging]()
-- 
 - [Responding to Requests]()
 	- [Accessing Request Data]()
 	- [Responding Parts]()
