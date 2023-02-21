@@ -111,6 +111,8 @@
 		- [Leptos_router](./server/cargo_leptos/leptos_router.md)
 - [Introspection and Debugging]()
 - [Responding to Requests]()
+	- [Get Method Forms](./server/responding/get_method_forms.md)
+	- [Post Method Forms](./server/responding/post_method_forms.md)
 	- [Accessing Request Data]()
 	- [Responding Parts]()
 		- [Headers]()
