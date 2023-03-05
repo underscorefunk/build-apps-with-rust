@@ -50,6 +50,7 @@
 ------------
 
 # Generting UI
+
 - [Introduction](./client/summary.md)	
 - [Setup]()
 	- [Trunk]()
@@ -99,6 +100,7 @@
 ------------
 
 # Server Side
+
 - [Introduction](./server/summary.md)
 - [Setup]()
 	- [Cargo Leptos](./server/cargo_leptos/summary.md)
@@ -143,11 +145,13 @@
 
 # Desktop Applications
 - [Tauri]()
+- [TUI]()
 
 ------------
 
 # Tutorial Projects
 
+- [Blog]()
 - [RPG Initiative Tracker](./tutorial_projects/initiative_tracker/summary.md)
 - [Chat](./tutorial_projects/chat/summary.md)
 
