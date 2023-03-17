@@ -21,7 +21,7 @@ IndexedDB is a NoSQL like database that lives in the browser. We are able to gra
 
 The IndexedDB API is notoriously unconfortable to use. This article will provide a cursory overview and exploration of it for those curious. 
 
-Let's get things started with our Leptos [inital client side application](/quick_reference/client_side_app_setup).
+Let's get things started with our Leptos [inital client side application](client_side_app_setup.md).
 
 ```rust
 use leptos::*;  
