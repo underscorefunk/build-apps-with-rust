@@ -144,7 +144,216 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="passing-data-around"><a class="header" href="#passing-data-around">Passing data around</a></h1>
+                        <h1 id="passing-data-around-your-application"><a class="header" href="#passing-data-around-your-application">Passing data around your application</a></h1>
+<p>#accessing-data #state #scope #context</p>
+<p>Applications can get complicated quickly. To combat this we often split up functionality into multiple component and compose those components back together. This always seems like a good idea at first and it often is, but we soon realize there are tradeoffs and simplicity that we give up when splitting up our code into components. This lesson will focus on how to manage data across these news boundaries.</p>
+<ol>
+<li>passing data using component properties</li>
+<li>passing data by context (static)</li>
+<li>passing data by context (reactive)</li>
+</ol>
+<p>Let's look at a silly example:</p>
+<pre><pre class="playground"><code class="language-rust">use leptos::*;
+
+fn main() {
+    mount_to_body(|cx|{
+        let name = &quot;Beans&quot;;
+        let animal = &quot;Cat&quot;;
+        let age = &quot;20 weeks&quot;;
+        let fav_phrase = &quot;meow?&quot;;
+
+        view!{
+            cx,
+            &lt;div class={animal}&gt;
+                &lt;h2&gt;{name}&lt;/h2&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&quot;Age: &quot;{age}&lt;/li&gt;
+                    &lt;li&gt;&quot;Says &quot;{fav_phrase}&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        }
+    });
+}</code></pre></pre>
+<p>This example is a little trivial, but my hope is that it'll illustrate patterns that you can apply in your applications.</p>
+<p>Let's pull out this little block into a separate component.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>&lt;ul&gt;
+	&lt;li&gt;&quot;Age: &quot;{age}&lt;/li&gt;
+	&lt;li&gt;&quot;Says: &quot;{fav_phrase}&lt;/li&gt;
+&lt;/ul&gt;
+<span class="boring">}</span></code></pre></pre>
+<p>We can copy this out and put it in a different view.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]
+fn Details(cx:Scope) -&gt; impl IntoView {
+    view!{
+        cx,
+        &lt;ul&gt;
+            &lt;li&gt;&quot;Age: &quot;{age}&lt;/li&gt;
+            &lt;li&gt;&quot;Says: &quot;{fav_phrase}&lt;/li&gt;
+        &lt;/ul&gt;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And we'll replace the extracted html with our component.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//...
+let age = &quot;20 weeks&quot;;
+let fav_phrase = &quot;meow?&quot;;
+view!{
+	cx,
+	&lt;div class={animal}&gt;
+		&lt;h2&gt;{name}&lt;/h2&gt;
+		&lt;Details /&gt;
+	&lt;/div&gt;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We can immediately see a problem. How do we get <code>age</code> and <code>fav_phrase</code> into our new component.
+Our main component got smaller and cleaner, which feels like a step forward, but now we need to create properties for this new Details component so that we can pass our age and fav_phrase in. Be aware that our code is getting more complicated by doing this. Not everything needs to be split into unique individual components. :) </p>
+<h2 id="passing-data-using-component-properties"><a class="header" href="#passing-data-using-component-properties">Passing data using component properties</a></h2>
+<p>Step one is to add our properties to the the Leptos component tag. I've deliberately named the properties on the <code>&lt;Details /&gt;</code> component separately from their variable names to disambiguate how this all wires together.  I also changed age to an unsigned 8bit integer to add some variation to the property types.</p>
+<blockquote>
+<p>We lose shared scope and immediate access to data ( - simplicity ) but we gain encapsulation, reuse, and composability ( + decoupling/portability )</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let age: = 20_u8;
+let fav_phrase = &quot;meow?&quot;;
+view!{
+	cx,
+	&lt;div class={animal}&gt;
+		&lt;h2&gt;{name}&lt;/h2&gt;
+		&lt;Details the_age_in_weeks={age} the_phrase={fav_phrase}/&gt;
+	&lt;/div&gt;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Next we need to update our component to accept those properties. The property names become arguments in the Leptos component's function.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]
+fn Details( 
+	cx:Scope, 
+	the_phrase: &amp;'static str, 
+	the_age_in_weeks: u8
+) -&gt; impl IntoView {
+
+	view!{
+        cx,
+        &lt;ul&gt;
+            &lt;li&gt;&quot;Age: &quot;{age} weeks&lt;/li&gt;
+            &lt;li&gt;&quot;Says: &quot;{phrase}&lt;/li&gt;
+        &lt;/ul&gt;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The properties listed in the Component do not need to be in the same order as the Leptos component function's parameters.</p>
+<h2 id="passing-data-using-context"><a class="header" href="#passing-data-using-context">Passing data using context</a></h2>
+<p>There are situations that will arise where one component may have multiple child components and some child deeeep in the hierarchy may require a piece of data from one of its ancestors. If we were using properties we would need to add a new property and Leptos component function parameter for that data in every single component in the lineage.</p>
+<pre><code>Ancestor (has data)
+  ↳ Child (needs to accept data to pass to child)
+	  ↳ Child (needs to accept data to pass to child)
+		  ↳ Child (needs data)
+</code></pre>
+<p>The nice thing about component properties is that they're visible and declarative. When you write the component it makes it's dependencies clear as part of its definition. Unfortunately that isn't going to work here so we're going to make a trade-off.</p>
+<blockquote>
+<p>We lose declarative data dependencies ( - clarity ) but we gain position independence ( + decoupling/portability )</p>
+</blockquote>
+<p>If we look at the component hierarchy illustrated above we'll notice something—all of the components are passing a shared piece of data down. We're saying, &quot;Everything in this tree needs to carry the data down to the child that needs it.&quot; It might already be hitting you that we already do this with scope! Each Leptos component accepts it's predecessors scope. </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn Details( 
+	cx:Scope,  // &lt;--  here's our scope, a window into the reactive system
+	the_phrase: &amp;'static str, 
+	the_age_in_weeks: u8
+) -&gt; impl IntoView {
+
+	view!{
+        cx,
+        &lt;ul&gt;
+            &lt;li&gt;&quot;Age: &quot;{age} weeks&lt;/li&gt;
+            &lt;li&gt;&quot;Says: &quot;{phrase}&lt;/li&gt;
+        &lt;/ul&gt;
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+<p>To solve the above problem we can reserve a part of the scope for our data. We call this <strong>context</strong>. It's named context because it forms part of the the context in which the application runs. This is also likely why the property <code>cx</code> is used as the name for <code>Scope</code> in Leptos component's functions.</p>
+<p>Using context requires to steps:</p>
+<p>1 - We setup the context, adding it to our scope/reactive system
+2 - We use the context, accessing it from our scope/reactive system.</p>
+<h3 id="setting-up-context"><a class="header" href="#setting-up-context">Setting up context</a></h3>
+<p>You may be thinking, &quot;How does Leptos know where to put my special piece of data?&quot; In a lot of traditional systems you would provide a key and then store a value. Leptos' scope uses types as the identifier instead of a key. This makes the system efficient and more safe. It saves us from comparing keys or using a hash map. It does however pose a limitation—you must make a unique type for each item you want to store in the scope as context.</p>
+<p>We're creating a struct called Pet Details here to hold our context data. Here we're using a tuple but you could just as well use a struct with named arguments.</p>
+<blockquote>
+<p><strong>Important:</strong> Context should always be created/provided at the higher level of the hierarchy and passed down. Do not create contexts and consume them from parents/ancestors.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use leptos::*;
+
+#[derive(Clone)]
+struct PetDetails(String, u8);
+
+// alternate
+
+#[derive(Clone)]
+struct PetDetails{
+	phrase: String,
+	age: u8,
+};
+<span class="boring">}</span></code></pre></pre>
+<p>Now we'll use the function <code>provide_context</code> with our scope <code>cx</code> and our <code>PetDetails</code>.
+Note that our <code>&lt;Details /&gt;</code> component in the <code>view!</code> macro has no properties.</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    mount_to_body(|cx|{
+        let name = &quot;Beans&quot;;
+        let animal = &quot;Cat&quot;;
+        let age = 20_u8;
+        let fav_phrase = &quot;meow?!&quot;;
+        
+        provide_context(
+            cx,
+            PetDetails(
+                fav_phrase.to_string(), 
+                age
+            )
+        );
+        
+        view!{
+            cx,
+            &lt;div class={animal}&gt;
+                &lt;h2&gt;{name}&lt;/h2&gt;
+                &lt;Details /&gt;
+            &lt;/div&gt;
+        }
+    });
+}
+</code></pre></pre>
+<h3 id="accessingusing-context"><a class="header" href="#accessingusing-context">Accessing/using context</a></h3>
+<p>We can update our details component to pull the context out of the scope by using the turbofish syntax to specify the type, <code>::&lt;PetDetails&gt;</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[component]
+fn Details(cx:Scope)-&gt; impl IntoView {
+    let data = use_context::&lt;PetDetails&gt;(cx).unwrap();
+    let phrase = data.0;
+    let age = data.1;
+    view!{
+        cx,
+        &lt;ul&gt;
+            &lt;li&gt;&quot;Age: &quot;{age} &quot;weeks&quot;&lt;/li&gt;
+            &lt;li&gt;&quot;Says: &quot;{phrase}&lt;/li&gt;
+        &lt;/ul&gt;
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+<p>An important thing to be aware of is that contexts are not signals. They are values. They are not inherently reactive. Reactivity requires that a value that can be recalculated. A context is just a view into our reactive system, i.e. the scope.</p>
+<h2 id="passing-reactive-data-using-context"><a class="header" href="#passing-reactive-data-using-context">Passing reactive data using context</a></h2>
+<p>Context is just a value stored in the scope. It is not inherently reactive. You can however store signals as a context to gain the ability to embed reactive values or update those values deeper in the hierarchy. </p>
 
                     </main>
 
