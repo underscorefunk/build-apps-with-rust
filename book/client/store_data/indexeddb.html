@@ -32,6 +32,7 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "../../";
@@ -69,10 +70,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -159,7 +162,7 @@
 <h2 id="the-lesson"><a class="header" href="#the-lesson">The Lesson</a></h2>
 <p>IndexedDB is a NoSQL like database that lives in the browser. We are able to grab data by creating a cursor that allows us to jump around the field of data that is the database. IndexedDB does not use structured query language (SQL) to retrieve data like MySQL, Maria, Postgres, etc.</p>
 <p>The IndexedDB API is notoriously unconfortable to use. This article will provide a cursory overview and exploration of it for those curious. </p>
-<p>Let's get things started with our Leptos <a href="/quick_reference/client_side_app_setup">inital client side application</a>.</p>
+<p>Let's get things started with our Leptos <a href="client_side_app_setup.html">inital client side application</a>.</p>
 <pre><pre class="playground"><code class="language-rust">use leptos::*;  
   
 fn main() {  
@@ -784,5 +787,6 @@ DBOpenRequest.onupgradeneeded = (event) =&gt; {
         <!-- Custom JS scripts -->
 
 
+    </div>
     </body>
 </html>
