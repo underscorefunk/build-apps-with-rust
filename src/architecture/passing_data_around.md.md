@@ -5,7 +5,8 @@
 Applications can get complicated quickly. To combat this we often split up functionality into multiple component and compose those components back together. This always seems like a good idea at first and it often is, but we soon realize there are tradeoffs and simplicity that we give up when splitting up our code into components. This lesson will focus on how to manage data across these news boundaries.
 
 1. passing data using component properties
-2. passing data by context
+2. passing data by context (static)
+3. passing data by context (reactive)
 
 Let's look at a silly example:
 
@@ -165,6 +166,8 @@ You may be thinking, "How does Leptos know where to put my special piece of data
 
 We're creating a struct called Pet Details here to hold our context data. Here we're using a tuple but you could just as well use a struct with named arguments.
 
+>**Important:** Context should always be created/provided at the higher level of the hierarchy and passed down. Do not create contexts and consume them from parents/ancestors.
+
 ```rust
 use leptos::*;
 
@@ -232,7 +235,7 @@ fn Details(cx:Scope)-> impl IntoView {
 
 ```
 
-An important thing to be aware of is that contexts are not signals. They are values 
+An important thing to be aware of is that contexts are not signals. They are values. They are not inherently reactive. Reactivity requires that a value that can be recalculated. A context is just a view into our reactive system, i.e. the scope.
 
 ## Passing reactive data using context
 
