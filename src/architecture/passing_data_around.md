@@ -239,4 +239,111 @@ An important thing to be aware of is that contexts are not signals. They are val
 
 ## Passing reactive data using context
 
-Context is just a value stored in the scope. It is not inherently reactive. You can however store signals as a context to gain the ability to embed reactive values or update those values deeper in the hierarchy. 
+Context is just a value stored in the scope. It is not inherently reactive. You can however store signals as a context to gain the ability to embed reactive values or update those values deeper in the hierarchy. You can think of it as embedding a "getter" and "setter" as things you can pass throughout your system where as before we were passing the actual value. Here we're passing an interface to the value.
+
+Here's an example of how we might initialize this:
+
+```rust
+use leptos::*;  
+  
+#[derive(Copy,Clone)]  
+struct MyReactiveContext(ReadSignal<u8>, WriteSignal<u8>); // 1
+ 
+```
+> (1) Here we create a struct that is a tuple with a read and write signal. These are our interface to the reactive values. They are not the values, but can be turned into the values. We will be able to provide a context with the MyReactiveContext type, which will store these two signals.
+
+Next we'll provide the context to our scope and subsequent child scopes:
+
+```rust
+fn main() {  
+    mount_to_body(|cx|{  
+        let (reader, writer)  = create_signal( cx, 0_u8 );  // 1
+        provide_context(  // 2
+            cx,  // 3
+            MyReactiveContext(reader, writer) // 4
+        );  
+        view!{  
+            cx,  
+            "Root: " {reader} // 5
+        }    
+	});
+}
+```
+>(1) We initialize the signal with a value. It's type is of unsigned 8 bit integer with a value of `0`. In rust we can add type suffixes as a shorthand to embed the type in number literals.
+>(2) We create context though `provide_context()` by giving the function our current scope `cx` (3) and our data (4). Recall that provide context will reserve a unique space for the `MyReactiveCotnect` type.
+>(5) We output the value for debug and visualization.
+
+Now let's add a child component and update the value from inside the child to see how our change can impact parent components.
+
+```rust
+#[component]  
+fn ChildOne(cx:Scope)-> impl IntoView {  
+    let my_reactive_context = use_context::<MyReactiveContext>(cx).unwrap(); // 1
+    let reader = data.0;  // 2
+    let writer = data.1;  // 3
+    writer.set(1);  // 4 
+    view!{  
+        cx,  
+        "- Child One: " {reader}  // 5
+    }
+}
+```
+>(1) We grab data from our scope (which contains anything that happened in it's ancestral lineage) using `use_context`. We can query our specific data by providing the type in a turbo fish `::<MyReactiveContext>`. The `use_context` function requires a scope to look into (`cx` ) as an argument.
+>(2) For simplicity we'll pull the reader and (3) writer out of the tuple struct.
+>(4) Let's update the reactive value to see where things change ^.^
+>(5) We'll output the value for debug visualization
+
+The last step here is to ad this component to our main `view!`
+
+```rust
+view!{  
+	cx,  
+	"Root: " {reader} <br />
+	<ChildOne />
+}  
+```
+
+All together our application looks like this:
+
+```rust
+use leptos::*;
+
+fn main() {  
+    mount_to_body(|cx|{  
+        let (reader, writer)  = create_signal( cx, 0_u8 ); 
+        provide_context(  
+            cx,  
+            MyReactiveContext(reader, writer)
+        );  
+        view!{  
+            cx,  
+            "Root: " {reader} "<br />"
+			<ChildOne />
+        }    
+	});
+}
+
+```rust
+#[component]  
+fn ChildOne(cx:Scope)-> impl IntoView {  
+    let my_reactive_context = use_context::<MyReactiveContext>(cx).unwrap();
+    let reader = data.0;
+    let writer = data.1;
+    writer.set(1);
+    view!{  
+        cx,  
+        "- Child One: " {reader}
+    }
+}
+```
+
+If we run this with `trunk serve` we'll end up with a web page that contains:
+
+```
+Root: 1  
+- Child One: 1
+```
+
+Magic! We've used content deeper in our hierarchy to update its parent! 
+
+This is the beauty of context and signals. They allow us to pass a capability or interface around our application. Be careful not to overuse context. If you can use properties they're almost always a better choice. That said, there are times you'll need a way to access state across the application and context is there to make it safe and easy.
