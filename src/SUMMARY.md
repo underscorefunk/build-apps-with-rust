@@ -135,6 +135,7 @@
 ------------
 # Architecture
 
+- [Scope and Runtime](./architecture/scope_and_runtime.md)
 - [Passing data around](./architecture/passing_data_around.md)
 
 ------------
