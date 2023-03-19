@@ -1,4 +1,3 @@
-
 # Documenting Applications
 
 Documentation with rust is easy and amazing. Documentation comments support markdown.

@@ -1,0 +1,307 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Structuring Applications - Building Apps with Rust</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Preamble</li><li class="chapter-item expanded "><a href="../../read_me_first.html"><strong aria-hidden="true">1.</strong> Notice to Reader</a></li><li class="chapter-item expanded "><a href="../../preface.html"><strong aria-hidden="true">2.</strong> Preface</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Acknowledgements</div></li><li class="chapter-item expanded "><a href="../../about.html"><strong aria-hidden="true">4.</strong> About this Book</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> About the Author</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> If you get stuck or lose steam</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Introductions</li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> Programming</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">7.1.</strong> What it is</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.2.</strong> Why it's worth it</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.3.</strong> Why it's hard</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.4.</strong> Programmer Thinking</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> Languages</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">8.1.</strong> Meaning and Interpretation</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> Architectures</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.1.</strong> What is architecture</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.2.</strong> How your computer works</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.3.</strong> How the web works</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.4.</strong> The frontend-backend divide</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.5.</strong> General application architecture</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.6.</strong> Trade-offs between WASM and JavaScript</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.</strong> Tools and Languages</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">10.1.</strong> Web browsers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.2.</strong> HTML</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.3.</strong> Bash and the terminal</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.4.</strong> Rust</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.5.</strong> Trunk</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">10.6.</strong> Cargo Leptos</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">11.</strong> Other Resources</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../intro/other_resources/rust.html"><strong aria-hidden="true">11.1.</strong> Rust</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Getting Started with Rust and Leptos</li><li class="chapter-item expanded "><a href="../../getting_started/setup.html"><strong aria-hidden="true">12.</strong> Setup</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.</strong> Architecture</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">13.1.</strong> Leptos Components - #[component]</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.2.</strong> Signals (reactive values) - create_signal</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">13.3.</strong> Effects (side effects) - create_effect</div></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Generting UI</li><li class="chapter-item expanded "><a href="../../client/summary.html"><strong aria-hidden="true">14.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">15.</strong> Setup</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">15.1.</strong> Trunk</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">16.</strong> Introspection and Debugging</div></li><li class="chapter-item expanded "><a href="../../getting_started/html_intro.html"><strong aria-hidden="true">17.</strong> HTML</a></li><li class="chapter-item expanded "><a href="../../getting_started/view_macro_html.html"><strong aria-hidden="true">18.</strong> The view! macro</a></li><li class="chapter-item expanded "><a href="../../ui/leptos_component_intro.html"><strong aria-hidden="true">19.</strong> Leptos Components</a></li><li class="chapter-item expanded "><a href="../../ui/view_macro_variables.html"><strong aria-hidden="true">20.</strong> Variables and the view! macro</a></li><li class="chapter-item expanded "><a href="../../ui/leptos_component_properties.html"><strong aria-hidden="true">21.</strong> Component properties</a></li><li class="chapter-item expanded "><a href="../../ui/leptos_component_dynamic_content_separation.html"><strong aria-hidden="true">22.</strong> Component dynamic content separation</a></li><li class="chapter-item expanded "><a href="../../ui/loops_and_the_for_view_macro_tag.html"><strong aria-hidden="true">23.</strong> Loops and the &lt;For /&gt; view! macro tag</a></li><li class="chapter-item expanded "><a href="../../ui/conditional_display_and_the_show_macro.html"><strong aria-hidden="true">24.</strong> Conditional display and the &lt;Show&gt; view! macro tag</a></li><li class="chapter-item expanded "><a href="../../ui/tables_and_data_sets.html"><strong aria-hidden="true">25.</strong> Tables and data sets</a></li><li class="chapter-item expanded "><a href="../../ui/reserved_tags.html"><strong aria-hidden="true">26.</strong> Reserved Tags</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Client Side</li><li class="chapter-item expanded "><a href="../../client/summary.html"><strong aria-hidden="true">27.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">28.</strong> Setup</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">28.1.</strong> Trunk</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">29.</strong> Introspection and Debugging</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">30.</strong> Responding to Events</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../client/responding/leptos_component_logging_events.html"><strong aria-hidden="true">30.1.</strong> Witnessing events</a></li><li class="chapter-item expanded "><a href="../../client/responding/leptos_component_update_from_event.html"><strong aria-hidden="true">30.2.</strong> Reacting to events with event handlers</a></li><li class="chapter-item expanded "><a href="../../client/responding/event_handlers_as_props.html"><strong aria-hidden="true">30.3.</strong> Event handers as props</a></li><li class="chapter-item expanded "><a href="../../client/responding/event_bubbling_and_signal_generics.html"><strong aria-hidden="true">30.4.</strong> Event Bubbling and Signal Generics</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">30.5.</strong> Preventing bubbling and default event behaviours </div></li><li class="chapter-item expanded "><a href="../../client/responding/custom_events.html"><strong aria-hidden="true">30.6.</strong> Custom Events</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_data.html"><strong aria-hidden="true">30.7.</strong> Custom Event Data</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_module.html"><strong aria-hidden="true">30.8.</strong> Custom Event Module</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_module_with_data.html"><strong aria-hidden="true">30.9.</strong> Custom Event Module with Data</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_data_with_signals_and_effects.html"><strong aria-hidden="true">30.10.</strong> Custom Event Data with Signals and Effects</a></li><li class="chapter-item expanded "><a href="../../client/responding/custom_event_data_with_signals_and_effects_part2.html"><strong aria-hidden="true">30.11.</strong> Custom Event Data with Signals and Effects - Part 2</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">31.</strong> Sending Data</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../client/responding/forms.html"><strong aria-hidden="true">31.1.</strong> Forms</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">31.2.</strong> Acton Forms</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">32.</strong> Sending and Receiving Data</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">32.1.</strong> Fetch</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">32.2.</strong> Web Socket</div></li></ol></li><li class="chapter-item expanded "><a href="../../client/store_data/summary.html"><strong aria-hidden="true">33.</strong> Saving/Persisting Data</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../client/store_data/web_storage.html"><strong aria-hidden="true">33.1.</strong> Local Storage</a></li><li class="chapter-item expanded "><a href="../../client/store_data/cookies.html"><strong aria-hidden="true">33.2.</strong> Cookies</a></li><li class="chapter-item expanded "><a href="../../client/store_data/indexeddb.html"><strong aria-hidden="true">33.3.</strong> IndexedDB</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Server Side</li><li class="chapter-item expanded "><a href="../../server/summary.html"><strong aria-hidden="true">34.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">35.</strong> Setup</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../server/cargo_leptos/summary.html"><strong aria-hidden="true">35.1.</strong> Cargo Leptos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../server/cargo_leptos/setup.html"><strong aria-hidden="true">35.1.1.</strong> Setup</a></li><li class="chapter-item expanded "><a href="../../server/cargo_leptos/file_structure.html"><strong aria-hidden="true">35.1.2.</strong> File Structure</a></li><li class="chapter-item expanded "><a href="../../server/cargo_leptos/config.html"><strong aria-hidden="true">35.1.3.</strong> Config</a></li><li class="chapter-item expanded "><a href="../../server/cargo_leptos/overview_main.html"><strong aria-hidden="true">35.1.4.</strong> Server Initialization and Main.rs</a></li><li class="chapter-item expanded "><a href="../../server/cargo_leptos/overview_app.html"><strong aria-hidden="true">35.1.5.</strong> Leptos app main component and app.rs</a></li><li class="chapter-item expanded "><a href="../../server/cargo_leptos/leptos_meta.html"><strong aria-hidden="true">35.1.6.</strong> Leptos_meta</a></li><li class="chapter-item expanded "><a href="../../server/cargo_leptos/leptos_router.html"><strong aria-hidden="true">35.1.7.</strong> Leptos_router</a></li></ol></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">36.</strong> Introspection and Debugging</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">37.</strong> Responding to Requests</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../server/responding/get_method_forms.html"><strong aria-hidden="true">37.1.</strong> Get Method Forms</a></li><li class="chapter-item expanded "><a href="../../server/responding/post_method_forms.html"><strong aria-hidden="true">37.2.</strong> Post Method Forms</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">37.3.</strong> Accessing Request Data</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">37.4.</strong> Responding Parts</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">37.4.1.</strong> Headers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">37.4.2.</strong> Cookies</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">37.4.3.</strong> Body</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">37.5.</strong> HTML Requests - Routes</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">37.6.</strong> Data Requests - Server Functions</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">37.7.</strong> Behaviour Request - Server Actions</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">38.</strong> Client Server Communication</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../server/server_client_communication/server_functions.html"><strong aria-hidden="true">38.1.</strong> Server Functions</a></li><li class="chapter-item expanded "><a href="../../server/server_client_communication/transition.html"><strong aria-hidden="true">38.2.</strong> &lt;Transition&gt;</a></li><li class="chapter-item expanded "><a href="../../server/server_client_communication/action_form.html"><strong aria-hidden="true">38.3.</strong> &lt;ActionForm&gt;</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">38.4.</strong> Web Sockets</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">39.</strong> Saving/Persisting Data</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Architecture</li><li class="chapter-item expanded "><a href="../../architecture/scope_and_runtime.html"><strong aria-hidden="true">40.</strong> Scope and Runtime</a></li><li class="chapter-item expanded "><a href="../../architecture/passing_data_around.html"><strong aria-hidden="true">41.</strong> Passing data around</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Deployment</li><li class="chapter-item expanded "><div><strong aria-hidden="true">42.</strong> Render.com</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">43.</strong> Fly.io</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">44.</strong> Cloudflare Workers</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Desktop Applications</li><li class="chapter-item expanded "><div><strong aria-hidden="true">45.</strong> Tauri</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">46.</strong> TUI</div></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Tutorial Projects</li><li class="chapter-item expanded "><div><strong aria-hidden="true">47.</strong> Blog</div></li><li class="chapter-item expanded "><a href="../../tutorial_projects/initiative_tracker/summary.html"><strong aria-hidden="true">48.</strong> RPG Initiative Tracker</a></li><li class="chapter-item expanded "><a href="../../tutorial_projects/chat/summary.html"><strong aria-hidden="true">49.</strong> Chat</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Quick Reference</li><li class="chapter-item expanded "><a href="../../quick_reference/rust/structuring_applications.html" class="active"><strong aria-hidden="true">50.</strong> Structuring Applications</a></li><li class="chapter-item expanded "><a href="../../quick_reference/rust/documenting_applications.html"><strong aria-hidden="true">51.</strong> Documenting Applications</a></li><li class="chapter-item expanded "><a href="../../quick_reference/rust/testing_applications.html"><strong aria-hidden="true">52.</strong> Testing Applications</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Recipes</li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendix</li><li class="chapter-item expanded "><div><strong aria-hidden="true">53.</strong> Common Application Behaviours</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">53.1.</strong> Form Validation</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">54.</strong> Common Design Patterns</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">54.1.</strong> Event Sourcing</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">55.</strong> Common Problems and Concerns</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">55.1.</strong> Quality</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">55.1.1.</strong> UI Response Time</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">55.1.2.</strong> Bundle Size</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">55.1.3.</strong> Partial Hydration</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">55.2.</strong> Consistency</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">55.2.1.</strong> Offline Support and Data Sync</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">55.2.2.</strong> Observability and Logging</div></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Building Apps with Rust</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="structuring-applications"><a class="header" href="#structuring-applications">Structuring Applications</a></h1>
+<p>You have two options:</p>
+<ol>
+<li>Make a new crate from inside /src of a crate and load it as a module in cargo.toml</li>
+<li>Split up code into modules, load those modules into a folder that becomes the namespace through a mod.rs file in a folder of the aformentioned name</li>
+</ol>
+<h2 id="crates"><a class="header" href="#crates">Crates</a></h2>
+<p>Important Distinctions</p>
+<ul>
+<li>library crates expose functions that other crates can call and use </li>
+<li>binary crates are meant to be run on their own.</li>
+</ul>
+<p>Read The Cargo Book — https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/cargo/index.html</p>
+<h3 id="takeaways"><a class="header" href="#takeaways">Takeaways</a></h3>
+<ul>
+<li>
+<p>Cargo.toml</p>
+<ul>
+<li>in a bin, put cargo.lock in git so that it rebuilds with the same deps versions</li>
+<li>cargo upgrade // update dependencies</li>
+<li>Versioning (semver)
+<ul>
+<li>Before you reach 1.0.0, anything goes, but if you make breaking changes, increment the minor version. In Rust, breaking changes include adding fields to structs or variants to enums.</li>
+<li>After 1.0.0, only make breaking changes when you increment the major version. Don’t break the build.</li>
+<li>After 1.0.0, don’t add any new public API (no new pub anything) in tiny versions. Always increment the minor version if you add any new pub structs, traits, fields, types, functions, methods or anything else.</li>
+</ul>
+</li>
+<li>Profiles can be created to determin how cargo run acts</li>
+<li>You can create config dependent dependencies</li>
+</ul>
+</li>
+<li>
+<p>Create sub crates by running <code>cargo new cratename --lib</code></p>
+<ul>
+<li>Make a requirement in cargo.toml with <code>cratename = {path:cratename}</code></li>
+<li>Use the crate in your main project with <code>extern crate cratename;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="modules"><a class="header" href="#modules">Modules</a></h2>
+<p>Read — https://doc.rust-lang.org/rust-by-example/mod.html</p>
+<h3 id="take-aways"><a class="header" href="#take-aways">Take aways</a></h3>
+<ul>
+<li>Make a mod with the syntax <code>mod modname{...}</code>
+<ul>
+<li>expose things to the public with <code>pub</code> keyword</li>
+<li>use them via <code>modname::modfunctionname()</code></li>
+</ul>
+</li>
+<li>Modules can be nested</li>
+<li>Modules can have visibility for their fields too</li>
+<li><code>use</code> binds the last component of a path as the accessible name 
+<ul>
+<li><code>use foo::bar::baz</code></li>
+<li><code>use foo::bar::{baz,bazsibling}</code></li>
+<li><code>use foo::bar::baz as renamedbaz</code></li>
+</ul>
+</li>
+<li><code>use</code> statements can be used in block scopes for more concise code</li>
+<li>Dynamic module roots
+<ul>
+<li><code>self::</code> refers to current scope as root</li>
+<li><code>super::</code> refers to parent scope as root</li>
+<li><code>crate::</code> refers to crate root as scope</li>
+</ul>
+</li>
+<li>A module can be loaded into a *.rs file with <code>mod modname</code>
+<ul>
+<li>rust will look for modname.rs and modname/mod.rs</li>
+<li>public components will be exposed on the name space</li>
+<li>A common pattern is
+<ul>
+<li>A module at <code>modfolder/somemod.rs</code> with public components</li>
+<li>A module at <code>modfolder/mod.rs</code> with <code>pub mod somemod;</code> with brings somemod into the scope of <code>mod.rs</code></li>
+<li>Use the module in <code>main.rs</code> with <code>mod modfolder;</code> and calling <code>modfolder::somemod::somemodfn()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="workspaces"><a class="header" href="#workspaces">Workspaces</a></h2>
+<p>Create an environment with multiple crates which depend on eachother but keep them separate for faster compilation, separation, etc</p>
+<p>Read - https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html</p>
+<h3 id="takeaways-1"><a class="header" href="#takeaways-1">Takeaways</a></h3>
+<ul>
+<li>Workspaces allow for efficient code reuse because you can have multiple distinct crates in a single work space</li>
+<li>Create a folder and put a cargo.toml in it</li>
+</ul>
+<pre><code class="language-toml">   [workspace] 
+   members = [ 
+   	&quot;some-binary-crate&quot;, 
+   	&quot;some-lib-crate&quot;, 
+   	&quot;another-lib-crate&quot;
+   ]
+</code></pre>
+<ul>
+<li>Crate the crate AFTER specifiying its membership or you'll get warnings</li>
+</ul>
+<pre><code class="language-bash">cargo new some-lib-crate --lib
+</code></pre>
+<ul>
+<li>Specify dependencies on other crates in the workspace with the following cargo.toml entry</li>
+</ul>
+<pre><code class="language-toml">some-lib-crate = { path = &quot;../some-lib-crate&quot; }
+</code></pre>
+<ul>
+<li>Use <code>bash cargo run -p some-binary-crate </code> in the workspace folder to run the binary crate. -p specifies package</li>
+<li>You can run tests with <code>bash cargo test -p some-library-crate </code> as well</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../tutorial_projects/chat/summary.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../../quick_reference/rust/documenting_applications.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../tutorial_projects/chat/summary.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../../quick_reference/rust/documenting_applications.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
