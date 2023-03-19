@@ -165,6 +165,7 @@
 # Quick Reference
 - [Structuring Applications](./quick_reference/rust/structuring_applictions.md)
 - [Documenting Applications](./quick_reference/rust/documenting_applictions.md)
+- [Testing Applications](./quick_reference/rust/testing_applictions.md)
 
 ------------
 
